@@ -40,7 +40,11 @@ export default class Renderer {
             return
         }
         const attributesBuffersInfo = gameObject.getAttributesBuffersInfo()
+
         for (const attributeBufferInfo of attributesBuffersInfo) {
+            const attribLocation = attributeBufferInfo.getAttribLocation()
+            WebGLWrapper.enableVertexAttribArray(attribLocation)
+
             
         }
     }

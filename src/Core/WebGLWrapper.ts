@@ -15,8 +15,12 @@ export default class WebGLWrapper {
         return this.getAttribLocation(program, nameAttrib)
     }
 
-    public static enableVertexAttrib(attribLocation: number) {
+    public static enableVertexAttribArray(attribLocation: number) {
         this._glContext.enableVertexAttribArray(attribLocation)
+    }
+
+    public static bindBuffer(buffer: WebGLBuffer) {
+        //this._glContext.bindBuffer()
     }
 
     public static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {

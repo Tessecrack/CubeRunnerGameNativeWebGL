@@ -1,12 +1,15 @@
+import type GLBufferInfo from "./GLBufferInfo.js"
+
 export default class GLAttributeBufferInfo {
     protected _attribLocation: number
-    public buffer: WebGLBuffer
+
+    public bufferInfo: GLBufferInfo
 
     constructor(
         attribLocation: number,
-        buffer: WebGLBuffer) {
+        bufferInfo: GLBufferInfo) {
         this._attribLocation = attribLocation
-        this.buffer = buffer
+        this.bufferInfo = bufferInfo
     }
 
     public getAttribLocation() {
