@@ -1,0 +1,1 @@
+{"version":3,"file":"Transform.d.ts","sourceRoot":"","sources":["Transform.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,cAAc,CAAC;AAEnC,MAAM,CAAC,OAAO,OAAO,SAAS;IACnB,WAAW,EAAE,OAAO,CAAuB;IAC3C,QAAQ,EAAE,OAAO,CAAuB;IACxC,OAAO,EAAE,OAAO,CAAuB;CACjD"}

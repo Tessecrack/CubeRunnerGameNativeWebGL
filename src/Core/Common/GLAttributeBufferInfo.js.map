@@ -1,0 +1,1 @@
+{"version":3,"file":"GLAttributeBufferInfo.js","sourceRoot":"","sources":["GLAttributeBufferInfo.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,OAAO,qBAAqB;IAC5B,eAAe,CAAQ;IAE1B,UAAU,CAAc;IAE/B,YACI,cAAsB,EACtB,UAAwB;QACxB,IAAI,CAAC,eAAe,GAAG,cAAc,CAAA;QACrC,IAAI,CAAC,UAAU,GAAG,UAAU,CAAA;IAChC,CAAC;IAEM,iBAAiB;QACpB,OAAO,IAAI,CAAC,eAAe,CAAA;IAC/B,CAAC;CACJ"}
