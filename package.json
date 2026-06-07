@@ -1,0 +1,17 @@
+{
+  "name": "cuberunnergamenativewebgl",
+  "version": "1.0.0",
+  "description": "Cube Runner Game on native WebGL",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "Main.ts",
+  "scripts": {
+    "dev": "tsc && vite build && vite --host localhost --port 8080",
+    "build": "tsc && vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "vite": "^8.0.16"
+  }
+}
