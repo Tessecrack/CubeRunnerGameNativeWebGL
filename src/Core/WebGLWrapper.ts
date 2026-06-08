@@ -1,3 +1,6 @@
+import type GLAttributesBufferInfo from "./Common/GLAttributesBufferInfo.js"
+import type GLUniformInfoBase from "./Common/GLUniformInfoBase.js"
+
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
 
@@ -19,8 +22,30 @@ export default class WebGLWrapper {
         this._glContext.enableVertexAttribArray(attribLocation)
     }
 
-    public static bindBuffer(buffer: WebGLBuffer) {
-        //this._glContext.bindBuffer()
+    public static bindAttributesBuffer(attributesBufferInfo: GLAttributesBufferInfo) {
+
+        const buffer = attributesBufferInfo.bufferInfo.buffer
+        const target = attributesBufferInfo.bufferInfo.target
+
+        this._glContext.bindBuffer(target, buffer)
+
+        const attibutesInfo = attributesBufferInfo.getAttributesInfo()
+
+        for (const attributeInfo of attibutesInfo) {
+            const attributeLocation = attributeInfo.attributeLocation
+            const type = attributeInfo.typeComponentVertexAttribute
+            const size = attributeInfo.componentsNumberPerVertexAttribute
+            const normalized = attributeInfo.normalized
+            const stride = attributeInfo.stride
+            const offset = attributeInfo.offset
+
+            this._glContext.vertexAttribPointer(attributeLocation, size, type, normalized, stride, offset)
+            this._glContext.enableVertexAttribArray(attributeLocation)        
+        }
+    }
+
+    public static setUniformValue(uniformInfo: GLUniformInfoBase) {
+        
     }
 
     public static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {

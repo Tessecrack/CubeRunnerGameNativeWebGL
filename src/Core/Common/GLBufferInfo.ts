@@ -1,10 +1,13 @@
 export default class GLBufferInfo {
 
-    public buffer: WebGLBuffer
-    public type: GLenum
+    public target: GLenum
 
-    constructor(buffer: WebGLBuffer, type: GLenum) {
+    public buffer: WebGLBuffer
+
+    constructor(
+        target: GLenum,
+        buffer: WebGLBuffer) {
+        this.target = target
         this.buffer = buffer
-        this.type = type
     }
 }

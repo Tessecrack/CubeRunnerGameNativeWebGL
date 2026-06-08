@@ -1,6 +1,6 @@
 export default class GLBufferInfo {
+    target: GLenum;
     buffer: WebGLBuffer;
-    type: GLenum;
-    constructor(buffer: WebGLBuffer, type: GLenum);
+    constructor(target: GLenum, buffer: WebGLBuffer);
 }
 //# sourceMappingURL=GLBufferInfo.d.ts.map

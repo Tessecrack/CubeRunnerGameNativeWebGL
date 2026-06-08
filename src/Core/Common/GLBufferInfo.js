@@ -1,9 +1,9 @@
 export default class GLBufferInfo {
+    target;
     buffer;
-    type;
-    constructor(buffer, type) {
+    constructor(target, buffer) {
+        this.target = target;
         this.buffer = buffer;
-        this.type = type;
     }
 }
 //# sourceMappingURL=GLBufferInfo.js.map

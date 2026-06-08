@@ -28,8 +28,7 @@ export default class Renderer {
         }
         const attributesBuffersInfo = gameObject.getAttributesBuffersInfo();
         for (const attributeBufferInfo of attributesBuffersInfo) {
-            const attribLocation = attributeBufferInfo.getAttribLocation();
-            WebGLWrapper.enableVertexAttribArray(attribLocation);
+            //WebGLWrapper.bindAttributeBuffer(attributeBufferInfo)
         }
     }
 }

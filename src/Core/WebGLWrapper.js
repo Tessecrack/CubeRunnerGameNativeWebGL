@@ -13,8 +13,23 @@ export default class WebGLWrapper {
     static enableVertexAttribArray(attribLocation) {
         this._glContext.enableVertexAttribArray(attribLocation);
     }
-    static bindBuffer(buffer) {
-        //this._glContext.bindBuffer()
+    static bindAttributesBuffer(attributesBufferInfo) {
+        const buffer = attributesBufferInfo.bufferInfo.buffer;
+        const target = attributesBufferInfo.bufferInfo.target;
+        this._glContext.bindBuffer(target, buffer);
+        const attibutesInfo = attributesBufferInfo.getAttributesInfo();
+        for (const attributeInfo of attibutesInfo) {
+            const attributeLocation = attributeInfo.attributeLocation;
+            const type = attributeInfo.typeComponentVertexAttribute;
+            const size = attributeInfo.componentsNumberPerVertexAttribute;
+            const normalized = attributeInfo.normalized;
+            const stride = attributeInfo.stride;
+            const offset = attributeInfo.offset;
+            this._glContext.vertexAttribPointer(attributeLocation, size, type, normalized, stride, offset);
+            this._glContext.enableVertexAttribArray(attributeLocation);
+        }
+    }
+    static setUniformValue(uniformInfo) {
     }
     static getUniformLocation(program, nameUniform) {
         return this.getUniformLocation(program, nameUniform);
