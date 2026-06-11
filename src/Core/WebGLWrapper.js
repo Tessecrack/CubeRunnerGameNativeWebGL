@@ -33,9 +33,42 @@ export default class WebGLWrapper {
     }
     static setUniformVecValue(uniformVecInfo) {
         uniformVecInfo.updateValue();
+        const value = uniformVecInfo.value;
+        const location = uniformVecInfo.getUniformLocation();
+        switch (value.length) {
+            case 1:
+                this._glContext.uniform1fv(location, value);
+                break;
+            case 2:
+                this._glContext.uniform2fv(location, value);
+                break;
+            case 3:
+                this._glContext.uniform3fv(location, value);
+                break;
+            case 4:
+                this._glContext.uniform4fv(location, value);
+                break;
+            default:
+                console.warn(`setUniformVecValue ${value}. Cannot calculate uniform by length ${value.length}`);
+        }
     }
     static setUniformMatValue(uniformMatInfo) {
         uniformMatInfo.updateValue();
+        const value = uniformMatInfo.value;
+        const location = uniformMatInfo.getUniformLocation();
+        switch (value.length) {
+            case 2:
+                this._glContext.uniformMatrix2fv(location, false, value);
+                break;
+            case 3:
+                this._glContext.uniformMatrix3fv(location, false, value);
+                break;
+            case 4:
+                this._glContext.uniformMatrix4fv(location, false, value);
+                break;
+            default:
+                console.warn(`setUniformMatValue ${value}. Cannot calculate uniform by length ${value.length}`);
+        }
     }
     static getUniformLocation(program, nameUniform) {
         return this.getUniformLocation(program, nameUniform);

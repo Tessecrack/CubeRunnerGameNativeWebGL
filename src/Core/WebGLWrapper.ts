@@ -42,20 +42,57 @@ export default class WebGLWrapper {
             const offset = attributeInfo.offset
 
             this._glContext.vertexAttribPointer(attributeLocation, size, type, normalized, stride, offset)
-            this._glContext.enableVertexAttribArray(attributeLocation)        
+            this._glContext.enableVertexAttribArray(attributeLocation)
         }
     }
 
     public static setUniformValue(uniformInfo: GLUniformInfoBase) {
-        
+
     }
 
     public static setUniformVecValue(uniformVecInfo: GLUniformVecInfo) {
         uniformVecInfo.updateValue()
+
+        const value = uniformVecInfo.value
+        const location = uniformVecInfo.getUniformLocation()
+
+        switch (value.length) {
+            case 1:
+                this._glContext.uniform1fv(location, value)
+                break
+            case 2:
+                this._glContext.uniform2fv(location, value)
+                break
+            case 3:
+                this._glContext.uniform3fv(location, value)
+                break
+            case 4:
+                this._glContext.uniform4fv(location, value)
+                break
+            default:
+                console.warn(`setUniformVecValue ${value}. Cannot calculate uniform by length ${value.length}`)
+        }
     }
 
     public static setUniformMatValue(uniformMatInfo: GLUniformMatInfo) {
         uniformMatInfo.updateValue()
+
+        const value = uniformMatInfo.value
+        const location = uniformMatInfo.getUniformLocation()
+
+        switch (value.length) {
+            case 2:
+                this._glContext.uniformMatrix2fv(location, false, value)
+                break
+            case 3:
+                this._glContext.uniformMatrix3fv(location, false, value)
+                break
+            case 4:
+                this._glContext.uniformMatrix4fv(location, false, value)
+                break;
+            default:
+                console.warn(`setUniformMatValue ${value}. Cannot calculate uniform by length ${value.length}`)
+        }
     }
 
     public static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {
