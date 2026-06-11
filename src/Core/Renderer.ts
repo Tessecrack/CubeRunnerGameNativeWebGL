@@ -36,12 +36,12 @@ export default class Renderer {
 
                     const uniformsMatInfo = gameObject.getUniformsMatInfo()
                     for (const uniformMatInfo of uniformsMatInfo) {
-
+                        uniformMatInfo.updateValue()
                     }
 
                     const uniformsVecInfo = gameObject.getUniformsVecInfo()
                     for (const uniformVecInfo of uniformsVecInfo) {
-                        
+                        uniformVecInfo.updateValue()
                     }
 
                 }

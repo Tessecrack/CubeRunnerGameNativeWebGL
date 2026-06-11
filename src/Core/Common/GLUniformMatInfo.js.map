@@ -1,1 +1,1 @@
-{"version":3,"file":"GLUniformMatInfo.js","sourceRoot":"","sources":["GLUniformMatInfo.ts"],"names":[],"mappings":"AAAA,OAAO,iBAAiB,MAAM,wBAAwB,CAAA;AAEtD,MAAM,CAAC,OAAO,OAAO,gBAAiB,SAAQ,iBAAiB;IAC3D,YACI,eAAqC,EACrC,MAAgB;QAEhB,KAAK,CAAC,eAAe,EAAE,MAAM,CAAC,CAAA;IAClC,CAAC;CACJ"}
+{"version":3,"file":"GLUniformMatInfo.js","sourceRoot":"","sources":["GLUniformMatInfo.ts"],"names":[],"mappings":"AAAA,OAAO,iBAAiB,EAAE,EAAkC,MAAM,wBAAwB,CAAA;AAE1F,MAAM,CAAC,OAAO,OAAO,gBAAiB,SAAQ,iBAAiB;IAE3D,YACI,eAAqC,EACrC,MAAgB;QAEhB,KAAK,CAAC,eAAe,EAAE,MAAM,CAAC,CAAA;IAClC,CAAC;CACJ"}
