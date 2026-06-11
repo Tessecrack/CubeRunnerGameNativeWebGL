@@ -17,6 +17,16 @@ export default class Renderer {
                         WebGLWrapper.useProgram(program);
                     }
                     lastProgram = program;
+                    const attributesBuffersInfo = gameObject.getAttributesBuffersInfo();
+                    for (const attributeBufferInfo of attributesBuffersInfo) {
+                        WebGLWrapper.bindAttributesBuffer(attributeBufferInfo);
+                    }
+                    const uniformsMatInfo = gameObject.getUniformsMatInfo();
+                    for (const uniformMatInfo of uniformsMatInfo) {
+                    }
+                    const uniformsVecInfo = gameObject.getUniformsVecInfo();
+                    for (const uniformVecInfo of uniformsVecInfo) {
+                    }
                 }
             }
         }
@@ -25,10 +35,6 @@ export default class Renderer {
     _drawObject(gameObject) {
         if (!gameObject) {
             return;
-        }
-        const attributesBuffersInfo = gameObject.getAttributesBuffersInfo();
-        for (const attributeBufferInfo of attributesBuffersInfo) {
-            //WebGLWrapper.bindAttributeBuffer(attributeBufferInfo)
         }
     }
 }
