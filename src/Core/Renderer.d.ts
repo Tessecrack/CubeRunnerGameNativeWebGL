@@ -4,6 +4,5 @@ export default class Renderer {
     constructor();
     setScene(scene: Scene): void;
     render(tick: number): void;
-    private _drawObject;
 }
 //# sourceMappingURL=Renderer.d.ts.map

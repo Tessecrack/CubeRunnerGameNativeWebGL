@@ -36,12 +36,12 @@ export default class Renderer {
 
                     const uniformsMatInfo = gameObject.getUniformsMatInfo()
                     for (const uniformMatInfo of uniformsMatInfo) {
-                        uniformMatInfo.updateValue()
+                        WebGLWrapper.setUniformMatValue(uniformMatInfo)
                     }
 
                     const uniformsVecInfo = gameObject.getUniformsVecInfo()
                     for (const uniformVecInfo of uniformsVecInfo) {
-                        uniformVecInfo.updateValue()
+                        WebGLWrapper.setUniformVecValue(uniformVecInfo)
                     }
 
                 }
@@ -49,14 +49,5 @@ export default class Renderer {
         }
 
         requestAnimationFrame(this.render.bind(this))
-    }
-
-    private _drawObject(gameObject: GameObject) {
-        if (!gameObject) {
-            return
-        }
-
-
-
     }
 }

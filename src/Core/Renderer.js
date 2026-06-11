@@ -23,21 +23,16 @@ export default class Renderer {
                     }
                     const uniformsMatInfo = gameObject.getUniformsMatInfo();
                     for (const uniformMatInfo of uniformsMatInfo) {
-                        uniformMatInfo.updateValue();
+                        WebGLWrapper.setUniformMatValue(uniformMatInfo);
                     }
                     const uniformsVecInfo = gameObject.getUniformsVecInfo();
                     for (const uniformVecInfo of uniformsVecInfo) {
-                        uniformVecInfo.updateValue();
+                        WebGLWrapper.setUniformVecValue(uniformVecInfo);
                     }
                 }
             }
         }
         requestAnimationFrame(this.render.bind(this));
-    }
-    _drawObject(gameObject) {
-        if (!gameObject) {
-            return;
-        }
     }
 }
 //# sourceMappingURL=Renderer.js.map

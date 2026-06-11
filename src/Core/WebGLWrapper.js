@@ -31,6 +31,12 @@ export default class WebGLWrapper {
     }
     static setUniformValue(uniformInfo) {
     }
+    static setUniformVecValue(uniformVecInfo) {
+        uniformVecInfo.updateValue();
+    }
+    static setUniformMatValue(uniformMatInfo) {
+        uniformMatInfo.updateValue();
+    }
     static getUniformLocation(program, nameUniform) {
         return this.getUniformLocation(program, nameUniform);
     }

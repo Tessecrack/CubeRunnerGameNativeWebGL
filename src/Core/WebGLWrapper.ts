@@ -1,5 +1,7 @@
 import type GLAttributesBufferInfo from "./Common/GLAttributesBufferInfo.js"
 import type GLUniformInfoBase from "./Common/GLUniformInfoBase.js"
+import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
+import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -46,6 +48,14 @@ export default class WebGLWrapper {
 
     public static setUniformValue(uniformInfo: GLUniformInfoBase) {
         
+    }
+
+    public static setUniformVecValue(uniformVecInfo: GLUniformVecInfo) {
+        uniformVecInfo.updateValue()
+    }
+
+    public static setUniformMatValue(uniformMatInfo: GLUniformMatInfo) {
+        uniformMatInfo.updateValue()
     }
 
     public static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {
