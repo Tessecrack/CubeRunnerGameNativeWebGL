@@ -1,6 +1,6 @@
-import GLUniformInfoBase from "./GLUniformInfoBase.js";
+import GLUniformInfoArrayBase from "./GLUniformInfoArrayBase.js";
 
-export default class GLUniformVecInfo extends GLUniformInfoBase {
+export default class GLUniformVecInfo extends GLUniformInfoArrayBase {
     constructor(
         uniformLocation: WebGLUniformLocation,
         vector: number[]

@@ -1,17 +1,21 @@
 import GLAttributeInfo from "./Common/GLAttributeInfo.js";
-import type GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js";
+import GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js";
 import GLBufferInfo from "./Common/GLBufferInfo.js";
-import type GLUniformInfoBase from "./Common/GLUniformInfoBase.js";
-import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
-import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
+import GLUniformInfoArrayBase from "./Common/GLUniformInfoArrayBase.js";
+import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
+import GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
+import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js";
 export default class WebGLWrapper {
     private static _glContext;
     static init(): void;
     static getAttribLocation(program: WebGLProgram, nameAttrib: string): number;
     static createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number, stride: number, offset: number): GLAttributeInfo;
+    static linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer;
+    static createUniformVecInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue?: UniformValueArrayFunction | null): GLUniformVecInfo;
+    static createUniformMatInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue?: UniformValueArrayFunction | null): GLUniformMatInfo;
     static enableVertexAttribArray(attribLocation: number): void;
     static bindAttributesBuffer(attributesBufferInfo: GLLinkedAttributesToBuffer): void;
-    static setUniformValue(uniformInfo: GLUniformInfoBase): void;
+    static setUniformValue(uniformInfo: GLUniformInfoArrayBase): void;
     static setUniformVecValue(uniformVecInfo: GLUniformVecInfo): void;
     static setUniformMatValue(uniformMatInfo: GLUniformMatInfo): void;
     static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation;

@@ -1,5 +1,5 @@
-import GLUniformInfoBase, {} from "./GLUniformInfoBase.js";
-export default class GLUniformMatInfo extends GLUniformInfoBase {
+import GLUniformInfoArrayBase, {} from "./GLUniformInfoArrayBase.js";
+export default class GLUniformMatInfo extends GLUniformInfoArrayBase {
     constructor(uniformLocation, matrix) {
         super(uniformLocation, matrix);
     }

@@ -1,6 +1,6 @@
-import GLUniformInfoBase, { type UniformValueArrayFunction } from "./GLUniformInfoBase.js"
+import GLUniformInfoArrayBase, { type UniformValueArrayFunction } from "./GLUniformInfoArrayBase.js"
 
-export default class GLUniformMatInfo extends GLUniformInfoBase {
+export default class GLUniformMatInfo extends GLUniformInfoArrayBase {
 
     constructor(
         uniformLocation: WebGLUniformLocation,

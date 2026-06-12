@@ -46,7 +46,7 @@ export default class Runner {
         const attributeColorInfo = WebGLWrapper.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize)
 
         const uniformMatrix = WebGLWrapper.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity())
-        const 
+        //const uniform
 
         //const object = new GameObject(program, )
         

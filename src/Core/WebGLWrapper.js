@@ -1,5 +1,9 @@
 import GLAttributeInfo from "./Common/GLAttributeInfo.js";
+import GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js";
 import GLBufferInfo from "./Common/GLBufferInfo.js";
+import GLUniformInfoArrayBase from "./Common/GLUniformInfoArrayBase.js";
+import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
+import GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
 export default class WebGLWrapper {
     static _glContext;
     static init() {
@@ -17,17 +21,35 @@ export default class WebGLWrapper {
         const attribInfo = new GLAttributeInfo(attribLocation, componentsNumberPerVertexAttribute, this._glContext.FLOAT, false, stride, offset);
         return attribInfo;
     }
-    /*
-        public static bindAttributesWithBuffer()
-    /*
-        public static createUniformVecInfo(program: WebGLProgram, nameUniform: string): GLUniformVecInfo {
-    
+    static linkAttributesToBuffer(attributesInfo, bufferInfo) {
+        const linkedAttributesToBuffer = new GLLinkedAttributesToBuffer(bufferInfo.target, bufferInfo);
+        for (const attributeInfo of attributesInfo) {
+            linkedAttributesToBuffer.addAttributeInfo(attributeInfo);
         }
-    
-        public static createUniformMatInfo(program: WebGLProgram, nameUniform: string): GLUniformMatInfo {
-    
+        return linkedAttributesToBuffer;
+    }
+    static createUniformVecInfo(program, nameUniform, value, updateValue = null) {
+        const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
+        if (uniformLocation === null) {
+            throw new Error(`Cannot find uniform by name ${nameUniform}`);
         }
-    */
+        const uniformVecInfo = new GLUniformVecInfo(uniformLocation, value);
+        if (updateValue !== null) {
+            uniformVecInfo.setUpdateValueFunc(updateValue);
+        }
+        return uniformVecInfo;
+    }
+    static createUniformMatInfo(program, nameUniform, value, updateValue = null) {
+        const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
+        if (uniformLocation === null) {
+            throw new Error(`Cannot find uniform by name ${nameUniform}`);
+        }
+        const uniformMatInfo = new GLUniformMatInfo(uniformLocation, value);
+        if (updateValue !== null) {
+            uniformMatInfo.setUpdateValueFunc(updateValue);
+        }
+        return uniformMatInfo;
+    }
     static enableVertexAttribArray(attribLocation) {
         this._glContext.enableVertexAttribArray(attribLocation);
     }
@@ -75,13 +97,13 @@ export default class WebGLWrapper {
         const value = uniformMatInfo.value;
         const location = uniformMatInfo.getUniformLocation();
         switch (value.length) {
-            case 2:
+            case 4:
                 this._glContext.uniformMatrix2fv(location, false, value);
                 break;
-            case 3:
+            case 9:
                 this._glContext.uniformMatrix3fv(location, false, value);
                 break;
-            case 4:
+            case 16:
                 this._glContext.uniformMatrix4fv(location, false, value);
                 break;
             default:

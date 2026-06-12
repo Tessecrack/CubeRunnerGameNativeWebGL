@@ -1,10 +1,10 @@
 import GLAttributeInfo from "./Common/GLAttributeInfo.js"
 import GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js"
 import GLBufferInfo from "./Common/GLBufferInfo.js"
-import GLUniformInfoBase from "./Common/GLUniformInfoBase.js"
+import GLUniformInfoArrayBase from "./Common/GLUniformInfoArrayBase.js"
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
-import type { UniformValueArrayFunction } from "./Common/GLUniformInfoBase.js"
+import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -99,7 +99,7 @@ export default class WebGLWrapper {
         }
     }
 
-    public static setUniformValue(uniformInfo: GLUniformInfoBase) {
+    public static setUniformValue(uniformInfo: GLUniformInfoArrayBase) {
 
     }
 

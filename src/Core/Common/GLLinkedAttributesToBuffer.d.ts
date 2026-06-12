@@ -4,7 +4,7 @@ export default class GLLinkedAttributesToBuffer {
     protected _attributesInfo: GLAttributeInfo[];
     bufferInfo: GLBufferInfo;
     constructor(target: GLenum, bufferInfo: GLBufferInfo);
-    addAttributesInfo(attributeInfo: GLAttributeInfo): void;
+    addAttributeInfo(attributeInfo: GLAttributeInfo): void;
     getAttributesInfo(): GLAttributeInfo[];
 }
 //# sourceMappingURL=GLLinkedAttributesToBuffer.d.ts.map

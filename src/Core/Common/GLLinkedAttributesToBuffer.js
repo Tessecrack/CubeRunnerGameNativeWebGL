@@ -4,7 +4,7 @@ export default class GLLinkedAttributesToBuffer {
     constructor(target, bufferInfo) {
         this.bufferInfo = bufferInfo;
     }
-    addAttributesInfo(attributeInfo) {
+    addAttributeInfo(attributeInfo) {
         this._attributesInfo.push(attributeInfo);
     }
     getAttributesInfo() {
