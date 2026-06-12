@@ -1,4 +1,4 @@
-import type GLAttributesBufferInfo from "./Common/GLAttributesBufferInfo.js";
+import type GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js";
 import type GLProgramInfo from "./Common/GLProgramInfo.js";
 import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
 import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
@@ -9,9 +9,9 @@ export default class GameObject {
     private _uniformsVecInfo;
     private _uniformsMatInfo;
     transform: Transform;
-    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLAttributesBufferInfo[]);
+    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[]);
     getProgram(): WebGLProgram;
-    getAttributesBuffersInfo(): GLAttributesBufferInfo[];
+    getAttributesBuffersInfo(): GLLinkedAttributesToBuffer[];
     getUniformsVecInfo(): GLUniformVecInfo[];
     getUniformsMatInfo(): GLUniformMatInfo[];
     addUniformVecInfo(uniformVecInfo: GLUniformVecInfo): void;

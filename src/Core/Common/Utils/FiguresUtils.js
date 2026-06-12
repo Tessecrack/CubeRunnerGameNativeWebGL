@@ -1,0 +1,11 @@
+export default class FiguresUtils {
+    static _colorTriangle = [
+        -0.5, -0.5, 0.0, 1, 0, 0, 1,
+        0, 0.5, 0.0, 0, 1, 0, 1,
+        0.5, -0.5, 0.0, 0, 0, 0, 1
+    ];
+    static getColorTriangle() {
+        return this._colorTriangle;
+    }
+}
+//# sourceMappingURL=FiguresUtils.js.map

@@ -1,3 +1,7 @@
+import GLAttributeInfo from "./Core/Common/GLAttributeInfo.js"
+import GLBufferInfo from "./Core/Common/GLBufferInfo.js"
+import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
+import MatricesUtils from "./Core/Common/Utils/MatricesUtils.js"
 import Renderer from "./Core/Renderer.js"
 import Scene from "./Core/Scene.js"
 import DefaultColorShadersSources from "./Core/ShaderSources/DefaultColorShadersSources.js"
@@ -28,15 +32,21 @@ export default class Runner {
 
         const program = WebGLWrapper.createProgram(vertexShader, fragmentShader)
 
-        const attributePositionLocation = WebGLWrapper.getAttribLocation(program, 'a_position')
-        const attributeColorLocation = WebGLWrapper.getAttribLocation(program, 'a_color')
 
         const u_matrix = WebGLWrapper.getUniformLocation(program, 'u_matrix')
         const u_multColor = WebGLWrapper.getUniformLocation(program, 'u_colorMult')
 
+        const triangle = FiguresUtils.getColorTriangle()
+        const bufferTriangle = WebGLWrapper.createBufferInfo(triangle)
 
-        
+        const floatSize = Float32Array.BYTES_PER_ELEMENT; // 4
+        const stride = 7 * floatSize;   
 
+        const attributePositionInfo = WebGLWrapper.createAttributeInfo(program, 'a_position', 3, stride, 0)
+        const attributeColorInfo = WebGLWrapper.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize)
+
+        const uniformMatrix = WebGLWrapper.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity())
+        const 
 
         //const object = new GameObject(program, )
         

@@ -1,7 +1,7 @@
 import type GLAttributeInfo from "./GLAttributeInfo.js"
 import type GLBufferInfo from "./GLBufferInfo.js"
 
-export default class GLAttributesBufferInfo {
+export default class GLLinkedAttributesToBuffer {
 
     protected _attributesInfo: GLAttributeInfo[] = []
 
@@ -13,7 +13,7 @@ export default class GLAttributesBufferInfo {
         this.bufferInfo = bufferInfo
     }
 
-    public addAttributesInfo(attributeInfo: GLAttributeInfo) {
+    public addAttributeInfo(attributeInfo: GLAttributeInfo) {
         this._attributesInfo.push(attributeInfo)
     }
 

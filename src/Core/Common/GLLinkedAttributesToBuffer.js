@@ -1,4 +1,4 @@
-export default class GLAttributesBufferInfo {
+export default class GLLinkedAttributesToBuffer {
     _attributesInfo = [];
     bufferInfo;
     constructor(target, bufferInfo) {
@@ -11,4 +11,4 @@ export default class GLAttributesBufferInfo {
         return this._attributesInfo;
     }
 }
-//# sourceMappingURL=GLAttributesBufferInfo.js.map
+//# sourceMappingURL=GLLinkedAttributesToBuffer.js.map

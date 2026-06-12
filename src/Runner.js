@@ -1,3 +1,6 @@
+import GLAttributeInfo from "./Core/Common/GLAttributeInfo.js";
+import GLBufferInfo from "./Core/Common/GLBufferInfo.js";
+import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js";
 import Renderer from "./Core/Renderer.js";
 import Scene from "./Core/Scene.js";
 import DefaultColorShadersSources from "./Core/ShaderSources/DefaultColorShadersSources.js";
@@ -23,6 +26,12 @@ export default class Runner {
         const attributeColorLocation = WebGLWrapper.getAttribLocation(program, 'a_color');
         const u_matrix = WebGLWrapper.getUniformLocation(program, 'u_matrix');
         const u_multColor = WebGLWrapper.getUniformLocation(program, 'u_colorMult');
+        const triangle = FiguresUtils.getColorTriangle();
+        const bufferTriangle = WebGLWrapper.createBufferInfo(triangle);
+        const floatSize = Float32Array.BYTES_PER_ELEMENT; // 4
+        const stride = 7 * floatSize;
+        const attributePositionInfo = WebGLWrapper.createAttributeInfo(program, 'a_position', 3, stride, 0);
+        const attributeColorInfo = WebGLWrapper.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize);
         //const object = new GameObject(program, )
         const testScene = new Scene("Test scene");
         return testScene;

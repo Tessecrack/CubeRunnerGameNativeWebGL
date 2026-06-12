@@ -1,3 +1,5 @@
+import GLAttributeInfo from "./Common/GLAttributeInfo.js";
+import GLBufferInfo from "./Common/GLBufferInfo.js";
 export default class WebGLWrapper {
     static _glContext;
     static init() {
@@ -10,6 +12,22 @@ export default class WebGLWrapper {
     static getAttribLocation(program, nameAttrib) {
         return this.getAttribLocation(program, nameAttrib);
     }
+    static createAttributeInfo(program, nameAttrib, componentsNumberPerVertexAttribute, stride, offset) {
+        const attribLocation = this._glContext.getAttribLocation(program, nameAttrib);
+        const attribInfo = new GLAttributeInfo(attribLocation, componentsNumberPerVertexAttribute, this._glContext.FLOAT, false, stride, offset);
+        return attribInfo;
+    }
+    /*
+        public static bindAttributesWithBuffer()
+    /*
+        public static createUniformVecInfo(program: WebGLProgram, nameUniform: string): GLUniformVecInfo {
+    
+        }
+    
+        public static createUniformMatInfo(program: WebGLProgram, nameUniform: string): GLUniformMatInfo {
+    
+        }
+    */
     static enableVertexAttribArray(attribLocation) {
         this._glContext.enableVertexAttribArray(attribLocation);
     }
@@ -96,6 +114,15 @@ export default class WebGLWrapper {
         }
         this._glContext.deleteShader(shader);
         throw new Error(infoLog);
+    }
+    static createBufferInfo(bufferData) {
+        const buffer = this._glContext.createBuffer();
+        const usage = this._glContext.STATIC_DRAW;
+        const target = this._glContext.ARRAY_BUFFER;
+        this._glContext.bindBuffer(target, buffer);
+        this._glContext.bufferData(target, new Float32Array(bufferData), usage);
+        const bufferInfo = new GLBufferInfo(this._glContext.ARRAY_BUFFER, usage, buffer);
+        return bufferInfo;
     }
     static useProgram(program) {
         this._glContext.useProgram(program);

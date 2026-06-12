@@ -1,7 +1,10 @@
-import type GLAttributesBufferInfo from "./Common/GLAttributesBufferInfo.js"
-import type GLUniformInfoBase from "./Common/GLUniformInfoBase.js"
-import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
-import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
+import GLAttributeInfo from "./Common/GLAttributeInfo.js"
+import GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js"
+import GLBufferInfo from "./Common/GLBufferInfo.js"
+import GLUniformInfoBase from "./Common/GLUniformInfoBase.js"
+import GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
+import GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
+import type { UniformValueArrayFunction } from "./Common/GLUniformInfoBase.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -20,11 +23,61 @@ export default class WebGLWrapper {
         return this.getAttribLocation(program, nameAttrib)
     }
 
+    public static createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number,
+        stride: number,
+        offset: number): GLAttributeInfo {
+        const attribLocation = this._glContext.getAttribLocation(program, nameAttrib)
+        const attribInfo = new GLAttributeInfo(attribLocation, componentsNumberPerVertexAttribute, this._glContext.FLOAT, false, stride, offset)
+        return attribInfo
+    }
+
+    public static linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer {
+        const linkedAttributesToBuffer = new GLLinkedAttributesToBuffer(bufferInfo.target, bufferInfo)
+
+        for (const attributeInfo of attributesInfo) {
+            linkedAttributesToBuffer.addAttributeInfo(attributeInfo)
+        }
+
+        return linkedAttributesToBuffer
+    }
+
+    public static createUniformVecInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformVecInfo {
+        const uniformLocation = this._glContext.getUniformLocation(program, nameUniform)
+
+        if (uniformLocation === null) {
+            throw new Error(`Cannot find uniform by name ${nameUniform}`)
+        }
+
+        const uniformVecInfo = new GLUniformVecInfo(uniformLocation, value)
+
+        if (updateValue !== null) {
+            uniformVecInfo.setUpdateValueFunc(updateValue)
+        }
+
+        return uniformVecInfo
+    }
+
+    public static createUniformMatInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformMatInfo {
+        const uniformLocation = this._glContext.getUniformLocation(program, nameUniform)
+
+        if (uniformLocation === null) {
+            throw new Error(`Cannot find uniform by name ${nameUniform}`)
+        }
+
+        const uniformMatInfo = new GLUniformMatInfo(uniformLocation, value)
+
+        if (updateValue !== null) {
+            uniformMatInfo.setUpdateValueFunc(updateValue)
+        }
+
+        return uniformMatInfo
+    }
+
     public static enableVertexAttribArray(attribLocation: number) {
         this._glContext.enableVertexAttribArray(attribLocation)
     }
 
-    public static bindAttributesBuffer(attributesBufferInfo: GLAttributesBufferInfo) {
+    public static bindAttributesBuffer(attributesBufferInfo: GLLinkedAttributesToBuffer) {
 
         const buffer = attributesBufferInfo.bufferInfo.buffer
         const target = attributesBufferInfo.bufferInfo.target
@@ -81,13 +134,13 @@ export default class WebGLWrapper {
         const location = uniformMatInfo.getUniformLocation()
 
         switch (value.length) {
-            case 2:
+            case 4:
                 this._glContext.uniformMatrix2fv(location, false, value)
                 break
-            case 3:
+            case 9:
                 this._glContext.uniformMatrix3fv(location, false, value)
                 break
-            case 4:
+            case 16:
                 this._glContext.uniformMatrix4fv(location, false, value)
                 break;
             default:
@@ -131,6 +184,19 @@ export default class WebGLWrapper {
 
         this._glContext.deleteShader(shader)
         throw new Error(infoLog)
+    }
+
+    public static createBufferInfo(bufferData: number[]): GLBufferInfo {
+        const buffer = this._glContext.createBuffer()
+        const usage = this._glContext.STATIC_DRAW
+        const target = this._glContext.ARRAY_BUFFER
+
+        this._glContext.bindBuffer(target, buffer)
+        this._glContext.bufferData(target, new Float32Array(bufferData), usage)
+
+        const bufferInfo = new GLBufferInfo(this._glContext.ARRAY_BUFFER, usage, buffer)
+
+        return bufferInfo
     }
 
     public static useProgram(program: WebGLProgram) {

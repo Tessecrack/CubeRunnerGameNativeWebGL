@@ -1,4 +1,4 @@
-import type GLAttributesBufferInfo from "./Common/GLAttributesBufferInfo.js"
+import type GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer.js"
 import type GLProgramInfo from "./Common/GLProgramInfo.js"
 import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
@@ -7,7 +7,7 @@ import Transform from "./Transform.js"
 export default class GameObject {
     private _programInfo: GLProgramInfo
 
-    private _attributesBuffersInfo: GLAttributesBufferInfo[]
+    private _attributesBuffersInfo: GLLinkedAttributesToBuffer[]
 
     private _uniformsVecInfo: GLUniformVecInfo[] = []
 
@@ -19,7 +19,7 @@ export default class GameObject {
 
     constructor(
         programInfo:GLProgramInfo, 
-        attributesBuffersInfo: GLAttributesBufferInfo[],
+        attributesBuffersInfo: GLLinkedAttributesToBuffer[],
     ) {
         this._programInfo = programInfo
         this._attributesBuffersInfo = attributesBuffersInfo
@@ -29,7 +29,7 @@ export default class GameObject {
         return this._programInfo.getProgram()
     }
 
-    public getAttributesBuffersInfo(): GLAttributesBufferInfo[] {
+    public getAttributesBuffersInfo(): GLLinkedAttributesToBuffer[] {
         return this._attributesBuffersInfo
     }
 
