@@ -1,1 +1,1 @@
-{"version":3,"file":"GLBufferInfo.d.ts","sourceRoot":"","sources":["GLBufferInfo.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,YAAY;IAEtB,MAAM,EAAE,MAAM,CAAA;IAEd,KAAK,EAAE,MAAM,CAAA;IAEb,MAAM,EAAE,WAAW,CAAA;gBAItB,MAAM,EAAE,MAAM,EACd,KAAK,EAAE,MAAM,EACb,MAAM,EAAE,WAAW;CAK1B"}
+{"version":3,"file":"GLBufferInfo.d.ts","sourceRoot":"","sources":["GLBufferInfo.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,YAAY;IAEtB,MAAM,EAAE,MAAM,CAAA;IAEd,KAAK,EAAE,MAAM,CAAA;IAEb,MAAM,EAAE,WAAW,CAAA;gBAGtB,MAAM,EAAE,MAAM,EACd,KAAK,EAAE,MAAM,EACb,MAAM,EAAE,WAAW;CAK1B"}

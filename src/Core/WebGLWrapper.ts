@@ -5,6 +5,8 @@ import GLUniformInfoArrayBase from "./Common/GLUniformInfoArrayBase.js"
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
 import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js"
+import GLProgramInfo from "./Common/GLProgramInfo.js"
+import GameObject from "./GameObject.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -17,6 +19,26 @@ export default class WebGLWrapper {
         }
 
         this._glContext = canvas.getContext('webgl')!
+    }
+
+    public static initViewport() {
+        //this._glContext.enable(this._glContext.CULL_FACE)
+        this._glContext.enable(this._glContext.DEPTH_TEST)
+        this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
+        this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
+    }
+
+    public static resizeCanvas() {
+        const elementCanvas = this._glContext.canvas as HTMLCanvasElement
+        const clientWidth = elementCanvas.clientWidth
+        const clientHeight = elementCanvas.clientHeight
+
+        if (this._glContext.canvas.width !== clientWidth || this._glContext.canvas.height !== clientHeight) {
+            this._glContext.canvas.width = elementCanvas.clientWidth
+            this._glContext.canvas.height = elementCanvas.clientHeight
+
+            this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
+        }
     }
 
     public static getAttribLocation(program: WebGLProgram, nameAttrib: string): number {
@@ -199,11 +221,12 @@ export default class WebGLWrapper {
         return bufferInfo
     }
 
+
     public static useProgram(program: WebGLProgram) {
         this._glContext.useProgram(program)
     }
 
-    public static createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram {
+    public static createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo {
         const program: WebGLProgram = this._glContext.createProgram()
 
         this._glContext.attachShader(program, vertexShader)
@@ -214,7 +237,7 @@ export default class WebGLWrapper {
         const success = this._glContext.getProgramParameter(program, this._glContext.LINK_STATUS)
 
         if (success) {
-            return program
+            return new GLProgramInfo(program)
         }
 
         let infoLog = this._glContext.getProgramInfoLog(program)
@@ -225,5 +248,14 @@ export default class WebGLWrapper {
 
         this._glContext.deleteProgram(program)
         throw new Error(infoLog)
+    }
+
+    public static drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number) {
+        this._glContext.drawArrays(drawMode, firstVertex, countVertices)
+    }
+
+    public static createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices)
+        return gameObject
     }
 }

@@ -6,7 +6,6 @@ export default class GLBufferInfo {
 
     public buffer: WebGLBuffer
 
-
     constructor(
         target: GLenum,
         usage: GLenum,

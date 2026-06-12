@@ -4,10 +4,14 @@ export default class GameObject {
     _attributesBuffersInfo;
     _uniformsVecInfo = [];
     _uniformsMatInfo = [];
+    _drawMode; // for example, TRIANGLES
     transform = new Transform();
-    constructor(programInfo, attributesBuffersInfo) {
+    countVertices;
+    constructor(programInfo, attributesBuffersInfo, drawMode, countVertices) {
         this._programInfo = programInfo;
         this._attributesBuffersInfo = attributesBuffersInfo;
+        this._drawMode = drawMode;
+        this.countVertices = countVertices;
     }
     getProgram() {
         return this._programInfo.getProgram();
@@ -20,6 +24,9 @@ export default class GameObject {
     }
     getUniformsMatInfo() {
         return this._uniformsMatInfo;
+    }
+    getDrawMode() {
+        return this._drawMode;
     }
     addUniformVecInfo(uniformVecInfo) {
         this._uniformsVecInfo.push(uniformVecInfo);

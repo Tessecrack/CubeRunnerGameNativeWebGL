@@ -8,12 +8,15 @@ export default class GameObject {
     private _attributesBuffersInfo;
     private _uniformsVecInfo;
     private _uniformsMatInfo;
+    private _drawMode;
     transform: Transform;
-    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[]);
+    countVertices: number;
+    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[], drawMode: GLenum, countVertices: number);
     getProgram(): WebGLProgram;
     getAttributesBuffersInfo(): GLLinkedAttributesToBuffer[];
     getUniformsVecInfo(): GLUniformVecInfo[];
     getUniformsMatInfo(): GLUniformMatInfo[];
+    getDrawMode(): number;
     addUniformVecInfo(uniformVecInfo: GLUniformVecInfo): void;
     addUniformMatInfo(uniformMatInfo: GLUniformMatInfo): void;
 }

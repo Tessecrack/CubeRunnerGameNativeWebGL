@@ -6,15 +6,27 @@ export default class Renderer {
 
     private _currentScene: Scene | undefined = undefined
 
+    private _previousTimeRendererMs: number = 0
+
+    public deltaTime: number = 0
+
     constructor() {
 
     }
-
+    
     public setScene(scene: Scene) {
         this._currentScene = scene
     }
 
     public render(tick: number) {
+
+        const currentTimeRendererMs = tick * 0.001;
+
+        this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs
+
+        this._previousTimeRendererMs = currentTimeRendererMs
+
+        WebGLWrapper.resizeCanvas()
         if (this._currentScene) {
             const gameObjects = this._currentScene.getGameObjects()
 
@@ -43,7 +55,9 @@ export default class Renderer {
                     for (const uniformVecInfo of uniformsVecInfo) {
                         WebGLWrapper.setUniformVecValue(uniformVecInfo)
                     }
+                    const drawMode = gameObject.getDrawMode()
 
+                    WebGLWrapper.drawArrays(drawMode, 0, gameObject.countVertices)
                 }
             }
         }

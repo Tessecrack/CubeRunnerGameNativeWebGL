@@ -5,9 +5,13 @@ import GLUniformInfoArrayBase from "./Common/GLUniformInfoArrayBase.js";
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
 import GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
 import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js";
+import GLProgramInfo from "./Common/GLProgramInfo.js";
+import GameObject from "./GameObject.js";
 export default class WebGLWrapper {
     private static _glContext;
     static init(): void;
+    static initViewport(): void;
+    static resizeCanvas(): void;
     static getAttribLocation(program: WebGLProgram, nameAttrib: string): number;
     static createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number, stride: number, offset: number): GLAttributeInfo;
     static linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer;
@@ -24,6 +28,8 @@ export default class WebGLWrapper {
     static createShader(type: GLenum, shaderSource: string): WebGLShader;
     static createBufferInfo(bufferData: number[]): GLBufferInfo;
     static useProgram(program: WebGLProgram): void;
-    static createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram;
+    static createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo;
+    static drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number): void;
+    static createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject;
 }
 //# sourceMappingURL=WebGLWrapper.d.ts.map

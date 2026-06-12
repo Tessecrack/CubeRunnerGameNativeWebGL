@@ -1,12 +1,18 @@
 import WebGLWrapper from "./WebGLWrapper.js";
 export default class Renderer {
     _currentScene = undefined;
+    _previousTimeRendererMs = 0;
+    deltaTime = 0;
     constructor() {
     }
     setScene(scene) {
         this._currentScene = scene;
     }
     render(tick) {
+        const currentTimeRendererMs = tick * 0.001;
+        this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs;
+        this._previousTimeRendererMs = currentTimeRendererMs;
+        WebGLWrapper.resizeCanvas();
         if (this._currentScene) {
             const gameObjects = this._currentScene.getGameObjects();
             if (gameObjects) {
@@ -29,6 +35,8 @@ export default class Renderer {
                     for (const uniformVecInfo of uniformsVecInfo) {
                         WebGLWrapper.setUniformVecValue(uniformVecInfo);
                     }
+                    const drawMode = gameObject.getDrawMode();
+                    WebGLWrapper.drawArrays(drawMode, 0, gameObject.countVertices);
                 }
             }
         }

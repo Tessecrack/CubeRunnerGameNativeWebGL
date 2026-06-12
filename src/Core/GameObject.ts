@@ -13,16 +13,22 @@ export default class GameObject {
 
     private _uniformsMatInfo: GLUniformMatInfo[] = []
 
+    private _drawMode: GLenum // for example, TRIANGLES
+
     public transform: Transform = new Transform()
 
-
+    public countVertices: number
 
     constructor(
         programInfo:GLProgramInfo, 
         attributesBuffersInfo: GLLinkedAttributesToBuffer[],
+        drawMode: GLenum,
+        countVertices: number
     ) {
         this._programInfo = programInfo
         this._attributesBuffersInfo = attributesBuffersInfo
+        this._drawMode = drawMode
+        this.countVertices = countVertices
     }
 
     public getProgram(): WebGLProgram {
@@ -39,6 +45,10 @@ export default class GameObject {
 
     public getUniformsMatInfo() {
         return this._uniformsMatInfo
+    }
+
+    public getDrawMode() {
+        return this._drawMode
     }
 
     public addUniformVecInfo(uniformVecInfo: GLUniformVecInfo) {
