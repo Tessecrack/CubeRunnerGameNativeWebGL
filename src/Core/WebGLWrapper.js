@@ -49,7 +49,7 @@ export default class WebGLWrapper {
                 this._glContext.uniform4fv(location, value);
                 break;
             default:
-                console.warn(`setUniformVecValue ${value}. Cannot calculate uniform by length ${value.length}`);
+                throw new Error(`setUniformVecValue ${value}. Cannot calculate uniform by length ${value.length}`);
         }
     }
     static setUniformMatValue(uniformMatInfo) {
@@ -67,7 +67,7 @@ export default class WebGLWrapper {
                 this._glContext.uniformMatrix4fv(location, false, value);
                 break;
             default:
-                console.warn(`setUniformMatValue ${value}. Cannot calculate uniform by length ${value.length}`);
+                throw new Error(`setUniformMatValue ${value}. Cannot calculate uniform by length ${value.length}`);
         }
     }
     static getUniformLocation(program, nameUniform) {
