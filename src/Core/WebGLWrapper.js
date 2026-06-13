@@ -8,20 +8,33 @@ import GLProgramInfo from "./Common/GLProgramInfo.js";
 import GameObject from "./GameObject.js";
 import DefaultColorShadersSources from "./ShaderSources/DefaultColorShadersSources.js";
 import MatricesUtils from "./Common/Utils/MatricesUtils.js";
+import Transform from "./Transform.js";
+import PerspectiveCamera, {} from "./PerspectiveCamera.js";
 export default class WebGLWrapper {
     static _glContext;
+    static perspectiveCamera;
     static init() {
         const canvas = document.getElementById('canvas');
         if (!canvas) {
             throw new Error(`Cannot get canvas`);
         }
         this._glContext = canvas.getContext('webgl');
+        const fieldOfViewRadians = 60 * Math.PI / 180;
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+        this.perspectiveCamera = new PerspectiveCamera(fieldOfViewRadians, aspect);
     }
     static initViewport() {
         this._glContext.enable(this._glContext.CULL_FACE);
         this._glContext.enable(this._glContext.DEPTH_TEST);
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT);
+        this.updatePerspective();
+    }
+    static setCameraPositionFunction(updateCameraPosition) {
+        this.perspectiveCamera.setCameraPositionFunction(updateCameraPosition);
+    }
+    static setCameraTargetFunction(updateCameraTarget) {
+        this.perspectiveCamera.setCameraTargetFunction(updateCameraTarget);
     }
     static resizeCanvas() {
         const elementCanvas = this._glContext.canvas;
@@ -31,7 +44,13 @@ export default class WebGLWrapper {
             this._glContext.canvas.width = elementCanvas.clientWidth;
             this._glContext.canvas.height = elementCanvas.clientHeight;
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
+            this.updatePerspective();
         }
+    }
+    static updatePerspective() {
+        const fieldOfViewRadians = 60 * Math.PI / 180;
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+        this.perspectiveCamera.updatePerspective(fieldOfViewRadians, aspect);
     }
     static getAttribLocation(program, nameAttrib) {
         return this.getAttribLocation(program, nameAttrib);
@@ -205,11 +224,21 @@ export default class WebGLWrapper {
         const attributePositionInfo = this.createAttributeInfo(program, 'a_position', 3, stride, 0);
         const attributeColorInfo = this.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize);
         const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle);
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity());
+        const transform = new Transform();
+        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity(), (value) => {
+            const viewProjectionMatrix = WebGLWrapper.perspectiveCamera.getViewProjectionMatrix();
+            value = MatricesUtils.translate(viewProjectionMatrix, transform.translation.x, transform.translation.y, transform.translation.z - 100);
+            value = MatricesUtils.xRotate(value, transform.rotation.x);
+            value = MatricesUtils.yRotate(value, transform.rotation.y);
+            value = MatricesUtils.zRotate(value, transform.rotation.z);
+            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z);
+            return value;
+        });
         const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1]);
         const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices);
         object.addUniformMatInfo(uniformMatrixInfo);
         object.addUniformVecInfo(uniformColorMultInfo);
+        object.transform = transform;
         return object;
     }
 }

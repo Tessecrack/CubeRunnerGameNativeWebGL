@@ -10,9 +10,13 @@ import GameObject from "./GameObject.js"
 import type FigureInfo from "./Common/Utils/FigureInfo.js"
 import DefaultColorShadersSources from "./ShaderSources/DefaultColorShadersSources.js"
 import MatricesUtils from "./Common/Utils/MatricesUtils.js"
+import Transform from "./Transform.js"
+import PerspectiveCamera, { type UpdateCameraFunction } from "./PerspectiveCamera.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
+
+    public static perspectiveCamera: PerspectiveCamera
 
     public static init() {
         const canvas = document.getElementById('canvas') as HTMLCanvasElement
@@ -22,6 +26,11 @@ export default class WebGLWrapper {
         }
 
         this._glContext = canvas.getContext('webgl')!
+
+        const fieldOfViewRadians = 60 * Math.PI / 180
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+
+        this.perspectiveCamera = new PerspectiveCamera(fieldOfViewRadians, aspect)
     }
 
     public static initViewport() {
@@ -29,6 +38,15 @@ export default class WebGLWrapper {
         this._glContext.enable(this._glContext.DEPTH_TEST)
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
+        this.updatePerspective()
+    }
+
+    public static setCameraPositionFunction(updateCameraPosition: UpdateCameraFunction) {
+        this.perspectiveCamera.setCameraPositionFunction(updateCameraPosition)
+    }
+
+    public static setCameraTargetFunction(updateCameraTarget: UpdateCameraFunction) {
+        this.perspectiveCamera.setCameraTargetFunction(updateCameraTarget)
     }
 
     public static resizeCanvas() {
@@ -41,7 +59,14 @@ export default class WebGLWrapper {
             this._glContext.canvas.height = elementCanvas.clientHeight
 
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
+            this.updatePerspective()
         }
+    }
+
+    public static updatePerspective() {
+        const fieldOfViewRadians = 60 * Math.PI / 180
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+        this.perspectiveCamera.updatePerspective(fieldOfViewRadians, aspect)
     }
 
     public static getAttribLocation(program: WebGLProgram, nameAttrib: string): number {
@@ -282,13 +307,31 @@ export default class WebGLWrapper {
 
         const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle)
 
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity())
+        const transform = new Transform()
+
+        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity(),
+        (value) => {
+            const viewProjectionMatrix = WebGLWrapper.perspectiveCamera.getViewProjectionMatrix()
+            value = MatricesUtils.translate(viewProjectionMatrix, 
+                transform.translation.x, 
+                transform.translation.y, 
+                transform.translation.z - 100)
+            value = MatricesUtils.xRotate(value, transform.rotation.x)
+            value = MatricesUtils.yRotate(value, transform.rotation.y)
+            value = MatricesUtils.zRotate(value, transform.rotation.z)
+            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z)
+
+            return value
+        })
+
+        
         const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1])
 
         const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices)
 
         object.addUniformMatInfo(uniformMatrixInfo)
         object.addUniformVecInfo(uniformColorMultInfo)
+        object.transform = transform
 
         return object
     }

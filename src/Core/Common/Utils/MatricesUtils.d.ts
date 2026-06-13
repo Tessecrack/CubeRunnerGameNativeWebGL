@@ -12,6 +12,11 @@ export default class MatricesUtils {
     static yRotation(angleInRadians: number): number[];
     static zRotation(angleInRadians: number): number[];
     static scaling(sx: number, sy: number, sz: number): number[];
+    static cross(a: number[], b: number[]): number[];
+    static subtractVectors(a: number[], b: number[]): number[];
+    static normalize(v: number[]): number[];
+    static lookAt(cameraPosition: number[], target: number[], up: number[]): number[];
     static multiply(firstMatrix: number[], secondMatrix: number[]): number[];
+    static inverse(m: number[]): number[];
 }
 //# sourceMappingURL=MatricesUtils.d.ts.map

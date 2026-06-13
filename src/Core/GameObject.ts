@@ -4,6 +4,8 @@ import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
 import Transform from "./Transform.js"
 
+export type GameObjectUpdateTransformFunction = (transform: Transform, deltaTime: number) => void
+
 export default class GameObject {
     private _programInfo: GLProgramInfo
 
@@ -14,6 +16,8 @@ export default class GameObject {
     private _uniformsMatInfo: GLUniformMatInfo[] = []
 
     private _drawMode: GLenum // for example, TRIANGLES
+
+    private _updateTransformFunction: GameObjectUpdateTransformFunction | null = null
 
     public transform: Transform = new Transform()
 
@@ -57,5 +61,15 @@ export default class GameObject {
 
     public addUniformMatInfo(uniformMatInfo: GLUniformMatInfo) {
         this._uniformsMatInfo.push(uniformMatInfo)
+    }
+
+    public setUpdateTransformFunction(updateTransformFunc: GameObjectUpdateTransformFunction) {
+        this._updateTransformFunction = updateTransformFunc
+    }
+
+    public updateTransform(deltaTime: number) {
+        if (this._updateTransformFunction !== null) {
+            this._updateTransformFunction(this.transform, deltaTime)
+        }
     }
 }

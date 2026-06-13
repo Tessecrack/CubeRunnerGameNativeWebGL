@@ -3,12 +3,14 @@ import type GLProgramInfo from "./Common/GLProgramInfo.js";
 import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
 import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
 import Transform from "./Transform.js";
+export type GameObjectUpdateTransformFunction = (transform: Transform, deltaTime: number) => void;
 export default class GameObject {
     private _programInfo;
     private _attributesBuffersInfo;
     private _uniformsVecInfo;
     private _uniformsMatInfo;
     private _drawMode;
+    private _updateTransformFunction;
     transform: Transform;
     countVertices: number;
     constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[], drawMode: GLenum, countVertices: number);
@@ -19,5 +21,7 @@ export default class GameObject {
     getDrawMode(): number;
     addUniformVecInfo(uniformVecInfo: GLUniformVecInfo): void;
     addUniformMatInfo(uniformMatInfo: GLUniformMatInfo): void;
+    setUpdateTransformFunction(updateTransformFunc: GameObjectUpdateTransformFunction): void;
+    updateTransform(deltaTime: number): void;
 }
 //# sourceMappingURL=GameObject.d.ts.map

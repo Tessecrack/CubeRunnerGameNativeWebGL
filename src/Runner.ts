@@ -1,18 +1,12 @@
-import GLAttributeInfo from "./Core/Common/GLAttributeInfo.js"
-import GLBufferInfo from "./Core/Common/GLBufferInfo.js"
-import FigureInfo from "./Core/Common/Utils/FigureInfo.js"
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
-import MatricesUtils from "./Core/Common/Utils/MatricesUtils.js"
-import GameObject from "./Core/GameObject.js"
 import Renderer from "./Core/Renderer.js"
 import Scene from "./Core/Scene.js"
-import DefaultColorShadersSources from "./Core/ShaderSources/DefaultColorShadersSources.js"
 import WebGLWrapper from "./Core/WebGLWrapper.js"
 
 export default class Runner {
     private _renderer: Renderer
 
-    private _isTest: boolean = true
+    private _isTest: boolean = false
 
     constructor() {
         WebGLWrapper.init()
@@ -35,10 +29,34 @@ export default class Runner {
     }
 
     private _initializeCubeRunnerScene(): Scene {
-        const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 50, 50, 50)
-        const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo)
-        
+        const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10)
         const scene = new Scene("CUBE RUNNER SCENE")
+        for (let i = -4; i < 4; ++i) {
+            for (let j = -4; j < 4; ++j) {
+                const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo)
+                object.transform.translation.x = i * 20
+                object.transform.translation.y = j * 20
+                
+                object.setUpdateTransformFunction((transform, deltaTime) => {
+                    const rotationSpeed = 1.5
+                    //transform.translation.y += rotationSpeed * deltaTime
+                    transform.rotation.y += rotationSpeed * deltaTime
+                    transform.rotation.x += rotationSpeed * deltaTime
+                })
+                scene.addObject(object)
+            }
+        }
+    
+        WebGLWrapper.setCameraPositionFunction((cameraPosition, deltaTime) => {
+            const speed = 1.1
+            //cameraPosition.x += 10
+        })
+        
+        WebGLWrapper.setCameraTargetFunction((target, deltaTime) => {
+            const speed = 1.1
+            //target.x += speed * deltaTime
+        })
+
         return scene
     }
 

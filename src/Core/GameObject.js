@@ -5,6 +5,7 @@ export default class GameObject {
     _uniformsVecInfo = [];
     _uniformsMatInfo = [];
     _drawMode; // for example, TRIANGLES
+    _updateTransformFunction = null;
     transform = new Transform();
     countVertices;
     constructor(programInfo, attributesBuffersInfo, drawMode, countVertices) {
@@ -33,6 +34,14 @@ export default class GameObject {
     }
     addUniformMatInfo(uniformMatInfo) {
         this._uniformsMatInfo.push(uniformMatInfo);
+    }
+    setUpdateTransformFunction(updateTransformFunc) {
+        this._updateTransformFunction = updateTransformFunc;
+    }
+    updateTransform(deltaTime) {
+        if (this._updateTransformFunction !== null) {
+            this._updateTransformFunction(this.transform, deltaTime);
+        }
     }
 }
 //# sourceMappingURL=GameObject.js.map

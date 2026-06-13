@@ -15,6 +15,9 @@ export default class Renderer {
         WebGLWrapper.resizeCanvas();
         if (this._currentScene) {
             const gameObjects = this._currentScene.getGameObjects();
+            WebGLWrapper.perspectiveCamera.updateCameraPosition(this.deltaTime);
+            //WebGLWrapper.perspectiveCamera.updateCameraTarget(this.deltaTime)
+            WebGLWrapper.perspectiveCamera.computeViewProjectionMatrix();
             if (gameObjects) {
                 let lastProgram;
                 for (let gameObject of gameObjects) {
@@ -27,6 +30,7 @@ export default class Renderer {
                     for (const attributeBufferInfo of attributesBuffersInfo) {
                         WebGLWrapper.bindAttributesBuffer(attributeBufferInfo);
                     }
+                    gameObject.updateTransform(this.deltaTime);
                     const uniformsMatInfo = gameObject.getUniformsMatInfo();
                     for (const uniformMatInfo of uniformsMatInfo) {
                         WebGLWrapper.setUniformMatValue(uniformMatInfo);
