@@ -1,8 +1,6 @@
 import MatricesUtils from "./Common/Utils/MatricesUtils.js"
 import Vector3 from "./Vector3.js"
 
-export type UpdateCameraFunction = (vector: Vector3, deltaTime: number) => void
-
 export default class PerspectiveCamera {
     private _fieldOfViewRadians: number
     private _aspect: number
@@ -16,10 +14,6 @@ export default class PerspectiveCamera {
 
     private _cameraPosition: Vector3
     private _target: Vector3
-
-    private _updateCameraPositionFunction: UpdateCameraFunction | null = null
-
-    private _updateCameraTargetFunction: UpdateCameraFunction | null = null
 
     constructor(
         fieldOfViewRadians: number,
@@ -72,30 +66,6 @@ export default class PerspectiveCamera {
         this._target = target
 
         this.computeViewProjectionMatrix()
-    }
-
-    public updateCameraPosition(deltaTime: number) {
-        if (this._updateCameraPositionFunction === null) {
-            return
-        }
-
-        this._updateCameraPositionFunction(this._cameraPosition, deltaTime)
-    }
-
-    public updateCameraTarget(deltaTime: number) {
-        if (this._updateCameraTargetFunction === null) {
-            return
-        }
-
-        this._updateCameraTargetFunction(this._target, deltaTime)
-    }
-
-    public setCameraPositionFunction(updateCameraPosition: UpdateCameraFunction) {
-        this._updateCameraPositionFunction = updateCameraPosition
-    }
-
-    public setCameraTargetFunction(updateCameraTarget: UpdateCameraFunction) {
-        this._updateCameraTargetFunction = updateCameraTarget
     }
 
     public computeViewProjectionMatrix() {

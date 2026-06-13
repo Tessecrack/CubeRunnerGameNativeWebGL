@@ -8,14 +8,12 @@ import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.
 import GLProgramInfo from "./Common/GLProgramInfo.js";
 import GameObject from "./GameObject.js";
 import type FigureInfo from "./Common/Utils/FigureInfo.js";
-import PerspectiveCamera, { type UpdateCameraFunction } from "./PerspectiveCamera.js";
+import PerspectiveCamera from "./PerspectiveCamera.js";
 export default class WebGLWrapper {
     private static _glContext;
     static perspectiveCamera: PerspectiveCamera;
     static init(): void;
     static initViewport(): void;
-    static setCameraPositionFunction(updateCameraPosition: UpdateCameraFunction): void;
-    static setCameraTargetFunction(updateCameraTarget: UpdateCameraFunction): void;
     static resizeCanvas(): void;
     static updatePerspective(): void;
     static getAttribLocation(program: WebGLProgram, nameAttrib: string): number;

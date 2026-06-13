@@ -15,7 +15,7 @@ export default class Renderer {
         WebGLWrapper.resizeCanvas();
         if (this._currentScene) {
             const gameObjects = this._currentScene.getGameObjects();
-            WebGLWrapper.perspectiveCamera.updateCameraPosition(this.deltaTime);
+            //WebGLWrapper.perspectiveCamera.updateCameraPosition(this.deltaTime)
             //WebGLWrapper.perspectiveCamera.updateCameraTarget(this.deltaTime)
             WebGLWrapper.perspectiveCamera.computeViewProjectionMatrix();
             if (gameObjects) {

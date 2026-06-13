@@ -46,16 +46,6 @@ export default class Runner {
                 scene.addObject(object)
             }
         }
-    
-        WebGLWrapper.setCameraPositionFunction((cameraPosition, deltaTime) => {
-            const speed = 1.1
-            //cameraPosition.x += 10
-        })
-        
-        WebGLWrapper.setCameraTargetFunction((target, deltaTime) => {
-            const speed = 1.1
-            //target.x += speed * deltaTime
-        })
 
         return scene
     }

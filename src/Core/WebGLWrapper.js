@@ -9,7 +9,7 @@ import GameObject from "./GameObject.js";
 import DefaultColorShadersSources from "./ShaderSources/DefaultColorShadersSources.js";
 import MatricesUtils from "./Common/Utils/MatricesUtils.js";
 import Transform from "./Transform.js";
-import PerspectiveCamera, {} from "./PerspectiveCamera.js";
+import PerspectiveCamera from "./PerspectiveCamera.js";
 export default class WebGLWrapper {
     static _glContext;
     static perspectiveCamera;
@@ -29,12 +29,6 @@ export default class WebGLWrapper {
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT);
         this.updatePerspective();
-    }
-    static setCameraPositionFunction(updateCameraPosition) {
-        this.perspectiveCamera.setCameraPositionFunction(updateCameraPosition);
-    }
-    static setCameraTargetFunction(updateCameraTarget) {
-        this.perspectiveCamera.setCameraTargetFunction(updateCameraTarget);
     }
     static resizeCanvas() {
         const elementCanvas = this._glContext.canvas;

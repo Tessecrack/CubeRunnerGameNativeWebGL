@@ -10,8 +10,6 @@ export default class PerspectiveCamera {
     _cameraMatrix;
     _cameraPosition;
     _target;
-    _updateCameraPositionFunction = null;
-    _updateCameraTargetFunction = null;
     constructor(fieldOfViewRadians, aspect) {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
@@ -46,24 +44,6 @@ export default class PerspectiveCamera {
         }
         this._target = target;
         this.computeViewProjectionMatrix();
-    }
-    updateCameraPosition(deltaTime) {
-        if (this._updateCameraPositionFunction === null) {
-            return;
-        }
-        this._updateCameraPositionFunction(this._cameraPosition, deltaTime);
-    }
-    updateCameraTarget(deltaTime) {
-        if (this._updateCameraTargetFunction === null) {
-            return;
-        }
-        this._updateCameraTargetFunction(this._target, deltaTime);
-    }
-    setCameraPositionFunction(updateCameraPosition) {
-        this._updateCameraPositionFunction = updateCameraPosition;
-    }
-    setCameraTargetFunction(updateCameraTarget) {
-        this._updateCameraTargetFunction = updateCameraTarget;
     }
     computeViewProjectionMatrix() {
         this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);

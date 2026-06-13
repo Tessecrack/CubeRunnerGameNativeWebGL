@@ -11,7 +11,7 @@ import type FigureInfo from "./Common/Utils/FigureInfo.js"
 import DefaultColorShadersSources from "./ShaderSources/DefaultColorShadersSources.js"
 import MatricesUtils from "./Common/Utils/MatricesUtils.js"
 import Transform from "./Transform.js"
-import PerspectiveCamera, { type UpdateCameraFunction } from "./PerspectiveCamera.js"
+import PerspectiveCamera from "./PerspectiveCamera.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -39,14 +39,6 @@ export default class WebGLWrapper {
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
         this.updatePerspective()
-    }
-
-    public static setCameraPositionFunction(updateCameraPosition: UpdateCameraFunction) {
-        this.perspectiveCamera.setCameraPositionFunction(updateCameraPosition)
-    }
-
-    public static setCameraTargetFunction(updateCameraTarget: UpdateCameraFunction) {
-        this.perspectiveCamera.setCameraTargetFunction(updateCameraTarget)
     }
 
     public static resizeCanvas() {

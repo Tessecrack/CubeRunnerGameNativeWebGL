@@ -30,7 +30,7 @@ export default class Renderer {
         if (this._currentScene) {
             const gameObjects = this._currentScene.getGameObjects()
 
-            WebGLWrapper.perspectiveCamera.updateCameraPosition(this.deltaTime)
+            //WebGLWrapper.perspectiveCamera.updateCameraPosition(this.deltaTime)
 
             //WebGLWrapper.perspectiveCamera.updateCameraTarget(this.deltaTime)
 
