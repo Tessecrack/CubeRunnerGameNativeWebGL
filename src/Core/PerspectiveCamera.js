@@ -16,8 +16,8 @@ export default class PerspectiveCamera {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar);
-        this._cameraPosition = new Vector3(100, 0, 100);
-        this._target = new Vector3(100, 0, 0);
+        this._cameraPosition = new Vector3(0, 0, 100);
+        this._target = new Vector3(0, 0, 0);
         this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
         const viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
         this._viewProjectionMatrix = MatricesUtils.multiply(this._projectionMatrix, viewMatrix);
