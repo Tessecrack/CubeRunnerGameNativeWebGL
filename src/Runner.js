@@ -1,5 +1,6 @@
 import GLAttributeInfo from "./Core/Common/GLAttributeInfo.js";
 import GLBufferInfo from "./Core/Common/GLBufferInfo.js";
+import FigureInfo from "./Core/Common/Utils/FigureInfo.js";
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js";
 import MatricesUtils from "./Core/Common/Utils/MatricesUtils.js";
 import GameObject from "./Core/GameObject.js";
@@ -9,40 +10,32 @@ import DefaultColorShadersSources from "./Core/ShaderSources/DefaultColorShaders
 import WebGLWrapper from "./Core/WebGLWrapper.js";
 export default class Runner {
     _renderer;
+    _isTest = true;
     constructor() {
         WebGLWrapper.init();
         WebGLWrapper.initViewport();
         this._renderer = new Renderer();
     }
     run() {
-        const scene = this._initializeTestScene();
-        //const scene = this._initializeCubeRunnerScene()
+        let scene = null;
+        if (this._isTest) {
+            scene = this._initializeTestScene();
+        }
+        else {
+            scene = this._initializeCubeRunnerScene();
+        }
         this._renderer.setScene(scene);
         this._renderer.render(0);
     }
     _initializeCubeRunnerScene() {
+        const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 50, 50, 50);
+        const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo);
         const scene = new Scene("CUBE RUNNER SCENE");
         return scene;
     }
     _initializeTestScene() {
-        const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource();
-        const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource();
-        const vertexShader = WebGLWrapper.createVertexShader(vertexShaderSrc);
-        const fragmentShader = WebGLWrapper.createFragmentShader(fragmentShaderSrc);
-        const programInfo = WebGLWrapper.createProgramInfo(vertexShader, fragmentShader);
-        const program = programInfo.getProgram();
         const triangleFigureInfo = FiguresUtils.getColorTriangle();
-        const bufferTriangle = WebGLWrapper.createBufferInfo(triangleFigureInfo.vertices);
-        const floatSize = Float32Array.BYTES_PER_ELEMENT; // 4
-        const stride = 7 * floatSize;
-        const attributePositionInfo = WebGLWrapper.createAttributeInfo(program, 'a_position', 3, stride, 0);
-        const attributeColorInfo = WebGLWrapper.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize);
-        const linkedAttributes = WebGLWrapper.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle);
-        const uniformMatrixInfo = WebGLWrapper.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity());
-        const uniformColorMultInfo = WebGLWrapper.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1]);
-        const object = WebGLWrapper.createGameObject(programInfo, [linkedAttributes], triangleFigureInfo.countVertices);
-        object.addUniformMatInfo(uniformMatrixInfo);
-        object.addUniformVecInfo(uniformColorMultInfo);
+        const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(triangleFigureInfo);
         const testScene = new Scene("Test scene");
         testScene.addObject(object);
         return testScene;

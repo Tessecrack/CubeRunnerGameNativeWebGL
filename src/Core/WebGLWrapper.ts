@@ -7,6 +7,9 @@ import GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
 import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js"
 import GLProgramInfo from "./Common/GLProgramInfo.js"
 import GameObject from "./GameObject.js"
+import type FigureInfo from "./Common/Utils/FigureInfo.js"
+import DefaultColorShadersSources from "./ShaderSources/DefaultColorShadersSources.js"
+import MatricesUtils from "./Common/Utils/MatricesUtils.js"
 
 export default class WebGLWrapper {
     private static _glContext: WebGLRenderingContext
@@ -22,7 +25,7 @@ export default class WebGLWrapper {
     }
 
     public static initViewport() {
-        //this._glContext.enable(this._glContext.CULL_FACE)
+        this._glContext.enable(this._glContext.CULL_FACE)
         this._glContext.enable(this._glContext.DEPTH_TEST)
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
@@ -257,5 +260,36 @@ export default class WebGLWrapper {
     public static createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject {
         const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices)
         return gameObject
+    }
+
+    public static getDefaultColorGameObjectByFigureInfo(figureInfo: FigureInfo): GameObject {
+        const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource()
+        const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource()
+
+        const vertexShader = this.createVertexShader(vertexShaderSrc)
+        const fragmentShader = this.createFragmentShader(fragmentShaderSrc)
+
+        const programInfo = this.createProgramInfo(vertexShader, fragmentShader)
+        const program = programInfo.getProgram()
+
+        const bufferTriangle = this.createBufferInfo(figureInfo.vertices)
+
+        const floatSize = Float32Array.BYTES_PER_ELEMENT; // 4
+        const stride = 7 * floatSize;
+
+        const attributePositionInfo = this.createAttributeInfo(program, 'a_position', 3, stride, 0)
+        const attributeColorInfo = this.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize)
+
+        const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle)
+
+        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity())
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1])
+
+        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices)
+
+        object.addUniformMatInfo(uniformMatrixInfo)
+        object.addUniformVecInfo(uniformColorMultInfo)
+
+        return object
     }
 }

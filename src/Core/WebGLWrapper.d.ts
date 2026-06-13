@@ -7,6 +7,7 @@ import GLUniformVecInfo from "./Common/GLUniformVecInfo.js";
 import type { UniformValueArrayFunction } from "./Common/GLUniformInfoArrayBase.js";
 import GLProgramInfo from "./Common/GLProgramInfo.js";
 import GameObject from "./GameObject.js";
+import type FigureInfo from "./Common/Utils/FigureInfo.js";
 export default class WebGLWrapper {
     private static _glContext;
     static init(): void;
@@ -31,5 +32,6 @@ export default class WebGLWrapper {
     static createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo;
     static drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number): void;
     static createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject;
+    static getDefaultColorGameObjectByFigureInfo(figureInfo: FigureInfo): GameObject;
 }
 //# sourceMappingURL=WebGLWrapper.d.ts.map
