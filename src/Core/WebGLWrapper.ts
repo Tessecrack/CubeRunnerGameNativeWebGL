@@ -300,7 +300,8 @@ export default class WebGLWrapper {
 
         const uniformModelMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity(), 
         (value) => {
-            let matrix = MatricesUtils.translate(value, transform.translation.x, transform.translation.y, transform.translation.z)
+            let matrix = MatricesUtils.identity() 
+            matrix = MatricesUtils.translate(matrix, transform.translation.x, transform.translation.y, transform.translation.z)
             matrix = MatricesUtils.xRotate(matrix, transform.rotation.x)
             matrix = MatricesUtils.yRotate(matrix, transform.rotation.y)
             matrix = MatricesUtils.zRotate(matrix, transform.rotation.z)
@@ -308,7 +309,7 @@ export default class WebGLWrapper {
             return matrix
         })
         
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1])
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1])
 
         const object = this.createGameObject(programInfo, 
             [linkedAttributes], 

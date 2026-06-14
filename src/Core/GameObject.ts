@@ -2,7 +2,6 @@ import type GLLinkedAttributesToBuffer from "./Common/GLLinkedAttributesToBuffer
 import type GLProgramInfo from "./Common/GLProgramInfo.js"
 import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import type GLUniformVecInfo from "./Common/GLUniformVecInfo.js"
-import MatricesUtils from "./Common/Utils/MatricesUtils.js"
 import Transform from "./Transform.js"
 
 export type GameObjectUpdateTransformFunction = (transform: Transform, deltaTime: number) => void

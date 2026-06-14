@@ -1,4 +1,3 @@
-import MatricesUtils from "./Common/Utils/MatricesUtils.js";
 import Transform from "./Transform.js";
 export default class GameObject {
     _programInfo;

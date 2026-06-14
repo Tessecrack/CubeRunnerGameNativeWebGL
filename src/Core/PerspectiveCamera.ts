@@ -36,7 +36,7 @@ export default class PerspectiveCamera {
         this._fieldOfViewRadians = fieldOfViewRadians
         this._aspect = aspect
 
-        this._cameraPosition = new Vector3(0, 0, 100)
+        this._cameraPosition = new Vector3(0, 0, 200)
         this._target = new Vector3(0, 0, 0)
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar)
         this._cameraMatrix = MatricesUtils.lookAt(
