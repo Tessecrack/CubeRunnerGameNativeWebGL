@@ -36,16 +36,13 @@ export default class PerspectiveCamera {
         this._fieldOfViewRadians = fieldOfViewRadians
         this._aspect = aspect
 
-        this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar)
-
         this._cameraPosition = new Vector3(0, 0, 100)
         this._target = new Vector3(0, 0, 0)
-
+        this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar)
         this._cameraMatrix = MatricesUtils.lookAt(
             [this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z],
             [this._target.x, this._target.y, this._target.z],
             Vector3.up)!
-
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
     }
 
@@ -89,7 +86,7 @@ export default class PerspectiveCamera {
 
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
 
-        if (this._uniformViewMatrixInfo !== null) { 
+        if (this._uniformViewMatrixInfo !== null) {
             this._uniformViewMatrixInfo.value = this._viewMatrix
         }
     }
@@ -103,10 +100,10 @@ export default class PerspectiveCamera {
     }
 
     public setUniformLocationViewMatrix(uniformViewMatrixLocation: WebGLUniformLocation) {
-        if (this._uniformProjectionMatrixInfo === null) {
-            this._uniformProjectionMatrixInfo = new GLUniformMatInfo(uniformViewMatrixLocation, this._viewMatrix)
+        if (this._uniformViewMatrixInfo === null) {
+            this._uniformViewMatrixInfo = new GLUniformMatInfo(uniformViewMatrixLocation, this._viewMatrix)
         } else {
-            this._uniformProjectionMatrixInfo.uniformLocation = uniformViewMatrixLocation
+            this._uniformViewMatrixInfo.uniformLocation = uniformViewMatrixLocation
         }
     }
 

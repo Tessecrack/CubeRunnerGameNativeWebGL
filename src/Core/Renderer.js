@@ -35,10 +35,9 @@ export default class Renderer {
         this._perspectiveCamera.computeViewMatrix();
         for (let gameObject of gameObjects) {
             const program = gameObject.getProgram();
-            if (program !== lastProgram) {
+            if (program != lastProgram) {
                 this._webGlWrapper.useProgram(program);
                 this._updatePerspectiveCameraByProgram(program);
-                this._perspectiveCamera.computeViewMatrix();
             }
             lastProgram = program;
             const attributesBuffersInfo = gameObject.getAttributesBuffersInfo();

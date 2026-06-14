@@ -31,15 +31,15 @@ export default class Runner {
     private _initializeCubeRunnerScene(): Scene {
         const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10)
         const scene = new Scene("CUBE RUNNER SCENE")
-        for (let i = -4; i < 4; ++i) {
-            for (let j = -4; j < 4; ++j) {
-                const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo)
-                object.transform.translation.x = i * 20
-                object.transform.translation.y = j * 20
+        const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
+        for (let i = 0; i < 1; ++i) {
+            for (let j = 0; j < 1; ++j) {
+                const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
+                //object.transform.translation.x = i * 20
+                //object.transform.translation.y = j * 20
                 
                 object.setUpdateTransformFunction((transform, deltaTime) => {
-                    const rotationSpeed = 1.5
-                    transform.translation.z -= 1
+                    const rotationSpeed = 1.1
                     transform.rotation.y += rotationSpeed * deltaTime
                     transform.rotation.x += rotationSpeed * deltaTime
                 })
@@ -56,12 +56,17 @@ export default class Runner {
     }
 
     private _initializeTestScene(): Scene {
-
+        const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
         const triangleFigureInfo = FiguresUtils.getColorTriangle()
-        const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(triangleFigureInfo)
+        const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, triangleFigureInfo)
 
         const testScene = new Scene("Test scene")
         testScene.addObject(object)
+
+        const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
+
+        this._renderer.setPerspectiveCamera(perspectiveCamera)
+        this._renderer.setScene(testScene)
 
         return testScene
     }

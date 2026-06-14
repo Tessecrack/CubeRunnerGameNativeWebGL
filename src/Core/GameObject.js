@@ -3,17 +3,15 @@ import Transform from "./Transform.js";
 export default class GameObject {
     _programInfo;
     _attributesBuffersInfo;
-    _uniformModelMatrixInfo;
     _uniformsVecInfo = [];
     _uniformsMatInfo = [];
     _drawMode; // for example, TRIANGLES
     _updateTransformFunction = null;
     transform = new Transform();
     countVertices;
-    constructor(programInfo, attributesBuffersInfo, uniformModelMatInfo, drawMode, countVertices) {
+    constructor(programInfo, attributesBuffersInfo, drawMode, countVertices) {
         this._programInfo = programInfo;
         this._attributesBuffersInfo = attributesBuffersInfo;
-        this._uniformModelMatrixInfo = uniformModelMatInfo;
         this._drawMode = drawMode;
         this.countVertices = countVertices;
     }
@@ -45,7 +43,6 @@ export default class GameObject {
         if (this._updateTransformFunction !== null) {
             this._updateTransformFunction(this.transform, deltaTime);
         }
-        this._uniformModelMatrixInfo.updateValue();
     }
 }
 //# sourceMappingURL=GameObject.js.map

@@ -65,7 +65,6 @@ export default class WebGLWrapper {
     }
     createUniformMatInfo(program, nameUniform, value, updateValue = null) {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
-        //const uniformLocation = this._glContext.getUniformLocation(program, 'u_matrix')
         if (uniformLocation === null) {
             throw new Error(`Cannot find uniform by name ${nameUniform}`);
         }
@@ -190,11 +189,19 @@ export default class WebGLWrapper {
         this._glContext.deleteProgram(program);
         throw new Error(infoLog);
     }
+    createDefaultColorProgramInfo() {
+        const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource();
+        const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource();
+        const vertexShader = this.createVertexShader(vertexShaderSrc);
+        const fragmentShader = this.createFragmentShader(fragmentShaderSrc);
+        const programInfo = this.createProgramInfo(vertexShader, fragmentShader);
+        return programInfo;
+    }
     drawArrays(drawMode, firstVertex, countVertices) {
         this._glContext.drawArrays(drawMode, firstVertex, countVertices);
     }
-    createGameObject(programInfo, linkedAttributesToBuffer, uniformModelMatrixInfo, countVertices) {
-        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, uniformModelMatrixInfo, this._glContext.TRIANGLES, countVertices);
+    createGameObject(programInfo, linkedAttributesToBuffer, countVertices) {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices);
         return gameObject;
     }
     createPerspectiveCamera() {
@@ -202,12 +209,7 @@ export default class WebGLWrapper {
         const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
         return new PerspectiveCamera(fieldOfViewRadians, aspect);
     }
-    getDefaultColorGameObjectByFigureInfo(figureInfo) {
-        const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource();
-        const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource();
-        const vertexShader = this.createVertexShader(vertexShaderSrc);
-        const fragmentShader = this.createFragmentShader(fragmentShaderSrc);
-        const programInfo = this.createProgramInfo(vertexShader, fragmentShader);
+    getDefaultColorGameObjectByFigureInfo(programInfo, figureInfo) {
         const program = programInfo.getProgram();
         const bufferTriangle = this.createBufferInfo(figureInfo.vertices);
         const floatSize = Float32Array.BYTES_PER_ELEMENT; // 4
@@ -217,16 +219,17 @@ export default class WebGLWrapper {
         const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle);
         const transform = new Transform();
         const uniformModelMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity(), (value) => {
-            value = MatricesUtils.translation(transform.translation.x, transform.translation.y, transform.translation.z);
-            value = MatricesUtils.xRotate(value, transform.rotation.x);
-            value = MatricesUtils.yRotate(value, transform.rotation.y);
-            value = MatricesUtils.zRotate(value, transform.rotation.z);
-            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z);
-            return value;
+            let matrix = MatricesUtils.translate(value, transform.translation.x, transform.translation.y, transform.translation.z);
+            matrix = MatricesUtils.xRotate(matrix, transform.rotation.x);
+            matrix = MatricesUtils.yRotate(matrix, transform.rotation.y);
+            matrix = MatricesUtils.zRotate(matrix, transform.rotation.z);
+            matrix = MatricesUtils.scale(matrix, transform.scaling.x, transform.scaling.y, transform.scaling.z);
+            return matrix;
         });
         const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1]);
-        const object = this.createGameObject(programInfo, [linkedAttributes], uniformModelMatrixInfo, figureInfo.countVertices);
+        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices);
         object.addUniformVecInfo(uniformColorMultInfo);
+        object.addUniformMatInfo(uniformModelMatrixInfo);
         object.transform = transform;
         return object;
     }
