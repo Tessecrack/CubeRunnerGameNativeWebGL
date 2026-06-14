@@ -11,9 +11,8 @@ import MatricesUtils from "./Common/Utils/MatricesUtils.js";
 import Transform from "./Transform.js";
 import PerspectiveCamera from "./PerspectiveCamera.js";
 export default class WebGLWrapper {
-    static _glContext;
-    static perspectiveCamera;
-    static init() {
+    _glContext;
+    constructor() {
         const canvas = document.getElementById('canvas');
         if (!canvas) {
             throw new Error(`Cannot get canvas`);
@@ -21,16 +20,14 @@ export default class WebGLWrapper {
         this._glContext = canvas.getContext('webgl');
         const fieldOfViewRadians = 60 * Math.PI / 180;
         const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
-        this.perspectiveCamera = new PerspectiveCamera(fieldOfViewRadians, aspect);
     }
-    static initViewport() {
+    initViewport() {
         this._glContext.enable(this._glContext.CULL_FACE);
         this._glContext.enable(this._glContext.DEPTH_TEST);
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT);
-        this.updatePerspective();
     }
-    static resizeCanvas() {
+    resizeCanvas() {
         const elementCanvas = this._glContext.canvas;
         const clientWidth = elementCanvas.clientWidth;
         const clientHeight = elementCanvas.clientHeight;
@@ -38,30 +35,24 @@ export default class WebGLWrapper {
             this._glContext.canvas.width = elementCanvas.clientWidth;
             this._glContext.canvas.height = elementCanvas.clientHeight;
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
-            this.updatePerspective();
         }
     }
-    static updatePerspective() {
-        const fieldOfViewRadians = 60 * Math.PI / 180;
-        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
-        this.perspectiveCamera.updatePerspective(fieldOfViewRadians, aspect);
-    }
-    static getAttribLocation(program, nameAttrib) {
+    getAttribLocation(program, nameAttrib) {
         return this.getAttribLocation(program, nameAttrib);
     }
-    static createAttributeInfo(program, nameAttrib, componentsNumberPerVertexAttribute, stride, offset) {
+    createAttributeInfo(program, nameAttrib, componentsNumberPerVertexAttribute, stride, offset) {
         const attribLocation = this._glContext.getAttribLocation(program, nameAttrib);
         const attribInfo = new GLAttributeInfo(attribLocation, componentsNumberPerVertexAttribute, this._glContext.FLOAT, false, stride, offset);
         return attribInfo;
     }
-    static linkAttributesToBuffer(attributesInfo, bufferInfo) {
+    linkAttributesToBuffer(attributesInfo, bufferInfo) {
         const linkedAttributesToBuffer = new GLLinkedAttributesToBuffer(bufferInfo.target, bufferInfo);
         for (const attributeInfo of attributesInfo) {
             linkedAttributesToBuffer.addAttributeInfo(attributeInfo);
         }
         return linkedAttributesToBuffer;
     }
-    static createUniformVecInfo(program, nameUniform, value, updateValue = null) {
+    createUniformVecInfo(program, nameUniform, value, updateValue = null) {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
         if (uniformLocation === null) {
             throw new Error(`Cannot find uniform by name ${nameUniform}`);
@@ -72,7 +63,7 @@ export default class WebGLWrapper {
         }
         return uniformVecInfo;
     }
-    static createUniformMatInfo(program, nameUniform, value, updateValue = null) {
+    createUniformMatInfo(program, nameUniform, value, updateValue = null) {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
         if (uniformLocation === null) {
             throw new Error(`Cannot find uniform by name ${nameUniform}`);
@@ -83,10 +74,10 @@ export default class WebGLWrapper {
         }
         return uniformMatInfo;
     }
-    static enableVertexAttribArray(attribLocation) {
+    enableVertexAttribArray(attribLocation) {
         this._glContext.enableVertexAttribArray(attribLocation);
     }
-    static bindAttributesBuffer(attributesBufferInfo) {
+    bindAttributesBuffer(attributesBufferInfo) {
         const buffer = attributesBufferInfo.bufferInfo.buffer;
         const target = attributesBufferInfo.bufferInfo.target;
         this._glContext.bindBuffer(target, buffer);
@@ -102,9 +93,9 @@ export default class WebGLWrapper {
             this._glContext.enableVertexAttribArray(attributeLocation);
         }
     }
-    static setUniformValue(uniformInfo) {
+    setUniformValue(uniformInfo) {
     }
-    static setUniformVecValue(uniformVecInfo) {
+    setUniformVecValue(uniformVecInfo) {
         uniformVecInfo.updateValue();
         const value = uniformVecInfo.value;
         const location = uniformVecInfo.getUniformLocation();
@@ -125,7 +116,7 @@ export default class WebGLWrapper {
                 throw new Error(`setUniformVecValue ${value}. Cannot calculate uniform by length ${value.length}`);
         }
     }
-    static setUniformMatValue(uniformMatInfo) {
+    setUniformMatValue(uniformMatInfo) {
         uniformMatInfo.updateValue();
         const value = uniformMatInfo.value;
         const location = uniformMatInfo.getUniformLocation();
@@ -143,16 +134,16 @@ export default class WebGLWrapper {
                 throw new Error(`setUniformMatValue ${value}. Cannot calculate uniform by length ${value.length}`);
         }
     }
-    static getUniformLocation(program, nameUniform) {
+    getUniformLocation(program, nameUniform) {
         return this.getUniformLocation(program, nameUniform);
     }
-    static createVertexShader(vertexShaderSource) {
+    createVertexShader(vertexShaderSource) {
         return this.createShader(this._glContext.VERTEX_SHADER, vertexShaderSource);
     }
-    static createFragmentShader(fragmentShaderSource) {
+    createFragmentShader(fragmentShaderSource) {
         return this.createShader(this._glContext.FRAGMENT_SHADER, fragmentShaderSource);
     }
-    static createShader(type, shaderSource) {
+    createShader(type, shaderSource) {
         const shader = this._glContext.createShader(type);
         if (shader === null) {
             throw new Error(`Cannot create shader by src ${shaderSource}`);
@@ -170,7 +161,7 @@ export default class WebGLWrapper {
         this._glContext.deleteShader(shader);
         throw new Error(infoLog);
     }
-    static createBufferInfo(bufferData) {
+    createBufferInfo(bufferData) {
         const buffer = this._glContext.createBuffer();
         const usage = this._glContext.STATIC_DRAW;
         const target = this._glContext.ARRAY_BUFFER;
@@ -179,10 +170,10 @@ export default class WebGLWrapper {
         const bufferInfo = new GLBufferInfo(this._glContext.ARRAY_BUFFER, usage, buffer);
         return bufferInfo;
     }
-    static useProgram(program) {
+    useProgram(program) {
         this._glContext.useProgram(program);
     }
-    static createProgramInfo(vertexShader, fragmentShader) {
+    createProgramInfo(vertexShader, fragmentShader) {
         const program = this._glContext.createProgram();
         this._glContext.attachShader(program, vertexShader);
         this._glContext.attachShader(program, fragmentShader);
@@ -198,14 +189,19 @@ export default class WebGLWrapper {
         this._glContext.deleteProgram(program);
         throw new Error(infoLog);
     }
-    static drawArrays(drawMode, firstVertex, countVertices) {
+    drawArrays(drawMode, firstVertex, countVertices) {
         this._glContext.drawArrays(drawMode, firstVertex, countVertices);
     }
-    static createGameObject(programInfo, linkedAttributesToBuffer, countVertices) {
-        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices);
+    createGameObject(programInfo, linkedAttributesToBuffer, uniformModelMatrixInfo, countVertices) {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, uniformModelMatrixInfo, this._glContext.TRIANGLES, countVertices);
         return gameObject;
     }
-    static getDefaultColorGameObjectByFigureInfo(figureInfo) {
+    createPerspectiveCamera() {
+        const fieldOfViewRadians = 60 * Math.PI / 180;
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+        return new PerspectiveCamera(fieldOfViewRadians, aspect);
+    }
+    getDefaultColorGameObjectByFigureInfo(figureInfo) {
         const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource();
         const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource();
         const vertexShader = this.createVertexShader(vertexShaderSrc);
@@ -219,18 +215,9 @@ export default class WebGLWrapper {
         const attributeColorInfo = this.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize);
         const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle);
         const transform = new Transform();
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity(), (value) => {
-            const viewProjectionMatrix = WebGLWrapper.perspectiveCamera.getViewProjectionMatrix();
-            value = MatricesUtils.translate(viewProjectionMatrix, transform.translation.x, transform.translation.y, transform.translation.z - 100);
-            value = MatricesUtils.xRotate(value, transform.rotation.x);
-            value = MatricesUtils.yRotate(value, transform.rotation.y);
-            value = MatricesUtils.zRotate(value, transform.rotation.z);
-            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z);
-            return value;
-        });
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1]);
-        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices);
-        object.addUniformMatInfo(uniformMatrixInfo);
+        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity());
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1]);
+        const object = this.createGameObject(programInfo, [linkedAttributes], uniformMatrixInfo, figureInfo.countVertices);
         object.addUniformVecInfo(uniformColorMultInfo);
         object.transform = transform;
         return object;

@@ -1,4 +1,5 @@
 export default class GLProgramInfo {
+
     protected _program: WebGLProgram
 
     constructor(program: WebGLProgram) {

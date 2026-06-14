@@ -1,17 +1,17 @@
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
+import PerspectiveCamera from "./Core/PerspectiveCamera.js"
 import Renderer from "./Core/Renderer.js"
 import Scene from "./Core/Scene.js"
 import WebGLWrapper from "./Core/WebGLWrapper.js"
 
 export default class Runner {
     private _renderer: Renderer
-
+    private _webGlWrapper: WebGLWrapper
     private _isTest: boolean = false
 
     constructor() {
-        WebGLWrapper.init()
-        WebGLWrapper.initViewport()
-        this._renderer = new Renderer()
+        this._webGlWrapper = new WebGLWrapper()        
+        this._renderer = new Renderer(this._webGlWrapper)
     }
 
     public run() {
@@ -23,7 +23,7 @@ export default class Runner {
             scene = this._initializeCubeRunnerScene()
         }
 
-        this._renderer.setScene(scene)
+        
 
         this._renderer.render(0)
     }
@@ -33,7 +33,7 @@ export default class Runner {
         const scene = new Scene("CUBE RUNNER SCENE")
         for (let i = -4; i < 4; ++i) {
             for (let j = -4; j < 4; ++j) {
-                const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo)
+                const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(cubeFigureInfo)
                 object.transform.translation.x = i * 20
                 object.transform.translation.y = j * 20
                 
@@ -47,13 +47,18 @@ export default class Runner {
             }
         }
 
+        const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
+
+        this._renderer.setPerspectiveCamera(perspectiveCamera)
+        this._renderer.setScene(scene)
+
         return scene
     }
 
     private _initializeTestScene(): Scene {
 
         const triangleFigureInfo = FiguresUtils.getColorTriangle()
-        const object = WebGLWrapper.getDefaultColorGameObjectByFigureInfo(triangleFigureInfo)
+        const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(triangleFigureInfo)
 
         const testScene = new Scene("Test scene")
         testScene.addObject(object)

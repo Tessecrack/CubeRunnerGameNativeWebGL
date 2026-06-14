@@ -7,13 +7,14 @@ export type GameObjectUpdateTransformFunction = (transform: Transform, deltaTime
 export default class GameObject {
     private _programInfo;
     private _attributesBuffersInfo;
+    private _uniformModelMatrixInfo;
     private _uniformsVecInfo;
     private _uniformsMatInfo;
     private _drawMode;
     private _updateTransformFunction;
     transform: Transform;
     countVertices: number;
-    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[], drawMode: GLenum, countVertices: number);
+    constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[], uniformModelMatInfo: GLUniformMatInfo, drawMode: GLenum, countVertices: number);
     getProgram(): WebGLProgram;
     getAttributesBuffersInfo(): GLLinkedAttributesToBuffer[];
     getUniformsVecInfo(): GLUniformVecInfo[];
@@ -23,5 +24,6 @@ export default class GameObject {
     addUniformMatInfo(uniformMatInfo: GLUniformMatInfo): void;
     setUpdateTransformFunction(updateTransformFunc: GameObjectUpdateTransformFunction): void;
     updateTransform(deltaTime: number): void;
+    updateMatrix(viewProjectionMatrix: number[]): void;
 }
 //# sourceMappingURL=GameObject.d.ts.map

@@ -1,1 +1,1 @@
-{"version":3,"file":"GLProgramInfo.d.ts","sourceRoot":"","sources":["GLProgramInfo.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,aAAa;IAC9B,SAAS,CAAC,QAAQ,EAAE,YAAY,CAAA;gBAEpB,OAAO,EAAE,YAAY;IAI1B,UAAU;CAGpB"}
+{"version":3,"file":"GLProgramInfo.d.ts","sourceRoot":"","sources":["GLProgramInfo.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,aAAa;IAE9B,SAAS,CAAC,QAAQ,EAAE,YAAY,CAAA;gBAEpB,OAAO,EAAE,YAAY;IAI1B,UAAU;CAGpB"}

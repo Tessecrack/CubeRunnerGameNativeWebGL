@@ -5,15 +5,16 @@ export default class PerspectiveCamera {
     private _zNear;
     private _zFar;
     private _projectionMatrix;
-    private _viewProjectionMatrix;
+    private _viewMatrix;
     private _cameraMatrix;
     private _cameraPosition;
     private _target;
+    private _uniformProjectionMatInfo;
+    private _uniformViewMatInfo;
     constructor(fieldOfViewRadians: number, aspect: number);
     updatePerspective(fieldOfViewRadians: number, aspect: number, zNear?: number, zFar?: number): void;
-    getViewProjectionMatrix(): number[];
     setCameraPosition(cameraPosition: Vector3): void;
     setCameraTarget(target: Vector3): void;
-    computeViewProjectionMatrix(): void;
+    computeViewMatrix(): void;
 }
 //# sourceMappingURL=PerspectiveCamera.d.ts.map

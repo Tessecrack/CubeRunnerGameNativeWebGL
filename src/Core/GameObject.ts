@@ -11,6 +11,8 @@ export default class GameObject {
 
     private _attributesBuffersInfo: GLLinkedAttributesToBuffer[]
 
+    private _uniformModelMatrixInfo: GLUniformMatInfo
+
     private _uniformsVecInfo: GLUniformVecInfo[] = []
 
     private _uniformsMatInfo: GLUniformMatInfo[] = []
@@ -26,11 +28,13 @@ export default class GameObject {
     constructor(
         programInfo:GLProgramInfo, 
         attributesBuffersInfo: GLLinkedAttributesToBuffer[],
+        uniformModelMatInfo: GLUniformMatInfo,
         drawMode: GLenum,
         countVertices: number
     ) {
         this._programInfo = programInfo
         this._attributesBuffersInfo = attributesBuffersInfo
+        this._uniformModelMatrixInfo = uniformModelMatInfo
         this._drawMode = drawMode
         this.countVertices = countVertices
     }
@@ -71,5 +75,9 @@ export default class GameObject {
         if (this._updateTransformFunction !== null) {
             this._updateTransformFunction(this.transform, deltaTime)
         }
+    }
+
+    public updateMatrix(viewProjectionMatrix: number[]) {
+
     }
 }

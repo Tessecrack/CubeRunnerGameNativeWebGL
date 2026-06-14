@@ -14,34 +14,26 @@ import Transform from "./Transform.js"
 import PerspectiveCamera from "./PerspectiveCamera.js"
 
 export default class WebGLWrapper {
-    private static _glContext: WebGLRenderingContext
+    private _glContext: WebGLRenderingContext    
 
-    public static perspectiveCamera: PerspectiveCamera
-
-    public static init() {
+    constructor() {
         const canvas = document.getElementById('canvas') as HTMLCanvasElement
-
         if (!canvas) {
             throw new Error(`Cannot get canvas`)
         }
-
         this._glContext = canvas.getContext('webgl')!
-
         const fieldOfViewRadians = 60 * Math.PI / 180
         const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
-
-        this.perspectiveCamera = new PerspectiveCamera(fieldOfViewRadians, aspect)
     }
 
-    public static initViewport() {
+    public initViewport() {
         this._glContext.enable(this._glContext.CULL_FACE)
         this._glContext.enable(this._glContext.DEPTH_TEST)
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
-        this.updatePerspective()
     }
 
-    public static resizeCanvas() {
+    public resizeCanvas() {
         const elementCanvas = this._glContext.canvas as HTMLCanvasElement
         const clientWidth = elementCanvas.clientWidth
         const clientHeight = elementCanvas.clientHeight
@@ -51,21 +43,14 @@ export default class WebGLWrapper {
             this._glContext.canvas.height = elementCanvas.clientHeight
 
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
-            this.updatePerspective()
         }
     }
 
-    public static updatePerspective() {
-        const fieldOfViewRadians = 60 * Math.PI / 180
-        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
-        this.perspectiveCamera.updatePerspective(fieldOfViewRadians, aspect)
-    }
-
-    public static getAttribLocation(program: WebGLProgram, nameAttrib: string): number {
+    public getAttribLocation(program: WebGLProgram, nameAttrib: string): number {
         return this.getAttribLocation(program, nameAttrib)
     }
 
-    public static createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number,
+    public createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number,
         stride: number,
         offset: number): GLAttributeInfo {
         const attribLocation = this._glContext.getAttribLocation(program, nameAttrib)
@@ -73,7 +58,7 @@ export default class WebGLWrapper {
         return attribInfo
     }
 
-    public static linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer {
+    public linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer {
         const linkedAttributesToBuffer = new GLLinkedAttributesToBuffer(bufferInfo.target, bufferInfo)
 
         for (const attributeInfo of attributesInfo) {
@@ -83,7 +68,7 @@ export default class WebGLWrapper {
         return linkedAttributesToBuffer
     }
 
-    public static createUniformVecInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformVecInfo {
+    public createUniformVecInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformVecInfo {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform)
 
         if (uniformLocation === null) {
@@ -99,7 +84,7 @@ export default class WebGLWrapper {
         return uniformVecInfo
     }
 
-    public static createUniformMatInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformMatInfo {
+    public createUniformMatInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformMatInfo {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform)
 
         if (uniformLocation === null) {
@@ -115,11 +100,11 @@ export default class WebGLWrapper {
         return uniformMatInfo
     }
 
-    public static enableVertexAttribArray(attribLocation: number) {
+    public enableVertexAttribArray(attribLocation: number) {
         this._glContext.enableVertexAttribArray(attribLocation)
     }
 
-    public static bindAttributesBuffer(attributesBufferInfo: GLLinkedAttributesToBuffer) {
+    public bindAttributesBuffer(attributesBufferInfo: GLLinkedAttributesToBuffer) {
 
         const buffer = attributesBufferInfo.bufferInfo.buffer
         const target = attributesBufferInfo.bufferInfo.target
@@ -141,11 +126,11 @@ export default class WebGLWrapper {
         }
     }
 
-    public static setUniformValue(uniformInfo: GLUniformInfoArrayBase) {
+    public setUniformValue(uniformInfo: GLUniformInfoArrayBase) {
 
     }
 
-    public static setUniformVecValue(uniformVecInfo: GLUniformVecInfo) {
+    public setUniformVecValue(uniformVecInfo: GLUniformVecInfo) {
         uniformVecInfo.updateValue()
 
         const value = uniformVecInfo.value
@@ -169,7 +154,7 @@ export default class WebGLWrapper {
         }
     }
 
-    public static setUniformMatValue(uniformMatInfo: GLUniformMatInfo) {
+    public setUniformMatValue(uniformMatInfo: GLUniformMatInfo) {
         uniformMatInfo.updateValue()
 
         const value = uniformMatInfo.value
@@ -190,19 +175,19 @@ export default class WebGLWrapper {
         }
     }
 
-    public static getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {
+    public getUniformLocation(program: WebGLProgram, nameUniform: string): WebGLUniformLocation {
         return this.getUniformLocation(program, nameUniform)
     }
 
-    public static createVertexShader(vertexShaderSource: string): WebGLShader {
+    public createVertexShader(vertexShaderSource: string): WebGLShader {
         return this.createShader(this._glContext.VERTEX_SHADER, vertexShaderSource)
     }
 
-    public static createFragmentShader(fragmentShaderSource: string): WebGLShader {
+    public createFragmentShader(fragmentShaderSource: string): WebGLShader {
         return this.createShader(this._glContext.FRAGMENT_SHADER, fragmentShaderSource)
     }
 
-    public static createShader(type: GLenum, shaderSource: string): WebGLShader {
+    public createShader(type: GLenum, shaderSource: string): WebGLShader {
         const shader: WebGLShader | null = this._glContext.createShader(type)
 
         if (shader === null) {
@@ -228,7 +213,7 @@ export default class WebGLWrapper {
         throw new Error(infoLog)
     }
 
-    public static createBufferInfo(bufferData: number[]): GLBufferInfo {
+    public createBufferInfo(bufferData: number[]): GLBufferInfo {
         const buffer = this._glContext.createBuffer()
         const usage = this._glContext.STATIC_DRAW
         const target = this._glContext.ARRAY_BUFFER
@@ -242,11 +227,11 @@ export default class WebGLWrapper {
     }
 
 
-    public static useProgram(program: WebGLProgram) {
+    public useProgram(program: WebGLProgram) {
         this._glContext.useProgram(program)
     }
 
-    public static createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo {
+    public createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo {
         const program: WebGLProgram = this._glContext.createProgram()
 
         this._glContext.attachShader(program, vertexShader)
@@ -270,16 +255,26 @@ export default class WebGLWrapper {
         throw new Error(infoLog)
     }
 
-    public static drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number) {
+    public drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number) {
         this._glContext.drawArrays(drawMode, firstVertex, countVertices)
     }
 
-    public static createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject {
-        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices)
+    public createGameObject(programInfo: GLProgramInfo, 
+        linkedAttributesToBuffer: GLLinkedAttributesToBuffer[],
+        uniformModelMatrixInfo: GLUniformMatInfo,
+        countVertices: number): GameObject {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, uniformModelMatrixInfo, this._glContext.TRIANGLES, countVertices)
         return gameObject
     }
 
-    public static getDefaultColorGameObjectByFigureInfo(figureInfo: FigureInfo): GameObject {
+    public createPerspectiveCamera(): PerspectiveCamera {
+        const fieldOfViewRadians = 60 * Math.PI / 180
+        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+
+        return new PerspectiveCamera(fieldOfViewRadians, aspect)
+    }
+
+    public getDefaultColorGameObjectByFigureInfo(figureInfo: FigureInfo): GameObject {
         const vertexShaderSrc = DefaultColorShadersSources.getVertexShaderSource()
         const fragmentShaderSrc = DefaultColorShadersSources.getFragmentShaderSource()
 
@@ -301,27 +296,15 @@ export default class WebGLWrapper {
 
         const transform = new Transform()
 
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_matrix', MatricesUtils.identity(),
-        (value) => {
-            const viewProjectionMatrix = WebGLWrapper.perspectiveCamera.getViewProjectionMatrix()
-            value = MatricesUtils.translate(viewProjectionMatrix, 
-                transform.translation.x, 
-                transform.translation.y, 
-                transform.translation.z - 100)
-            value = MatricesUtils.xRotate(value, transform.rotation.x)
-            value = MatricesUtils.yRotate(value, transform.rotation.y)
-            value = MatricesUtils.zRotate(value, transform.rotation.z)
-            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z)
-
-            return value
-        })
-
+        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity())
         
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1])
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1])
 
-        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices)
+        const object = this.createGameObject(programInfo, 
+            [linkedAttributes], 
+            uniformMatrixInfo,
+            figureInfo.countVertices)
 
-        object.addUniformMatInfo(uniformMatrixInfo)
         object.addUniformVecInfo(uniformColorMultInfo)
         object.transform = transform
 

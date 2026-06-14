@@ -6,10 +6,12 @@ export default class PerspectiveCamera {
     _zNear = 1;
     _zFar = 2000;
     _projectionMatrix;
-    _viewProjectionMatrix;
+    _viewMatrix;
     _cameraMatrix;
     _cameraPosition;
     _target;
+    _uniformProjectionMatInfo = null;
+    _uniformViewMatInfo = null;
     constructor(fieldOfViewRadians, aspect) {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
@@ -17,8 +19,7 @@ export default class PerspectiveCamera {
         this._cameraPosition = new Vector3(0, 0, 100);
         this._target = new Vector3(0, 0, 0);
         this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
-        const viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
-        this._viewProjectionMatrix = MatricesUtils.multiply(this._projectionMatrix, viewMatrix);
+        this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
     }
     updatePerspective(fieldOfViewRadians, aspect, zNear = 1, zFar = 2000) {
         this._fieldOfViewRadians = fieldOfViewRadians;
@@ -26,29 +27,31 @@ export default class PerspectiveCamera {
         this._zNear = zNear;
         this._zFar = zFar;
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, zNear, zFar);
-        this.computeViewProjectionMatrix();
-    }
-    getViewProjectionMatrix() {
-        return this._viewProjectionMatrix;
+        this.computeViewMatrix();
     }
     setCameraPosition(cameraPosition) {
         if (this._cameraPosition.x === cameraPosition.x && this._cameraPosition.y === cameraPosition.y && this._cameraPosition.z === cameraPosition.z) {
             return;
         }
         this._cameraPosition = cameraPosition;
-        this.computeViewProjectionMatrix();
+        this.computeViewMatrix();
     }
     setCameraTarget(target) {
         if (this._target.x === target.x && this._target.y === target.y && this._target.z === target.z) {
             return;
         }
         this._target = target;
-        this.computeViewProjectionMatrix();
+        this.computeViewMatrix();
     }
-    computeViewProjectionMatrix() {
+    computeViewMatrix() {
         this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
-        const viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
-        this._viewProjectionMatrix = MatricesUtils.multiply(this._projectionMatrix, viewMatrix);
+        this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
+        if (this._uniformProjectionMatInfo !== null) {
+            this._uniformProjectionMatInfo.value = this._projectionMatrix;
+        }
+        if (this._uniformViewMatInfo !== null) {
+            this._uniformViewMatInfo.value = this._viewMatrix;
+        }
     }
 }
 //# sourceMappingURL=PerspectiveCamera.js.map

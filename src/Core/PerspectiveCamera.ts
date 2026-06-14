@@ -1,3 +1,4 @@
+import type GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import MatricesUtils from "./Common/Utils/MatricesUtils.js"
 import Vector3 from "./Vector3.js"
 
@@ -8,12 +9,19 @@ export default class PerspectiveCamera {
     private _zFar: number = 2000
 
     private _projectionMatrix: number[]
-    private _viewProjectionMatrix: number[]
+
+    private _viewMatrix: number[]
 
     private _cameraMatrix: number[]
 
     private _cameraPosition: Vector3
+
     private _target: Vector3
+
+
+    private _uniformProjectionMatInfo: GLUniformMatInfo | null = null
+
+    private _uniformViewMatInfo: GLUniformMatInfo | null = null
 
     constructor(
         fieldOfViewRadians: number,
@@ -31,8 +39,7 @@ export default class PerspectiveCamera {
             [this._target.x, this._target.y, this._target.z],
             Vector3.up)!
 
-        const viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
-        this._viewProjectionMatrix = MatricesUtils.multiply(this._projectionMatrix, viewMatrix)
+        this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
     }
 
     public updatePerspective(fieldOfViewRadians: number, aspect: number, zNear: number = 1, zFar: number = 2000) {
@@ -42,11 +49,7 @@ export default class PerspectiveCamera {
         this._zFar = zFar
 
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, zNear, zFar)
-        this.computeViewProjectionMatrix()
-    }
-
-    public getViewProjectionMatrix() {
-        return this._viewProjectionMatrix
+        this.computeViewMatrix()
     }
 
     public setCameraPosition(cameraPosition: Vector3) {
@@ -55,7 +58,7 @@ export default class PerspectiveCamera {
         }
         this._cameraPosition = cameraPosition
 
-        this.computeViewProjectionMatrix()
+        this.computeViewMatrix()
     }
 
     public setCameraTarget(target: Vector3) {
@@ -65,16 +68,23 @@ export default class PerspectiveCamera {
 
         this._target = target
 
-        this.computeViewProjectionMatrix()
+        this.computeViewMatrix()
     }
 
-    public computeViewProjectionMatrix() {
+    public computeViewMatrix() {
         this._cameraMatrix = MatricesUtils.lookAt(
             [this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z],
             [this._target.x, this._target.y, this._target.z],
             Vector3.up)!
 
-        const viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
-        this._viewProjectionMatrix = MatricesUtils.multiply(this._projectionMatrix, viewMatrix)
+        this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
+
+        if (this._uniformProjectionMatInfo !== null) {
+            this._uniformProjectionMatInfo.value = this._projectionMatrix
+        }
+
+        if (this._uniformViewMatInfo !== null) { 
+            this._uniformViewMatInfo.value = this._viewMatrix
+        }
     }
 }
