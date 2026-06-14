@@ -227,7 +227,7 @@ export default class WebGLWrapper {
             matrix = MatricesUtils.scale(matrix, transform.scaling.x, transform.scaling.y, transform.scaling.z);
             return matrix;
         });
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1]);
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.9, 0.7, 1]);
         const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices);
         object.addUniformVecInfo(uniformColorMultInfo);
         object.addUniformMatInfo(uniformModelMatrixInfo);

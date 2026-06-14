@@ -25,15 +25,15 @@ export default class Runner {
         const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10);
         const scene = new Scene("CUBE RUNNER SCENE");
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo();
-        for (let i = -5; i < 5; ++i) {
-            for (let j = -5; j < 5; ++j) {
+        for (let i = -30; i < 30; ++i) {
+            for (let j = -30; j < 30; ++j) {
                 const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo);
-                object.transform.translation.x = i * 20;
-                object.transform.translation.y = j * 20;
+                object.transform.translation.x = i * 16;
+                object.transform.translation.y = j * 16;
                 object.setUpdateTransformFunction((transform, deltaTime) => {
                     const rotationSpeed = 1.1;
-                    transform.rotation.y += i * rotationSpeed * deltaTime;
-                    transform.rotation.z += j * rotationSpeed * deltaTime;
+                    transform.rotation.y += i / 2 * rotationSpeed * deltaTime;
+                    transform.rotation.z += j / 2 * rotationSpeed * deltaTime;
                 });
                 scene.addObject(object);
             }

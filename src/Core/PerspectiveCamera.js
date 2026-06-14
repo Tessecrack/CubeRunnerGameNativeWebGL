@@ -19,7 +19,7 @@ export default class PerspectiveCamera {
     constructor(fieldOfViewRadians, aspect) {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
-        this._cameraPosition = new Vector3(0, 0, 200);
+        this._cameraPosition = new Vector3(0, 0, 1000);
         this._target = new Vector3(0, 0, 0);
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar);
         this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
