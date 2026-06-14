@@ -1,1 +1,1 @@
-{"version":3,"file":"GLUniformInfoBase.js","sourceRoot":"","sources":["GLUniformInfoBase.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAgB,iBAAiB;IACjC,gBAAgB,CAAsB;IAEhD,YAAY,eAAqC;QAC7C,IAAI,CAAC,gBAAgB,GAAG,eAAe,CAAA;IAC3C,CAAC;CACJ"}
+{"version":3,"file":"GLUniformInfoBase.js","sourceRoot":"","sources":["GLUniformInfoBase.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAgB,iBAAiB;IACpC,eAAe,CAAsB;IAE5C,YAAY,eAAqC;QAC7C,IAAI,CAAC,eAAe,GAAG,eAAe,CAAA;IAC1C,CAAC;CACJ"}

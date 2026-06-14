@@ -1,1 +1,1 @@
-{"version":3,"file":"GLUniformInfoBase.d.ts","sourceRoot":"","sources":["GLUniformInfoBase.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,CAAC,QAAQ,OAAO,iBAAiB;IAC3C,SAAS,CAAC,gBAAgB,EAAE,oBAAoB,CAAA;gBAEpC,eAAe,EAAE,oBAAoB;CAGpD"}
+{"version":3,"file":"GLUniformInfoBase.d.ts","sourceRoot":"","sources":["GLUniformInfoBase.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,CAAC,QAAQ,OAAO,iBAAiB;IACpC,eAAe,EAAE,oBAAoB,CAAA;gBAEhC,eAAe,EAAE,oBAAoB;CAGpD"}

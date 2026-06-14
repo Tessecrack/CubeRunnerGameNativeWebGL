@@ -19,14 +19,9 @@ export default class Renderer {
         const currentTimeRendererMs = tick * 0.001;
         this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs;
         this._previousTimeRendererMs = currentTimeRendererMs;
-        this._webGlWrapper.resizeCanvas();
         if (this._currentScene !== null) {
             const gameObjects = this._currentScene.getGameObjects();
-            if (this._perspectiveCamera === null) {
-            }
-            else {
-                this._renderGameObjects(gameObjects);
-            }
+            this._renderGameObjects(gameObjects);
         }
         requestAnimationFrame(this.render.bind(this));
     }
@@ -36,11 +31,14 @@ export default class Renderer {
             return;
         }
         let lastProgram;
+        this._webGlWrapper.resizeCanvas(this._perspectiveCamera);
         this._perspectiveCamera.computeViewMatrix();
         for (let gameObject of gameObjects) {
             const program = gameObject.getProgram();
             if (program !== lastProgram) {
                 this._webGlWrapper.useProgram(program);
+                this._updatePerspectiveCameraByProgram(program);
+                this._perspectiveCamera.computeViewMatrix();
             }
             lastProgram = program;
             const attributesBuffersInfo = gameObject.getAttributesBuffersInfo();
@@ -58,6 +56,20 @@ export default class Renderer {
             }
             const drawMode = gameObject.getDrawMode();
             this._webGlWrapper.drawArrays(drawMode, 0, gameObject.countVertices);
+        }
+    }
+    _updatePerspectiveCameraByProgram(program) {
+        if (this._perspectiveCamera === null) {
+            return;
+        }
+        this._webGlWrapper.updatePerspectiveCameraByProgram(program, this._perspectiveCamera);
+        const uniformViewMatrixInfo = this._perspectiveCamera.getUniformViewMatrixInfo();
+        if (uniformViewMatrixInfo !== null) {
+            this._webGlWrapper.setUniformMatValue(uniformViewMatrixInfo);
+        }
+        const uniformProjectionMatrixInfo = this._perspectiveCamera.getUniformProjectionMatrixInfo();
+        if (uniformProjectionMatrixInfo !== null) {
+            this._webGlWrapper.setUniformMatValue(uniformProjectionMatrixInfo);
         }
     }
 }

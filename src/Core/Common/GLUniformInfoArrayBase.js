@@ -7,7 +7,7 @@ export default class GLUniformInfoArrayBase extends GLUniformInfoBase {
         this.value = value;
     }
     getUniformLocation() {
-        return this._uniformLocation;
+        return this.uniformLocation;
     }
     setUpdateValueFunc(updateValueArrayFunc) {
         this._updateValueArrayFunc = updateValueArrayFunc;

@@ -18,8 +18,6 @@ export default class WebGLWrapper {
             throw new Error(`Cannot get canvas`);
         }
         this._glContext = canvas.getContext('webgl');
-        const fieldOfViewRadians = 60 * Math.PI / 180;
-        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
     }
     initViewport() {
         this._glContext.enable(this._glContext.CULL_FACE);
@@ -27,7 +25,7 @@ export default class WebGLWrapper {
         this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT);
     }
-    resizeCanvas() {
+    resizeCanvas(perspectiveCamera) {
         const elementCanvas = this._glContext.canvas;
         const clientWidth = elementCanvas.clientWidth;
         const clientHeight = elementCanvas.clientHeight;
@@ -35,6 +33,8 @@ export default class WebGLWrapper {
             this._glContext.canvas.width = elementCanvas.clientWidth;
             this._glContext.canvas.height = elementCanvas.clientHeight;
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height);
+            const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+            perspectiveCamera.updatePerspective(PerspectiveCamera.defaultFieldOfViewRadians, aspect);
         }
     }
     getAttribLocation(program, nameAttrib) {
@@ -65,6 +65,7 @@ export default class WebGLWrapper {
     }
     createUniformMatInfo(program, nameUniform, value, updateValue = null) {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform);
+        //const uniformLocation = this._glContext.getUniformLocation(program, 'u_matrix')
         if (uniformLocation === null) {
             throw new Error(`Cannot find uniform by name ${nameUniform}`);
         }
@@ -197,7 +198,7 @@ export default class WebGLWrapper {
         return gameObject;
     }
     createPerspectiveCamera() {
-        const fieldOfViewRadians = 60 * Math.PI / 180;
+        const fieldOfViewRadians = PerspectiveCamera.defaultFieldOfViewRadians;
         const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
         return new PerspectiveCamera(fieldOfViewRadians, aspect);
     }
@@ -215,12 +216,29 @@ export default class WebGLWrapper {
         const attributeColorInfo = this.createAttributeInfo(program, 'a_color', 4, stride, 3 * floatSize);
         const linkedAttributes = this.linkAttributesToBuffer([attributePositionInfo, attributeColorInfo], bufferTriangle);
         const transform = new Transform();
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity());
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1]);
-        const object = this.createGameObject(programInfo, [linkedAttributes], uniformMatrixInfo, figureInfo.countVertices);
+        const uniformModelMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity(), (value) => {
+            value = MatricesUtils.translation(transform.translation.x, transform.translation.y, transform.translation.z);
+            value = MatricesUtils.xRotate(value, transform.rotation.x);
+            value = MatricesUtils.yRotate(value, transform.rotation.y);
+            value = MatricesUtils.zRotate(value, transform.rotation.z);
+            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z);
+            return value;
+        });
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1]);
+        const object = this.createGameObject(programInfo, [linkedAttributes], uniformModelMatrixInfo, figureInfo.countVertices);
         object.addUniformVecInfo(uniformColorMultInfo);
         object.transform = transform;
         return object;
+    }
+    updatePerspectiveCameraByProgram(program, perspectiveCamera) {
+        const uniformViewMatrixLocation = this._glContext.getUniformLocation(program, PerspectiveCamera.nameUniformViewMatrix);
+        if (uniformViewMatrixLocation !== null) {
+            perspectiveCamera.setUniformLocationViewMatrix(uniformViewMatrixLocation);
+        }
+        const uniformProjectionMatrixLocation = this._glContext.getUniformLocation(program, PerspectiveCamera.nameUniformProjectionMatrix);
+        if (uniformProjectionMatrixLocation !== null) {
+            perspectiveCamera.setUniformProjectionMatrix(uniformProjectionMatrixLocation);
+        }
     }
 }
 //# sourceMappingURL=WebGLWrapper.js.map

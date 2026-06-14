@@ -16,7 +16,7 @@ export default abstract class GLUniformInfoArrayBase extends GLUniformInfoBase {
     }
 
     public getUniformLocation() {
-        return this._uniformLocation
+        return this.uniformLocation
     }
 
     public setUpdateValueFunc(updateValueArrayFunc: UniformValueArrayFunction) {

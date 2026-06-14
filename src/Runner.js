@@ -31,7 +31,7 @@ export default class Runner {
                 object.transform.translation.y = j * 20;
                 object.setUpdateTransformFunction((transform, deltaTime) => {
                     const rotationSpeed = 1.5;
-                    //transform.translation.y += rotationSpeed * deltaTime
+                    transform.translation.z -= 1;
                     transform.rotation.y += rotationSpeed * deltaTime;
                     transform.rotation.x += rotationSpeed * deltaTime;
                 });

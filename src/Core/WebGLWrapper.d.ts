@@ -13,7 +13,7 @@ export default class WebGLWrapper {
     private _glContext;
     constructor();
     initViewport(): void;
-    resizeCanvas(): void;
+    resizeCanvas(perspectiveCamera: PerspectiveCamera): void;
     getAttribLocation(program: WebGLProgram, nameAttrib: string): number;
     createAttributeInfo(program: WebGLProgram, nameAttrib: string, componentsNumberPerVertexAttribute: number, stride: number, offset: number): GLAttributeInfo;
     linkAttributesToBuffer(attributesInfo: GLAttributeInfo[], bufferInfo: GLBufferInfo): GLLinkedAttributesToBuffer;
@@ -35,5 +35,6 @@ export default class WebGLWrapper {
     createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], uniformModelMatrixInfo: GLUniformMatInfo, countVertices: number): GameObject;
     createPerspectiveCamera(): PerspectiveCamera;
     getDefaultColorGameObjectByFigureInfo(figureInfo: FigureInfo): GameObject;
+    updatePerspectiveCameraByProgram(program: WebGLProgram, perspectiveCamera: PerspectiveCamera): void;
 }
 //# sourceMappingURL=WebGLWrapper.d.ts.map

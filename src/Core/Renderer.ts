@@ -1,3 +1,4 @@
+import type GLProgramInfo from "./Common/GLProgramInfo.js";
 import type GameObject from "./GameObject.js";
 import type PerspectiveCamera from "./PerspectiveCamera.js";
 import type Scene from "./Scene.js";
@@ -34,15 +35,9 @@ export default class Renderer {
 
         this._previousTimeRendererMs = currentTimeRendererMs
 
-        this._webGlWrapper.resizeCanvas()
         if (this._currentScene !== null) {
             const gameObjects = this._currentScene.getGameObjects()
-
-            if (this._perspectiveCamera === null) {
-
-            } else {
-                this._renderGameObjects(gameObjects)
-            }
+            this._renderGameObjects(gameObjects)
         }
         requestAnimationFrame(this.render.bind(this))
     }
@@ -54,12 +49,16 @@ export default class Renderer {
         }
 
         let lastProgram
+
+        this._webGlWrapper.resizeCanvas(this._perspectiveCamera)
         this._perspectiveCamera.computeViewMatrix()
         for (let gameObject of gameObjects) {
             const program = gameObject.getProgram()
 
             if (program !== lastProgram) {
                 this._webGlWrapper.useProgram(program)
+                this._updatePerspectiveCameraByProgram(program)
+                this._perspectiveCamera.computeViewMatrix()
             }
 
             lastProgram = program
@@ -85,5 +84,23 @@ export default class Renderer {
             this._webGlWrapper.drawArrays(drawMode, 0, gameObject.countVertices)
         }
 
+    }
+
+    _updatePerspectiveCameraByProgram(program: WebGLProgram) {
+        if (this._perspectiveCamera === null) {
+            return
+        }
+
+        this._webGlWrapper.updatePerspectiveCameraByProgram(program, this._perspectiveCamera)
+
+        const uniformViewMatrixInfo = this._perspectiveCamera.getUniformViewMatrixInfo()
+        if (uniformViewMatrixInfo !== null) {
+            this._webGlWrapper.setUniformMatValue(uniformViewMatrixInfo)
+        }
+
+        const uniformProjectionMatrixInfo = this._perspectiveCamera.getUniformProjectionMatrixInfo()
+        if (uniformProjectionMatrixInfo !== null) {
+            this._webGlWrapper.setUniformMatValue(uniformProjectionMatrixInfo)
+        }
     }
 }

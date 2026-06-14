@@ -1,5 +1,9 @@
+import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
 import Vector3 from "./Vector3.js";
 export default class PerspectiveCamera {
+    static defaultFieldOfViewRadians: number;
+    static nameUniformViewMatrix: string;
+    static nameUniformProjectionMatrix: string;
     private _fieldOfViewRadians;
     private _aspect;
     private _zNear;
@@ -9,12 +13,18 @@ export default class PerspectiveCamera {
     private _cameraMatrix;
     private _cameraPosition;
     private _target;
-    private _uniformProjectionMatInfo;
-    private _uniformViewMatInfo;
+    private _uniformProjectionMatrixInfo;
+    private _uniformViewMatrixInfo;
     constructor(fieldOfViewRadians: number, aspect: number);
     updatePerspective(fieldOfViewRadians: number, aspect: number, zNear?: number, zFar?: number): void;
     setCameraPosition(cameraPosition: Vector3): void;
     setCameraTarget(target: Vector3): void;
     computeViewMatrix(): void;
+    getViewMatrix(): number[];
+    getProjectionMatrix(): number[];
+    setUniformLocationViewMatrix(uniformViewMatrixLocation: WebGLUniformLocation): void;
+    setUniformProjectionMatrix(uniformProjectionMatrixInfo: WebGLUniformLocation): void;
+    getUniformViewMatrixInfo(): GLUniformMatInfo | null;
+    getUniformProjectionMatrixInfo(): GLUniformMatInfo | null;
 }
 //# sourceMappingURL=PerspectiveCamera.d.ts.map

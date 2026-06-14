@@ -1,7 +1,7 @@
 export default class GLUniformInfoBase {
-    _uniformLocation;
+    uniformLocation;
     constructor(uniformLocation) {
-        this._uniformLocation = uniformLocation;
+        this.uniformLocation = uniformLocation;
     }
 }
 //# sourceMappingURL=GLUniformInfoBase.js.map

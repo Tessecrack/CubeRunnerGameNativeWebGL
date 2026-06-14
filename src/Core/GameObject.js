@@ -1,3 +1,4 @@
+import MatricesUtils from "./Common/Utils/MatricesUtils.js";
 import Transform from "./Transform.js";
 export default class GameObject {
     _programInfo;
@@ -44,8 +45,7 @@ export default class GameObject {
         if (this._updateTransformFunction !== null) {
             this._updateTransformFunction(this.transform, deltaTime);
         }
-    }
-    updateMatrix(viewProjectionMatrix) {
+        this._uniformModelMatrixInfo.updateValue();
     }
 }
 //# sourceMappingURL=GameObject.js.map

@@ -24,6 +24,5 @@ export default class GameObject {
     addUniformMatInfo(uniformMatInfo: GLUniformMatInfo): void;
     setUpdateTransformFunction(updateTransformFunc: GameObjectUpdateTransformFunction): void;
     updateTransform(deltaTime: number): void;
-    updateMatrix(viewProjectionMatrix: number[]): void;
 }
 //# sourceMappingURL=GameObject.d.ts.map

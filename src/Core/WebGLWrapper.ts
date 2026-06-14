@@ -22,8 +22,6 @@ export default class WebGLWrapper {
             throw new Error(`Cannot get canvas`)
         }
         this._glContext = canvas.getContext('webgl')!
-        const fieldOfViewRadians = 60 * Math.PI / 180
-        const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
     }
 
     public initViewport() {
@@ -33,7 +31,7 @@ export default class WebGLWrapper {
         this._glContext.clear(this._glContext.COLOR_BUFFER_BIT | this._glContext.DEPTH_BUFFER_BIT)
     }
 
-    public resizeCanvas() {
+    public resizeCanvas(perspectiveCamera: PerspectiveCamera) {
         const elementCanvas = this._glContext.canvas as HTMLCanvasElement
         const clientWidth = elementCanvas.clientWidth
         const clientHeight = elementCanvas.clientHeight
@@ -43,6 +41,8 @@ export default class WebGLWrapper {
             this._glContext.canvas.height = elementCanvas.clientHeight
 
             this._glContext.viewport(0, 0, this._glContext.canvas.width, this._glContext.canvas.height)
+            const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
+            perspectiveCamera.updatePerspective(PerspectiveCamera.defaultFieldOfViewRadians, aspect)
         }
     }
 
@@ -86,6 +86,7 @@ export default class WebGLWrapper {
 
     public createUniformMatInfo(program: WebGLProgram, nameUniform: string, value: number[], updateValue: UniformValueArrayFunction | null = null): GLUniformMatInfo {
         const uniformLocation = this._glContext.getUniformLocation(program, nameUniform)
+        //const uniformLocation = this._glContext.getUniformLocation(program, 'u_matrix')
 
         if (uniformLocation === null) {
             throw new Error(`Cannot find uniform by name ${nameUniform}`)
@@ -226,7 +227,6 @@ export default class WebGLWrapper {
         return bufferInfo
     }
 
-
     public useProgram(program: WebGLProgram) {
         this._glContext.useProgram(program)
     }
@@ -268,7 +268,7 @@ export default class WebGLWrapper {
     }
 
     public createPerspectiveCamera(): PerspectiveCamera {
-        const fieldOfViewRadians = 60 * Math.PI / 180
+        const fieldOfViewRadians = PerspectiveCamera.defaultFieldOfViewRadians
         const aspect = this._glContext.canvas.width / this._glContext.canvas.height;
 
         return new PerspectiveCamera(fieldOfViewRadians, aspect)
@@ -296,18 +296,38 @@ export default class WebGLWrapper {
 
         const transform = new Transform()
 
-        const uniformMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity())
+        const uniformModelMatrixInfo = this.createUniformMatInfo(program, 'u_modelMatrix', MatricesUtils.identity(), 
+        (value) => {
+            value = MatricesUtils.translation(transform.translation.x, transform.translation.y, transform.translation.z)
+            value = MatricesUtils.xRotate(value, transform.rotation.x)
+            value = MatricesUtils.yRotate(value, transform.rotation.y)
+            value = MatricesUtils.zRotate(value, transform.rotation.z)
+            value = MatricesUtils.scale(value, transform.scaling.x, transform.scaling.y, transform.scaling.z)
+            return value
+        })
         
-        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.7, 0.7, 1])
+        const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [1, 1, 1, 1])
 
         const object = this.createGameObject(programInfo, 
             [linkedAttributes], 
-            uniformMatrixInfo,
+            uniformModelMatrixInfo,
             figureInfo.countVertices)
 
         object.addUniformVecInfo(uniformColorMultInfo)
         object.transform = transform
 
         return object
+    }
+
+    public updatePerspectiveCameraByProgram(program: WebGLProgram, perspectiveCamera: PerspectiveCamera) {
+        const uniformViewMatrixLocation = this._glContext.getUniformLocation(program, PerspectiveCamera.nameUniformViewMatrix)
+        if (uniformViewMatrixLocation !== null) {
+            perspectiveCamera.setUniformLocationViewMatrix(uniformViewMatrixLocation)   
+        }
+
+        const uniformProjectionMatrixLocation = this._glContext.getUniformLocation(program, PerspectiveCamera.nameUniformProjectionMatrix)
+        if (uniformProjectionMatrixLocation !== null) {
+            perspectiveCamera.setUniformProjectionMatrix(uniformProjectionMatrixLocation)
+        }
     }
 }

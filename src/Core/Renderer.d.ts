@@ -13,5 +13,6 @@ export default class Renderer {
     setScene(scene: Scene): void;
     render(tick: number): void;
     _renderGameObjects(gameObjects: GameObject[]): void;
+    _updatePerspectiveCameraByProgram(program: WebGLProgram): void;
 }
 //# sourceMappingURL=Renderer.d.ts.map
