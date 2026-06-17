@@ -1,14 +1,17 @@
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js";
+import InputSystem from "./Core/InputSystem.js";
 import PerspectiveCamera from "./Core/PerspectiveCamera.js";
 import Renderer from "./Core/Renderer.js";
 import Scene from "./Core/Scene.js";
 import WebGLWrapper from "./Core/WebGLWrapper.js";
 export default class Runner {
     _renderer;
+    _inputSystem;
     _webGlWrapper;
     _isTest = false;
     constructor() {
         this._webGlWrapper = new WebGLWrapper();
+        this._inputSystem = new InputSystem(window);
         this._renderer = new Renderer(this._webGlWrapper);
     }
     run() {

@@ -1,1 +1,1 @@
-{"version":3,"file":"InputSystem.d.ts","sourceRoot":"","sources":["InputSystem.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,WAAW;;CAI/B"}
+{"version":3,"file":"InputSystem.d.ts","sourceRoot":"","sources":["InputSystem.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,WAAW;IAE5B,OAAO,CAAC,OAAO,CAAQ;gBAEX,MAAM,EAAE,MAAM;IAK1B,OAAO,CAAC,cAAc;CAIzB"}

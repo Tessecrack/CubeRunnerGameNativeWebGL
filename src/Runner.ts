@@ -1,4 +1,5 @@
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
+import InputSystem from "./Core/InputSystem.js"
 import PerspectiveCamera from "./Core/PerspectiveCamera.js"
 import Renderer from "./Core/Renderer.js"
 import Scene from "./Core/Scene.js"
@@ -6,11 +7,13 @@ import WebGLWrapper from "./Core/WebGLWrapper.js"
 
 export default class Runner {
     private _renderer: Renderer
+    private _inputSystem: InputSystem
     private _webGlWrapper: WebGLWrapper
     private _isTest: boolean = false
 
     constructor() {
         this._webGlWrapper = new WebGLWrapper()        
+        this._inputSystem = new InputSystem(window)
         this._renderer = new Renderer(this._webGlWrapper)
     }
 
@@ -22,7 +25,6 @@ export default class Runner {
         } else {
             scene = this._initializeCubeRunnerScene()
         }
-
         
 
         this._renderer.render(0)
@@ -46,7 +48,7 @@ export default class Runner {
                 scene.addObject(object)
             }
         }
-
+        
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
 
         this._renderer.setPerspectiveCamera(perspectiveCamera)
