@@ -1,0 +1,1 @@
+{"version":3,"file":"InputController.d.ts","sourceRoot":"","sources":["InputController.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,WAAW,MAAM,kBAAkB,CAAC;AAEhD,MAAM,CAAC,OAAO,OAAO,eAAe;IAEhC,OAAO,CAAC,YAAY,CAAa;gBAErB,WAAW,EAAE,WAAW;CAGvC"}
