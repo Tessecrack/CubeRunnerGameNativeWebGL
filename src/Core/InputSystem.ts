@@ -1,5 +1,13 @@
 export default class InputSystem {
 
+    private static _upKeyCode = 'KeyW'
+    private static _leftKeyCode = 'KeyA'
+    private static _downKeyCode = 'KeyS'
+    private static _rightKeyCode = 'KeyD'
+
+    private static _spaceKeyCode = 'Space'
+
+
     private _window: Window
 
     constructor(window: Window) {
@@ -8,7 +16,10 @@ export default class InputSystem {
     }
 
     private _handleKeyDown(event: KeyboardEvent): void {
-        console.log(`Key pressed: ${event.key}`)
-        console.log(`Physical code: ${event.code}`)
+
+        switch(event.code) {
+            case 'KeyW': break
+            case 'KeyA': break
+        }
     }
 }
