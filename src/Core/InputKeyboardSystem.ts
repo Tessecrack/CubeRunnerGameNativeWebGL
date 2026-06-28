@@ -1,6 +1,6 @@
 export type InputKeyPressedCallbackFunction = () => void
 
-export default class InputSystem {
+export default class InputKeyboardSystem {
 
     private static _upKeyCode = 'KeyW'
     private static _leftKeyCode = 'KeyA'
@@ -29,23 +29,23 @@ export default class InputSystem {
     private _handleKeyDown(event: KeyboardEvent): void {
 
         switch(event.code) {
-            case InputSystem._upKeyCode: 
+            case InputKeyboardSystem._upKeyCode: 
                 this._handleUpKeyDown()
                 break
 
-            case InputSystem._leftKeyCode: 
+            case InputKeyboardSystem._leftKeyCode: 
                 this._handleLeftKeyDown()
                 break
 
-            case InputSystem._downKeyCode:
+            case InputKeyboardSystem._downKeyCode:
                 this._handleDownKeyDown()
                 break
 
-            case InputSystem._rightKeyCode:
+            case InputKeyboardSystem._rightKeyCode:
                 this._handleRightKeyDown()
                 break
 
-            case InputSystem._spaceKeyCode:
+            case InputKeyboardSystem._spaceKeyCode:
                 this._handleSpaceKeyDown()
                 break
         }

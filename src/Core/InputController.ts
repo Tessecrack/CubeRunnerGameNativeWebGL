@@ -1,10 +1,12 @@
-import type InputSystem from "./InputSystem.js";
+import type InputKeyboardSystem from "./InputKeyboardSystem.js";
+import type Transform from "./Transform.js";
 
 export default class InputController {
 
-    private _inputSystem: InputSystem
+    private _inputSystem: InputKeyboardSystem
+    private _transform: Transform | null = null
 
-    constructor(inputSystem: InputSystem) {
+    constructor(inputSystem: InputKeyboardSystem) {
         this._inputSystem = inputSystem
     }
 }

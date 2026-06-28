@@ -1,5 +1,5 @@
 export type InputKeyPressedCallbackFunction = () => void;
-export default class InputSystem {
+export default class InputKeyboardSystem {
     private static _upKeyCode;
     private static _leftKeyCode;
     private static _downKeyCode;
@@ -19,4 +19,4 @@ export default class InputSystem {
     private _handleRightKeyDown;
     private _handleSpaceKeyDown;
 }
-//# sourceMappingURL=InputSystem.d.ts.map
+//# sourceMappingURL=InputKeyboardSystem.d.ts.map

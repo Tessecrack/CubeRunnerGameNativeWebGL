@@ -1,1 +1,1 @@
-{"version":3,"file":"InputController.js","sourceRoot":"","sources":["InputController.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,OAAO,eAAe;IAExB,YAAY,CAAa;IAEjC,YAAY,WAAwB;QAChC,IAAI,CAAC,YAAY,GAAG,WAAW,CAAA;IACnC,CAAC;CACJ"}
+{"version":3,"file":"InputController.js","sourceRoot":"","sources":["InputController.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,OAAO,eAAe;IAExB,YAAY,CAAqB;IAEzC,YAAY,WAAgC;QACxC,IAAI,CAAC,YAAY,GAAG,WAAW,CAAA;IACnC,CAAC;CACJ"}
