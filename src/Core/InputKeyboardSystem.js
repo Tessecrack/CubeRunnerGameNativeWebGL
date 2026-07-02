@@ -12,7 +12,7 @@ export default class InputKeyboardSystem {
     spaceKeyPressed = null;
     constructor(window) {
         this._window = window;
-        this._window.addEventListener('keydown', this._handleKeyDown);
+        this._window.addEventListener('keydown', this._handleKeyDown.bind(this));
     }
     _handleKeyDown(event) {
         switch (event.code) {

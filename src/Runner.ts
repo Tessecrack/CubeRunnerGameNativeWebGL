@@ -1,4 +1,5 @@
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
+import InputController from "./Core/InputController.js"
 import InputKeyboardSystem from "./Core/InputKeyboardSystem.js"
 import PerspectiveCamera from "./Core/PerspectiveCamera.js"
 import Renderer from "./Core/Renderer.js"
@@ -8,12 +9,14 @@ import WebGLWrapper from "./Core/WebGLWrapper.js"
 export default class Runner {
     private _renderer: Renderer
     private _inputSystem: InputKeyboardSystem
+    private _inputController: InputController
     private _webGlWrapper: WebGLWrapper
     private _isTest: boolean = false
 
     constructor() {
         this._webGlWrapper = new WebGLWrapper()        
         this._inputSystem = new InputKeyboardSystem(window)
+        this._inputController = new InputController(this._inputSystem)
         this._renderer = new Renderer(this._webGlWrapper)
     }
 
@@ -35,6 +38,7 @@ export default class Runner {
         const scene = new Scene("CUBE RUNNER SCENE")
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
+        this._inputController.setGameObject(object)
         //object.transform.translation.x = i * 16
         //object.transform.translation.y = j * 16
         /*

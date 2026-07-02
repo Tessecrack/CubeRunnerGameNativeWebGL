@@ -23,7 +23,7 @@ export default class InputKeyboardSystem {
 
     constructor(window: Window) {
         this._window = window
-        this._window.addEventListener('keydown', this._handleKeyDown)
+        this._window.addEventListener('keydown', this._handleKeyDown.bind(this))
     }
 
     private _handleKeyDown(event: KeyboardEvent): void {

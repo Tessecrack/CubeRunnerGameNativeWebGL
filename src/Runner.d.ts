@@ -1,6 +1,7 @@
 export default class Runner {
     private _renderer;
     private _inputSystem;
+    private _inputController;
     private _webGlWrapper;
     private _isTest;
     constructor();
