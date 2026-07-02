@@ -1,14 +1,10 @@
-import type GameObject from "./GameObject.js";
 import type InputKeyboardSystem from "./InputKeyboardSystem.js";
+import Player from "./Player.js";
 export default class InputController {
     private _inputSystem;
-    private _gameObject;
+    private _player;
     constructor(inputSystem: InputKeyboardSystem);
-    setGameObject(gameObject: GameObject): void;
-    private up;
-    private down;
-    private left;
-    private right;
-    private space;
+    setPlayer(player: Player): void;
+    update(deltaTime: number): void;
 }
 //# sourceMappingURL=InputController.d.ts.map

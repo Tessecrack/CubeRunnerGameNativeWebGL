@@ -1,49 +1,44 @@
+import DeltaTimeManager from "./DeltaTimeManager.js";
 import type GameObject from "./GameObject.js";
 import type InputKeyboardSystem from "./InputKeyboardSystem.js";
+import Player from "./Player.js";
 import type Transform from "./Transform.js";
 
 export default class InputController {
 
     private _inputSystem: InputKeyboardSystem
-    private _gameObject: GameObject | null = null
+    private _player: Player | null = null
 
     constructor(inputSystem: InputKeyboardSystem) {
         this._inputSystem = inputSystem
-
-        this._inputSystem.upKeyPressed = this.up
-        this._inputSystem.downKeyPressed = this.down
-        this._inputSystem.leftKeyPressed = this.left
-        this._inputSystem.rightKeyPressed = this.right
-        this._inputSystem.spaceKeyPressed = this.space
     }
 
-    public setGameObject(gameObject: GameObject) {
-        this._gameObject = gameObject
+    public setPlayer(player: Player) {
+        this._player = player
     }
 
-    private up() {
-        if (this._gameObject !== null) {
-            this._gameObject.transform.translation.y += 1
+    public update(deltaTime: number) {
+        if (this._player === null) {
+            return
         }
-    }
 
-    private down() {
-        if (this._gameObject !== null) {
-            this._gameObject.transform.translation.y -= 1
+        const speed = this._player.speed * deltaTime
+        const transform = this._player.gameObject.transform
+
+        if (this._inputSystem.isUpPressed) {
+            transform.translation.y += speed
         }
-    }
 
-    private left() {
-        if (this._gameObject) {
-            
+        if (this._inputSystem.isDownPressed) {
+            transform.translation.y -= speed
         }
-    }
 
-    private right() {
-        console.log("RIGHT")
-    }
+        if (this._inputSystem.isLeftPressed) {
+            transform.translation.x -= speed
+        }
 
-    private space() {
-        console.log("SPACE")
+        if (this._inputSystem.isRightPressed) {
+            transform.translation.x += speed
+        }
     }
 }

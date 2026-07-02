@@ -1,9 +1,11 @@
+import DeltaTimeManager from "./DeltaTimeManager.js";
 import WebGLWrapper from "./WebGLWrapper.js";
 export default class Renderer {
     _webGlWrapper;
     _perspectiveCamera = null;
     _currentScene = null;
     _previousTimeRendererMs = 0;
+    _inputController = null;
     deltaTime = 0;
     constructor(webGlWrapper) {
         this._webGlWrapper = webGlWrapper;
@@ -15,9 +17,16 @@ export default class Renderer {
     setScene(scene) {
         this._currentScene = scene;
     }
+    setInputController(inputController) {
+        this._inputController = inputController;
+    }
     render(tick) {
         const currentTimeRendererMs = tick * 0.001;
         this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs;
+        DeltaTimeManager.deltaTime = this.deltaTime;
+        if (this._inputController !== null) {
+            this._inputController.update(this.deltaTime);
+        }
         this._previousTimeRendererMs = currentTimeRendererMs;
         if (this._currentScene !== null) {
             const gameObjects = this._currentScene.getGameObjects();

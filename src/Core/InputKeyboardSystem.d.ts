@@ -6,17 +6,16 @@ export default class InputKeyboardSystem {
     private static _rightKeyCode;
     private static _spaceKeyCode;
     private _window;
-    upKeyPressed: InputKeyPressedCallbackFunction | null;
-    leftKeyPressed: InputKeyPressedCallbackFunction | null;
-    downKeyPressed: InputKeyPressedCallbackFunction | null;
-    rightKeyPressed: InputKeyPressedCallbackFunction | null;
-    spaceKeyPressed: InputKeyPressedCallbackFunction | null;
+    private _isKeyUpPressed;
+    private _isKeyDownPressed;
+    private _isKeyLeftPressed;
+    private _isKeyRightPressed;
     constructor(window: Window);
+    get isUpPressed(): boolean;
+    get isLeftPressed(): boolean;
+    get isDownPressed(): boolean;
+    get isRightPressed(): boolean;
+    private _handleKeyUp;
     private _handleKeyDown;
-    private _handleUpKeyDown;
-    private _handleLeftKeyDown;
-    private _handleDownKeyDown;
-    private _handleRightKeyDown;
-    private _handleSpaceKeyDown;
 }
 //# sourceMappingURL=InputKeyboardSystem.d.ts.map

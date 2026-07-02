@@ -13,71 +13,67 @@ export default class InputKeyboardSystem {
     private _window: Window
 
 
-    public upKeyPressed: InputKeyPressedCallbackFunction | null = null
-    public leftKeyPressed: InputKeyPressedCallbackFunction | null = null
-    public downKeyPressed: InputKeyPressedCallbackFunction | null = null
-    public rightKeyPressed: InputKeyPressedCallbackFunction | null = null
-    public spaceKeyPressed: InputKeyPressedCallbackFunction | null = null
-
-
+    private _isKeyUpPressed: boolean = false
+    private _isKeyDownPressed: boolean = false
+    private _isKeyLeftPressed: boolean = false
+    private _isKeyRightPressed: boolean = false
 
     constructor(window: Window) {
         this._window = window
         this._window.addEventListener('keydown', this._handleKeyDown.bind(this))
+        this._window.addEventListener('keyup', this._handleKeyUp.bind(this))
     }
 
-    private _handleKeyDown(event: KeyboardEvent): void {
+    public get isUpPressed(): boolean { return this._isKeyUpPressed }
+    public get isLeftPressed(): boolean { return this._isKeyLeftPressed }
+    public get isDownPressed(): boolean { return this._isKeyDownPressed }
+    public get isRightPressed(): boolean { return this._isKeyRightPressed }
 
-        switch(event.code) {
-            case InputKeyboardSystem._upKeyCode: 
-                this._handleUpKeyDown()
+    private _handleKeyUp(event: KeyboardEvent) {
+                switch (event.code) {
+            case InputKeyboardSystem._upKeyCode:
+                this._isKeyUpPressed = false
                 break
 
-            case InputKeyboardSystem._leftKeyCode: 
-                this._handleLeftKeyDown()
+            case InputKeyboardSystem._leftKeyCode:
+                this._isKeyLeftPressed = false
                 break
 
             case InputKeyboardSystem._downKeyCode:
-                this._handleDownKeyDown()
+                this._isKeyDownPressed = false
                 break
 
             case InputKeyboardSystem._rightKeyCode:
-                this._handleRightKeyDown()
+                this._isKeyRightPressed = false
                 break
 
             case InputKeyboardSystem._spaceKeyCode:
-                this._handleSpaceKeyDown()
+                
                 break
         }
     }
 
-    private _handleUpKeyDown() {
-        if (this.upKeyPressed !== null) {
-            this.upKeyPressed()
-        }
-    }
+    private _handleKeyDown(event: KeyboardEvent): void {
+        switch (event.code) {
+            case InputKeyboardSystem._upKeyCode:
+                this._isKeyUpPressed = true
+                break
 
-    private _handleLeftKeyDown() {
-        if (this.leftKeyPressed !== null) {
-            this.leftKeyPressed()
-        }
-    }
+            case InputKeyboardSystem._leftKeyCode:
+                this._isKeyLeftPressed = true
+                break
 
-    private _handleDownKeyDown() {
-        if (this.downKeyPressed !== null) {
-            this.downKeyPressed()
-        }
-    }
+            case InputKeyboardSystem._downKeyCode:
+                this._isKeyDownPressed = true
+                break
 
-    private _handleRightKeyDown() {
-        if (this.rightKeyPressed !== null) {
-            this.rightKeyPressed()
-        }
-    }
+            case InputKeyboardSystem._rightKeyCode:
+                this._isKeyRightPressed = true
+                break
 
-    private _handleSpaceKeyDown() {
-        if (this.spaceKeyPressed !== null) {
-            this.spaceKeyPressed()
+            case InputKeyboardSystem._spaceKeyCode:
+                
+                break
         }
     }
 }

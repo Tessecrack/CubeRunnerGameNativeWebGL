@@ -1,36 +1,32 @@
+import DeltaTimeManager from "./DeltaTimeManager.js";
+import Player from "./Player.js";
 export default class InputController {
     _inputSystem;
-    _gameObject = null;
+    _player = null;
     constructor(inputSystem) {
         this._inputSystem = inputSystem;
-        this._inputSystem.upKeyPressed = this.up;
-        this._inputSystem.downKeyPressed = this.down;
-        this._inputSystem.leftKeyPressed = this.left;
-        this._inputSystem.rightKeyPressed = this.right;
-        this._inputSystem.spaceKeyPressed = this.space;
     }
-    setGameObject(gameObject) {
-        this._gameObject = gameObject;
+    setPlayer(player) {
+        this._player = player;
     }
-    up() {
-        if (this._gameObject !== null) {
-            this._gameObject.transform.translation.y += 1;
+    update(deltaTime) {
+        if (this._player === null) {
+            return;
         }
-    }
-    down() {
-        if (this._gameObject !== null) {
-            this._gameObject.transform.translation.y -= 1;
+        const speed = this._player.speed * deltaTime;
+        const transform = this._player.gameObject.transform;
+        if (this._inputSystem.isUpPressed) {
+            transform.translation.y += speed;
         }
-    }
-    left() {
-        if (this._gameObject) {
+        if (this._inputSystem.isDownPressed) {
+            transform.translation.y -= speed;
         }
-    }
-    right() {
-        console.log("RIGHT");
-    }
-    space() {
-        console.log("SPACE");
+        if (this._inputSystem.isLeftPressed) {
+            transform.translation.x -= speed;
+        }
+        if (this._inputSystem.isRightPressed) {
+            transform.translation.x += speed;
+        }
     }
 }
 //# sourceMappingURL=InputController.js.map
