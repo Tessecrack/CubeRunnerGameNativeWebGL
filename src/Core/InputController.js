@@ -13,13 +13,18 @@ export default class InputController {
         this._gameObject = gameObject;
     }
     up() {
-        console.log("UP");
+        if (this._gameObject !== null) {
+            this._gameObject.transform.translation.y += 1;
+        }
     }
     down() {
-        console.log("DOWN");
+        if (this._gameObject !== null) {
+            this._gameObject.transform.translation.y -= 1;
+        }
     }
     left() {
-        console.log("LEFT");
+        if (this._gameObject) {
+        }
     }
     right() {
         console.log("RIGHT");

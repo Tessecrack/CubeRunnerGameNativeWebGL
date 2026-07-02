@@ -34,7 +34,9 @@ export default class InputController {
     }
 
     private left() {
-        if (this._gameObject)
+        if (this._gameObject) {
+            
+        }
     }
 
     private right() {
