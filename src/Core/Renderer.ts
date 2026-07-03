@@ -1,9 +1,5 @@
-import type GLProgramInfo from "./Common/GLProgramInfo.js";
-import DeltaTimeManager from "./DeltaTimeManager.js";
 import type GameObject from "./GameObject.js";
-import type InputController from "./InputController.js";
 import type PerspectiveCamera from "./PerspectiveCamera.js";
-import type Scene from "./Scene.js";
 import WebGLWrapper from "./WebGLWrapper.js";
 
 export default class Renderer {
@@ -11,13 +7,6 @@ export default class Renderer {
 
     private _perspectiveCamera: PerspectiveCamera | null = null
 
-    private _currentScene: Scene | null = null
-
-    private _previousTimeRendererMs: number = 0
-
-    private _inputController: InputController | null = null
-
-    public deltaTime: number = 0
 
     constructor(webGlWrapper: WebGLWrapper) {
         this._webGlWrapper = webGlWrapper
@@ -28,32 +17,8 @@ export default class Renderer {
         this._perspectiveCamera = perspectiveCamera
     }
 
-    public setScene(scene: Scene) {
-        this._currentScene = scene
-    }
-
-    public setInputController(inputController: InputController) {
-        this._inputController = inputController
-    }
-
-    public render(tick: number) {
-        const currentTimeRendererMs = tick * 0.001;
-
-        this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs
-
-        DeltaTimeManager.deltaTime = this.deltaTime
-
-        if (this._inputController !== null) {
-            this._inputController.update(this.deltaTime)
-        }
-
-        this._previousTimeRendererMs = currentTimeRendererMs
-
-        if (this._currentScene !== null) {
-            const gameObjects = this._currentScene.getGameObjects()
-            this._renderGameObjects(gameObjects)
-        }
-        requestAnimationFrame(this.render.bind(this))
+    public render(deltaTime: number, gameObjects: GameObject[]) {
+        this._renderGameObjects(gameObjects)
     }
 
     _renderGameObjects(gameObjects: GameObject[]) {
@@ -80,8 +45,6 @@ export default class Renderer {
             for (const attributeBufferInfo of attributesBuffersInfo) {
                 this._webGlWrapper.bindAttributesBuffer(attributeBufferInfo)
             }
-
-            gameObject.updateTransform(this.deltaTime)
 
             const uniformsMatInfo = gameObject.getUniformsMatInfo()
             for (const uniformMatInfo of uniformsMatInfo) {

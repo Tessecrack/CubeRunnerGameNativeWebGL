@@ -131,8 +131,6 @@ export default class WebGLWrapper {
     }
 
     public setUniformVecValue(uniformVecInfo: GLUniformVecInfo) {
-        uniformVecInfo.updateValue()
-
         const value = uniformVecInfo.value
         const location = uniformVecInfo.getUniformLocation()
 
@@ -155,8 +153,6 @@ export default class WebGLWrapper {
     }
 
     public setUniformMatValue(uniformMatInfo: GLUniformMatInfo) {
-        uniformMatInfo.updateValue()
-
         const value = uniformMatInfo.value
         const location = uniformMatInfo.getUniformLocation()
 

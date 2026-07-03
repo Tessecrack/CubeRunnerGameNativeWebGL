@@ -96,7 +96,6 @@ export default class WebGLWrapper {
     setUniformValue(uniformInfo) {
     }
     setUniformVecValue(uniformVecInfo) {
-        uniformVecInfo.updateValue();
         const value = uniformVecInfo.value;
         const location = uniformVecInfo.getUniformLocation();
         switch (value.length) {
@@ -117,7 +116,6 @@ export default class WebGLWrapper {
         }
     }
     setUniformMatValue(uniformMatInfo) {
-        uniformMatInfo.updateValue();
         const value = uniformMatInfo.value;
         const location = uniformMatInfo.getUniformLocation();
         switch (value.length) {

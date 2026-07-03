@@ -17,8 +17,6 @@ export default class GameObject {
 
     private _drawMode: GLenum // for example, TRIANGLES
 
-    private _updateTransformFunction: GameObjectUpdateTransformFunction | null = null
-
     public transform: Transform = new Transform()
 
     public countVertices: number
@@ -61,15 +59,5 @@ export default class GameObject {
 
     public addUniformMatInfo(uniformMatInfo: GLUniformMatInfo) {
         this._uniformsMatInfo.push(uniformMatInfo)
-    }
-
-    public setUpdateTransformFunction(updateTransformFunc: GameObjectUpdateTransformFunction) {
-        this._updateTransformFunction = updateTransformFunc
-    }
-
-    public updateTransform(deltaTime: number) {
-        if (this._updateTransformFunction !== null) {
-            this._updateTransformFunction(this.transform, deltaTime)
-        }
     }
 }

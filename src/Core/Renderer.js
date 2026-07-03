@@ -1,12 +1,7 @@
-import DeltaTimeManager from "./DeltaTimeManager.js";
 import WebGLWrapper from "./WebGLWrapper.js";
 export default class Renderer {
     _webGlWrapper;
     _perspectiveCamera = null;
-    _currentScene = null;
-    _previousTimeRendererMs = 0;
-    _inputController = null;
-    deltaTime = 0;
     constructor(webGlWrapper) {
         this._webGlWrapper = webGlWrapper;
         this._webGlWrapper.initViewport();
@@ -14,25 +9,8 @@ export default class Renderer {
     setPerspectiveCamera(perspectiveCamera) {
         this._perspectiveCamera = perspectiveCamera;
     }
-    setScene(scene) {
-        this._currentScene = scene;
-    }
-    setInputController(inputController) {
-        this._inputController = inputController;
-    }
-    render(tick) {
-        const currentTimeRendererMs = tick * 0.001;
-        this.deltaTime = currentTimeRendererMs - this._previousTimeRendererMs;
-        DeltaTimeManager.deltaTime = this.deltaTime;
-        if (this._inputController !== null) {
-            this._inputController.update(this.deltaTime);
-        }
-        this._previousTimeRendererMs = currentTimeRendererMs;
-        if (this._currentScene !== null) {
-            const gameObjects = this._currentScene.getGameObjects();
-            this._renderGameObjects(gameObjects);
-        }
-        requestAnimationFrame(this.render.bind(this));
+    render(deltaTime, gameObjects) {
+        this._renderGameObjects(gameObjects);
     }
     _renderGameObjects(gameObjects) {
         if (this._perspectiveCamera === null) {
@@ -53,7 +31,6 @@ export default class Renderer {
             for (const attributeBufferInfo of attributesBuffersInfo) {
                 this._webGlWrapper.bindAttributesBuffer(attributeBufferInfo);
             }
-            gameObject.updateTransform(this.deltaTime);
             const uniformsMatInfo = gameObject.getUniformsMatInfo();
             for (const uniformMatInfo of uniformsMatInfo) {
                 this._webGlWrapper.setUniformMatValue(uniformMatInfo);

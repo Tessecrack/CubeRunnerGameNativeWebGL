@@ -1,1 +1,1 @@
-{"version":3,"file":"UpdateManager.d.ts","sourceRoot":"","sources":["UpdateManager.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,aAAa;;CAMjC"}
+{"version":3,"file":"UpdateManager.d.ts","sourceRoot":"","sources":["UpdateManager.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,UAAU,MAAM,iBAAiB,CAAA;AAC7C,OAAO,eAAe,MAAM,sBAAsB,CAAA;AAElD,MAAM,CAAC,OAAO,OAAO,aAAa;IAE9B,OAAO,CAAC,gBAAgB,CAA+B;gBAE3C,eAAe,EAAE,eAAe;IAIrC,WAAW,CAAC,SAAS,EAAE,MAAM,EAAE,WAAW,EAAE,UAAU,EAAE;CAuBlE"}

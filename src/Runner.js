@@ -1,13 +1,17 @@
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js";
+import GameLoopManager from "./Core/GameLoopManager.js";
 import InputController from "./Core/InputController.js";
 import InputKeyboardSystem from "./Core/InputKeyboardSystem.js";
 import PerspectiveCamera from "./Core/PerspectiveCamera.js";
 import Player from "./Core/Player.js";
 import Renderer from "./Core/Renderer.js";
 import Scene from "./Core/Scene.js";
+import UpdateManager from "./Core/UpdateManager.js";
 import WebGLWrapper from "./Core/WebGLWrapper.js";
 export default class Runner {
     _renderer;
+    _updateManager;
+    _gameLoopManager;
     _inputSystem;
     _inputController;
     _webGlWrapper;
@@ -17,6 +21,8 @@ export default class Runner {
         this._inputSystem = new InputKeyboardSystem(window);
         this._inputController = new InputController(this._inputSystem);
         this._renderer = new Renderer(this._webGlWrapper);
+        this._updateManager = new UpdateManager(this._inputController);
+        this._gameLoopManager = new GameLoopManager(this._updateManager, this._renderer);
     }
     run() {
         let scene = null;
@@ -26,7 +32,7 @@ export default class Runner {
         else {
             scene = this._initializeCubeRunnerScene();
         }
-        this._renderer.render(0);
+        this._gameLoopManager.start();
     }
     _initializeCubeRunnerScene() {
         const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10);
@@ -35,29 +41,10 @@ export default class Runner {
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo);
         const player = new Player(object);
         this._inputController.setPlayer(player);
-        //object.transform.translation.x = i * 16
-        //object.transform.translation.y = j * 16
-        /*
-        for (let i = -30; i < 30; ++i) {
-            for (let j = -30; j < 30; ++j) {
-                const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
-                object.transform.translation.x = i * 16
-                object.transform.translation.y = j * 16
-                
-                object.setUpdateTransformFunction((transform, deltaTime) => {
-                    const rotationSpeed = 1.1
-                    transform.rotation.y += i/2 * rotationSpeed * deltaTime
-                    transform.rotation.z += j/2 * rotationSpeed * deltaTime
-                })
-                scene.addObject(object)
-            }
-        }
-        */
         scene.addObject(object);
+        this._gameLoopManager.setScene(scene);
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera();
         this._renderer.setPerspectiveCamera(perspectiveCamera);
-        this._renderer.setScene(scene);
-        this._renderer.setInputController(this._inputController);
         return scene;
     }
     _initializeTestScene() {
@@ -68,7 +55,6 @@ export default class Runner {
         testScene.addObject(object);
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera();
         this._renderer.setPerspectiveCamera(perspectiveCamera);
-        this._renderer.setScene(testScene);
         return testScene;
     }
 }
