@@ -59,8 +59,8 @@ export default class UpdateManager {
         
         const playerTransform = this._player.gameObject.transform
 
-        const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z)
+        //const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z)
 
-        this._perspectiveCamera.setCameraTarget(cameraPosition)
+        //this._perspectiveCamera.setCameraTarget(cameraPosition)
     }
 }

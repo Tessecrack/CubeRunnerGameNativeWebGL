@@ -40,10 +40,10 @@ export default class Runner {
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo();
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo);
         const player = new Player(object);
-        this._inputController.setControlledTransform(player.gameObject.transform);
         scene.addObject(object);
         this._gameLoopManager.setScene(scene);
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera();
+        this._inputController.setControlledTransform(perspectiveCamera.transform);
         this._renderer.setPerspectiveCamera(perspectiveCamera);
         this._updateManager.setPerspectiveCamera(perspectiveCamera);
         this._updateManager.setPlayer(player);

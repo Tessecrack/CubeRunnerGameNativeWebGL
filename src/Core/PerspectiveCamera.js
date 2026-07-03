@@ -1,5 +1,6 @@
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
 import MatricesUtils from "./Common/Utils/MatricesUtils.js";
+import Transform from "./Transform.js";
 import Vector3 from "./Vector3.js";
 export default class PerspectiveCamera {
     static defaultFieldOfViewRadians = 60 * Math.PI / 180;
@@ -12,17 +13,18 @@ export default class PerspectiveCamera {
     _projectionMatrix;
     _viewMatrix;
     _cameraMatrix;
-    _cameraPosition;
     _target;
     _uniformProjectionMatrixInfo = null;
     _uniformViewMatrixInfo = null;
+    transform;
     constructor(fieldOfViewRadians, aspect) {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
-        this._cameraPosition = new Vector3(0, 0, 100);
+        this.transform = new Transform();
+        this.transform.translation = new Vector3(0, 0, 100);
         this._target = new Vector3(0, 0, 0);
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar);
-        this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
+        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
     }
     updatePerspective(fieldOfViewRadians, aspect, zNear = 1, zFar = 2000) {
@@ -39,10 +41,10 @@ export default class PerspectiveCamera {
         }
     }
     setCameraPosition(cameraPosition) {
-        if (this._cameraPosition.x === cameraPosition.x && this._cameraPosition.y === cameraPosition.y && this._cameraPosition.z === cameraPosition.z) {
+        if (this.transform.translation.x === cameraPosition.x && this.transform.translation.y === cameraPosition.y && this.transform.translation.z === cameraPosition.z) {
             return;
         }
-        this._cameraPosition = cameraPosition;
+        this.transform.translation = cameraPosition;
     }
     setCameraTarget(target) {
         if (this._target.x === target.x && this._target.y === target.y && this._target.z === target.z) {
@@ -51,7 +53,7 @@ export default class PerspectiveCamera {
         this._target = target;
     }
     computeViewMatrix() {
-        this._cameraMatrix = MatricesUtils.lookAt([this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
+        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
         if (this._uniformViewMatrixInfo !== null) {
             this._uniformViewMatrixInfo.value = this._viewMatrix;

@@ -1,4 +1,5 @@
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js";
+import Transform from "./Transform.js";
 import Vector3 from "./Vector3.js";
 export default class PerspectiveCamera {
     static defaultFieldOfViewRadians: number;
@@ -11,10 +12,10 @@ export default class PerspectiveCamera {
     private _projectionMatrix;
     private _viewMatrix;
     private _cameraMatrix;
-    private _cameraPosition;
     private _target;
     private _uniformProjectionMatrixInfo;
     private _uniformViewMatrixInfo;
+    transform: Transform;
     constructor(fieldOfViewRadians: number, aspect: number);
     updatePerspective(fieldOfViewRadians: number, aspect: number, zNear?: number, zFar?: number): void;
     setCameraPosition(cameraPosition: Vector3): void;

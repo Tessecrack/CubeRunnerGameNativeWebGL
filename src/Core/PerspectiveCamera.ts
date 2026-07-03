@@ -1,5 +1,6 @@
 import GLUniformMatInfo from "./Common/GLUniformMatInfo.js"
 import MatricesUtils from "./Common/Utils/MatricesUtils.js"
+import Transform from "./Transform.js"
 import Vector3 from "./Vector3.js"
 
 export default class PerspectiveCamera {
@@ -21,26 +22,26 @@ export default class PerspectiveCamera {
 
     private _cameraMatrix: number[]
 
-    private _cameraPosition: Vector3
-
     private _target: Vector3
-
 
     private _uniformProjectionMatrixInfo: GLUniformMatInfo | null = null
 
     private _uniformViewMatrixInfo: GLUniformMatInfo | null = null
+
+    public transform: Transform
 
     constructor(
         fieldOfViewRadians: number,
         aspect: number) {
         this._fieldOfViewRadians = fieldOfViewRadians
         this._aspect = aspect
-
-        this._cameraPosition = new Vector3(0, 0, 100)
+        
+        this.transform = new Transform()
+        this.transform.translation = new Vector3(0, 0, 100)
         this._target = new Vector3(0, 0, 0)
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar)
         this._cameraMatrix = MatricesUtils.lookAt(
-            [this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z],
+            [this.transform.translation.x, this.transform.translation.y, this.transform.translation.z],
             [this._target.x, this._target.y, this._target.z],
             Vector3.up)!
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
@@ -64,10 +65,10 @@ export default class PerspectiveCamera {
     }
 
     public setCameraPosition(cameraPosition: Vector3) {
-        if (this._cameraPosition.x === cameraPosition.x && this._cameraPosition.y === cameraPosition.y && this._cameraPosition.z === cameraPosition.z) {
+        if (this.transform.translation.x === cameraPosition.x && this.transform.translation.y === cameraPosition.y && this.transform.translation.z === cameraPosition.z) {
             return
         }
-        this._cameraPosition = cameraPosition
+        this.transform.translation = cameraPosition
     }
 
     public setCameraTarget(target: Vector3) {
@@ -80,7 +81,7 @@ export default class PerspectiveCamera {
 
     public computeViewMatrix() {
         this._cameraMatrix = MatricesUtils.lookAt(
-            [this._cameraPosition.x, this._cameraPosition.y, this._cameraPosition.z],
+            [this.transform.translation.x, this.transform.translation.y, this.transform.translation.z],
             [this._target.x, this._target.y, this._target.z],
             Vector3.up)!
 

@@ -47,13 +47,14 @@ export default class Runner {
 
         const player = new Player(object)
 
-        this._inputController.setControlledTransform(player.gameObject.transform)
-
+    
         scene.addObject(object)
 
         this._gameLoopManager.setScene(scene)
 
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
+
+        this._inputController.setControlledTransform(perspectiveCamera.transform)
 
         this._renderer.setPerspectiveCamera(perspectiveCamera)
 

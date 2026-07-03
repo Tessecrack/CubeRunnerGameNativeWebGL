@@ -41,8 +41,8 @@ export default class UpdateManager {
             return;
         }
         const playerTransform = this._player.gameObject.transform;
-        const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z);
-        this._perspectiveCamera.setCameraTarget(cameraPosition);
+        //const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z)
+        //this._perspectiveCamera.setCameraTarget(cameraPosition)
     }
 }
 //# sourceMappingURL=UpdateManager.js.map
