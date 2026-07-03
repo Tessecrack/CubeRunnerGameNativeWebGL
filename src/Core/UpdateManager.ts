@@ -1,19 +1,36 @@
 import type GameObject from "./GameObject.js"
 import InputController from "./InputController.js"
+import type PerspectiveCamera from "./PerspectiveCamera.js"
+import type Player from "./Player.js"
+import Vector3 from "./Vector3.js"
 
 export default class UpdateManager {
 
-    private _inputController: InputController | null = null
+    private _inputController: InputController
+    private _perspectiveCamera: PerspectiveCamera | null = null
+    private _player: Player | null = null
 
     constructor(inputController: InputController) {
         this._inputController = inputController
     }
 
+    public setPerspectiveCamera(perspectiveCamera: PerspectiveCamera) {
+        this._perspectiveCamera = perspectiveCamera
+    }
+
+    public setPlayer(player: Player) {
+        this._player = player
+    }
+
     public updateLogic(deltaTime: number, gameObjects: GameObject[]) {
         if (this._inputController !== null) {
-            this._inputController.update(deltaTime)
+            let valueForTranslation = 1.0
+            if (this._player !== null) {
+                valueForTranslation = this._player.speed
+            }
+            this._inputController.update(deltaTime, valueForTranslation)
         }
-        console.log(deltaTime)
+
         if (!gameObjects || gameObjects.length === 0) {
             return
         }
@@ -31,5 +48,19 @@ export default class UpdateManager {
                 uniformMat.updateValue()
             }
         }
+
+        this._updateCameraState()
+    }
+
+    private _updateCameraState() {
+        if (this._perspectiveCamera === null || this._player === null) {
+            return
+        }
+        
+        const playerTransform = this._player.gameObject.transform
+
+        const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z)
+
+        this._perspectiveCamera.setCameraTarget(cameraPosition)
     }
 }

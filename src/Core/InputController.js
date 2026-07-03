@@ -1,31 +1,28 @@
-import DeltaTimeManager from "./DeltaTimeManager.js";
-import Player from "./Player.js";
 export default class InputController {
     _inputSystem;
-    _player = null;
+    _conrolledTransform = null;
     constructor(inputSystem) {
         this._inputSystem = inputSystem;
     }
-    setPlayer(player) {
-        this._player = player;
+    setControlledTransform(controlledTransform) {
+        this._conrolledTransform = controlledTransform;
     }
-    update(deltaTime) {
-        if (this._player === null) {
+    update(deltaTime, valueTranslation) {
+        if (this._conrolledTransform === null) {
             return;
         }
-        const speed = this._player.speed * deltaTime;
-        const transform = this._player.gameObject.transform;
+        const speed = valueTranslation * deltaTime;
         if (this._inputSystem.isUpPressed) {
-            transform.translation.y += speed;
+            this._conrolledTransform.translation.y += speed;
         }
         if (this._inputSystem.isDownPressed) {
-            transform.translation.y -= speed;
+            this._conrolledTransform.translation.y -= speed;
         }
         if (this._inputSystem.isLeftPressed) {
-            transform.translation.x -= speed;
+            this._conrolledTransform.translation.x -= speed;
         }
         if (this._inputSystem.isRightPressed) {
-            transform.translation.x += speed;
+            this._conrolledTransform.translation.x += speed;
         }
     }
 }

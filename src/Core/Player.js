@@ -1,6 +1,6 @@
 export default class Player {
     gameObject;
-    speed = 10;
+    speed = 100;
     constructor(gameObject) {
         this.gameObject = gameObject;
     }

@@ -1,14 +1,26 @@
 import InputController from "./InputController.js";
+import Vector3 from "./Vector3.js";
 export default class UpdateManager {
-    _inputController = null;
+    _inputController;
+    _perspectiveCamera = null;
+    _player = null;
     constructor(inputController) {
         this._inputController = inputController;
     }
+    setPerspectiveCamera(perspectiveCamera) {
+        this._perspectiveCamera = perspectiveCamera;
+    }
+    setPlayer(player) {
+        this._player = player;
+    }
     updateLogic(deltaTime, gameObjects) {
         if (this._inputController !== null) {
-            this._inputController.update(deltaTime);
+            let valueForTranslation = 1.0;
+            if (this._player !== null) {
+                valueForTranslation = this._player.speed;
+            }
+            this._inputController.update(deltaTime, valueForTranslation);
         }
-        console.log(deltaTime);
         if (!gameObjects || gameObjects.length === 0) {
             return;
         }
@@ -22,6 +34,15 @@ export default class UpdateManager {
                 uniformMat.updateValue();
             }
         }
+        this._updateCameraState();
+    }
+    _updateCameraState() {
+        if (this._perspectiveCamera === null || this._player === null) {
+            return;
+        }
+        const playerTransform = this._player.gameObject.transform;
+        const cameraPosition = new Vector3(playerTransform.translation.x, playerTransform.translation.y, playerTransform.translation.z);
+        this._perspectiveCamera.setCameraTarget(cameraPosition);
     }
 }
 //# sourceMappingURL=UpdateManager.js.map

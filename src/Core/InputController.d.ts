@@ -1,10 +1,10 @@
 import type InputKeyboardSystem from "./InputKeyboardSystem.js";
-import Player from "./Player.js";
+import type Transform from "./Transform.js";
 export default class InputController {
     private _inputSystem;
-    private _player;
+    private _conrolledTransform;
     constructor(inputSystem: InputKeyboardSystem);
-    setPlayer(player: Player): void;
-    update(deltaTime: number): void;
+    setControlledTransform(controlledTransform: Transform): void;
+    update(deltaTime: number, valueTranslation: number): void;
 }
 //# sourceMappingURL=InputController.d.ts.map
