@@ -40,15 +40,21 @@ export default class Runner {
     }
 
     private _initializeCubeRunnerScene(): Scene {
+
+
+
         const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10)
 
         const scene = new Scene("CUBE RUNNER SCENE")
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
 
+        const simpleCube = FiguresUtils.getColorCube(10, 10, 0, 40, 10, 10)
+        const simpleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, simpleCube)
+
         const player = new Player(object)
 
-    
+        scene.addObject(simpleObject)
         scene.addObject(object)
 
         this._gameLoopManager.setScene(scene)
