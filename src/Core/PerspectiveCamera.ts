@@ -22,11 +22,12 @@ export default class PerspectiveCamera {
 
     private _cameraMatrix: number[]
 
-    private _target: Vector3
 
     private _uniformProjectionMatrixInfo: GLUniformMatInfo | null = null
 
     private _uniformViewMatrixInfo: GLUniformMatInfo | null = null
+
+    public target: Vector3
 
     public transform: Transform
 
@@ -38,11 +39,11 @@ export default class PerspectiveCamera {
         
         this.transform = new Transform()
         this.transform.translation = new Vector3(0, 0, 100)
-        this._target = new Vector3(0, 0, 0)
+        this.target = new Vector3(0, 0, 0)
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar)
         this._cameraMatrix = MatricesUtils.lookAt(
             [this.transform.translation.x, this.transform.translation.y, this.transform.translation.z],
-            [this._target.x, this._target.y, this._target.z],
+            [this.target.x, this.target.y, this.target.z],
             Vector3.up)!
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)
     }
@@ -72,17 +73,17 @@ export default class PerspectiveCamera {
     }
 
     public setCameraTarget(target: Vector3) {
-        if (this._target.x === target.x && this._target.y === target.y && this._target.z === target.z) {
+        if (this.target.x === target.x && this.target.y === target.y && this.target.z === target.z) {
             return
         }
 
-        this._target = target
+        this.target = target
     }
 
     public computeViewMatrix() {
         this._cameraMatrix = MatricesUtils.lookAt(
             [this.transform.translation.x, this.transform.translation.y, this.transform.translation.z],
-            [this._target.x, this._target.y, this._target.z],
+            [this.target.x, this.target.y, this.target.z],
             Vector3.up)!
 
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix)

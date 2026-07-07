@@ -12,9 +12,9 @@ export default class PerspectiveCamera {
     private _projectionMatrix;
     private _viewMatrix;
     private _cameraMatrix;
-    private _target;
     private _uniformProjectionMatrixInfo;
     private _uniformViewMatrixInfo;
+    target: Vector3;
     transform: Transform;
     constructor(fieldOfViewRadians: number, aspect: number);
     updatePerspective(fieldOfViewRadians: number, aspect: number, zNear?: number, zFar?: number): void;

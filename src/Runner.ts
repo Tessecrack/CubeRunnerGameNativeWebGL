@@ -41,6 +41,7 @@ export default class Runner {
 
     private _initializeCubeRunnerScene(): Scene {
         const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10)
+
         const scene = new Scene("CUBE RUNNER SCENE")
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
@@ -54,7 +55,7 @@ export default class Runner {
 
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
 
-        this._inputController.setControlledTransform(perspectiveCamera.transform)
+        this._inputController.setControlledTransform(player.gameObject.transform)
 
         this._renderer.setPerspectiveCamera(perspectiveCamera)
 

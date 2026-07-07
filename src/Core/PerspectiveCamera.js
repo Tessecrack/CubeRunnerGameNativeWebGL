@@ -13,18 +13,18 @@ export default class PerspectiveCamera {
     _projectionMatrix;
     _viewMatrix;
     _cameraMatrix;
-    _target;
     _uniformProjectionMatrixInfo = null;
     _uniformViewMatrixInfo = null;
+    target;
     transform;
     constructor(fieldOfViewRadians, aspect) {
         this._fieldOfViewRadians = fieldOfViewRadians;
         this._aspect = aspect;
         this.transform = new Transform();
         this.transform.translation = new Vector3(0, 0, 100);
-        this._target = new Vector3(0, 0, 0);
+        this.target = new Vector3(0, 0, 0);
         this._projectionMatrix = MatricesUtils.perspective(fieldOfViewRadians, aspect, this._zNear, this._zFar);
-        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
+        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this.target.x, this.target.y, this.target.z], Vector3.up);
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
     }
     updatePerspective(fieldOfViewRadians, aspect, zNear = 1, zFar = 2000) {
@@ -47,13 +47,13 @@ export default class PerspectiveCamera {
         this.transform.translation = cameraPosition;
     }
     setCameraTarget(target) {
-        if (this._target.x === target.x && this._target.y === target.y && this._target.z === target.z) {
+        if (this.target.x === target.x && this.target.y === target.y && this.target.z === target.z) {
             return;
         }
-        this._target = target;
+        this.target = target;
     }
     computeViewMatrix() {
-        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this._target.x, this._target.y, this._target.z], Vector3.up);
+        this._cameraMatrix = MatricesUtils.lookAt([this.transform.translation.x, this.transform.translation.y, this.transform.translation.z], [this.target.x, this.target.y, this.target.z], Vector3.up);
         this._viewMatrix = MatricesUtils.inverse(this._cameraMatrix);
         if (this._uniformViewMatrixInfo !== null) {
             this._uniformViewMatrixInfo.value = this._viewMatrix;
