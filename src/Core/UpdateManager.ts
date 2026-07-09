@@ -60,7 +60,7 @@ export default class UpdateManager {
         const playerTransform = this._player.gameObject.transform
 
         this._perspectiveCamera.transform.translation.x = playerTransform.translation.x
-        this._perspectiveCamera.transform.translation.y = playerTransform.translation.z
+        this._perspectiveCamera.transform.translation.y = playerTransform.translation.y
 
         this._perspectiveCamera.target.x = playerTransform.translation.x
         this._perspectiveCamera.target.y = playerTransform.translation.y
