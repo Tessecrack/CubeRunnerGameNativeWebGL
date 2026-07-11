@@ -6,6 +6,7 @@ export default class UpdateManager {
     private _inputController;
     private _perspectiveCamera;
     private _player;
+    private _collisionManager;
     constructor(inputController: InputController);
     setPerspectiveCamera(perspectiveCamera: PerspectiveCamera): void;
     setPlayer(player: Player): void;

@@ -1,3 +1,4 @@
+import CollisionManager from "./CollisionManager.js"
 import type GameObject from "./GameObject.js"
 import InputController from "./InputController.js"
 import type PerspectiveCamera from "./PerspectiveCamera.js"
@@ -10,8 +11,11 @@ export default class UpdateManager {
     private _perspectiveCamera: PerspectiveCamera | null = null
     private _player: Player | null = null
 
+    private _collisionManager: CollisionManager
+
     constructor(inputController: InputController) {
         this._inputController = inputController
+        this._collisionManager = new CollisionManager()
     }
 
     public setPerspectiveCamera(perspectiveCamera: PerspectiveCamera) {

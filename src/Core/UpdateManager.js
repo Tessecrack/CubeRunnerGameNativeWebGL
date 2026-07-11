@@ -1,11 +1,14 @@
+import CollisionManager from "./CollisionManager.js";
 import InputController from "./InputController.js";
 import Vector3 from "./Vector3.js";
 export default class UpdateManager {
     _inputController;
     _perspectiveCamera = null;
     _player = null;
+    _collisionManager;
     constructor(inputController) {
         this._inputController = inputController;
+        this._collisionManager = new CollisionManager();
     }
     setPerspectiveCamera(perspectiveCamera) {
         this._perspectiveCamera = perspectiveCamera;
