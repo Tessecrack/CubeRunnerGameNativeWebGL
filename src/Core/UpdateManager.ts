@@ -33,7 +33,7 @@ export default class UpdateManager {
             return
         }
         if (this._player !== null) {
-            this.applyInput(deltaTime, this._player.gameObject.transform, 1.0)
+            this.applyInput(deltaTime, this._player.speed, this._player.gameObject.transform)
         }
 
         for (let gameObject of gameObjects) {
@@ -53,11 +53,11 @@ export default class UpdateManager {
         this._updateCameraState()
     }
 
-    public applyInput(deltaTime: number, controlledTransform: Transform, valueTranslation: number): Transform {
+    public applyInput(deltaTime: number, valueTranslation: number, controlledTransform: Transform) {
         let appliedTransform = controlledTransform
-        
+
         if (this._inputController === null || appliedTransform === null) {
-            return appliedTransform
+            return
         }
 
         const speed = valueTranslation * deltaTime
@@ -77,8 +77,6 @@ export default class UpdateManager {
         if (this._inputController.isRightPressed()) {
             appliedTransform.translation.x += speed
         }
-
-        return appliedTransform
     }
 
     private _updateCameraState() {
