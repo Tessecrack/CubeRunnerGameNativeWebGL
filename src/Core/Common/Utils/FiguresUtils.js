@@ -4,7 +4,7 @@ export default class FiguresUtils {
         20, -20, 0.0, 0, 0, 1, 1,
         0, 20, 0.0, 0, 1, 0, 1,
         -20, -20, 0.0, 1, 0, 0, 1
-    ], 3);
+    ], 3, 40, 40, 0);
     static getColorTriangle() {
         return this._colorTriangleInfo;
     }
@@ -62,7 +62,7 @@ export default class FiguresUtils {
             x2, y1, z2, 0, 1, 1, 1,
             x2, y1, z1, 0, 1, 1, 1,
         ];
-        return new FigureInfo(vertices, 36);
+        return new FigureInfo(vertices, 36, width, height, depth);
     }
 }
 //# sourceMappingURL=FiguresUtils.js.map

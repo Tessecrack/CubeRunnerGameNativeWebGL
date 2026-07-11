@@ -267,8 +267,8 @@ export default class WebGLWrapper {
 
     public createGameObject(programInfo: GLProgramInfo, 
         linkedAttributesToBuffer: GLLinkedAttributesToBuffer[],
-        countVertices: number): GameObject {
-        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices)
+        figureInfo: FigureInfo): GameObject {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, figureInfo)
         return gameObject
     }
 
@@ -309,7 +309,7 @@ export default class WebGLWrapper {
 
         const object = this.createGameObject(programInfo, 
             [linkedAttributes], 
-            figureInfo.countVertices)
+            figureInfo)
 
         object.addUniformVecInfo(uniformColorMultInfo)
         object.addUniformMatInfo(uniformModelMatrixInfo)

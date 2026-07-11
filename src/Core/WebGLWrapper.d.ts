@@ -33,7 +33,7 @@ export default class WebGLWrapper {
     createProgramInfo(vertexShader: WebGLShader, fragmentShader: WebGLShader): GLProgramInfo;
     createDefaultColorProgramInfo(): GLProgramInfo;
     drawArrays(drawMode: GLenum, firstVertex: number, countVertices: number): void;
-    createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], countVertices: number): GameObject;
+    createGameObject(programInfo: GLProgramInfo, linkedAttributesToBuffer: GLLinkedAttributesToBuffer[], figureInfo: FigureInfo): GameObject;
     createPerspectiveCamera(): PerspectiveCamera;
     getDefaultColorGameObjectByFigureInfo(programInfo: GLProgramInfo, figureInfo: FigureInfo): GameObject;
     updatePerspectiveCameraByProgram(program: WebGLProgram, perspectiveCamera: PerspectiveCamera): void;

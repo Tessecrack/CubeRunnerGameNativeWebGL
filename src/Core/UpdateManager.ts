@@ -1,8 +1,9 @@
-import CollisionManager from "./CollisionManager.js"
+import CollisionManager from "./Common/CollisionManager.js"
 import type GameObject from "./GameObject.js"
 import InputController from "./InputController.js"
 import type PerspectiveCamera from "./PerspectiveCamera.js"
-import type Player from "./Player.js"
+import Player from "./Player.js"
+import Transform from "./Transform.js"
 import Vector3 from "./Vector3.js"
 
 export default class UpdateManager {
@@ -27,16 +28,12 @@ export default class UpdateManager {
     }
 
     public updateLogic(deltaTime: number, gameObjects: GameObject[]) {
-        if (this._inputController !== null) {
-            let valueForTranslation = 1.0
-            if (this._player !== null) {
-                valueForTranslation = this._player.speed
-            }
-            this._inputController.update(deltaTime, valueForTranslation)
-        }
 
         if (!gameObjects || gameObjects.length === 0) {
             return
+        }
+        if (this._player !== null) {
+            this.applyInput(deltaTime, this._player.gameObject.transform, 1.0)
         }
 
         for (let gameObject of gameObjects) {
@@ -54,6 +51,34 @@ export default class UpdateManager {
         }
 
         this._updateCameraState()
+    }
+
+    public applyInput(deltaTime: number, controlledTransform: Transform, valueTranslation: number): Transform {
+        let appliedTransform = controlledTransform
+        
+        if (this._inputController === null || appliedTransform === null) {
+            return appliedTransform
+        }
+
+        const speed = valueTranslation * deltaTime
+
+        if (this._inputController.isUpPressed()) {
+            appliedTransform.translation.y += speed
+        }
+
+        if (this._inputController.isDownPressed()) {
+            appliedTransform.translation.y -= speed
+        }
+
+        if (this._inputController.isLeftPressed()) {
+            appliedTransform.translation.x -= speed
+        }
+
+        if (this._inputController.isRightPressed()) {
+            appliedTransform.translation.x += speed
+        }
+
+        return appliedTransform
     }
 
     private _updateCameraState() {

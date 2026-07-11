@@ -1,0 +1,1 @@
+{"version":3,"file":"CollisionBox.d.ts","sourceRoot":"","sources":["CollisionBox.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,OAAO,YAAY;IAEtB,KAAK,EAAE,MAAM,CAAA;IACb,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;gBAER,KAAK,EAAE,MAAM,EAAE,MAAM,EAAE,MAAM,EAAE,KAAK,EAAE,MAAM;CAK3D"}

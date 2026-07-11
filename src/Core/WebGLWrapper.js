@@ -198,8 +198,8 @@ export default class WebGLWrapper {
     drawArrays(drawMode, firstVertex, countVertices) {
         this._glContext.drawArrays(drawMode, firstVertex, countVertices);
     }
-    createGameObject(programInfo, linkedAttributesToBuffer, countVertices) {
-        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, countVertices);
+    createGameObject(programInfo, linkedAttributesToBuffer, figureInfo) {
+        const gameObject = new GameObject(programInfo, linkedAttributesToBuffer, this._glContext.TRIANGLES, figureInfo);
         return gameObject;
     }
     createPerspectiveCamera() {
@@ -226,7 +226,7 @@ export default class WebGLWrapper {
             return matrix;
         });
         const uniformColorMultInfo = this.createUniformVecInfo(program, 'u_multColor', [0.7, 0.9, 0.7, 1]);
-        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo.countVertices);
+        const object = this.createGameObject(programInfo, [linkedAttributes], figureInfo);
         object.addUniformVecInfo(uniformColorMultInfo);
         object.addUniformMatInfo(uniformModelMatrixInfo);
         object.transform = transform;
