@@ -19,7 +19,7 @@ export default class GameObject {
 
     private _drawMode: GLenum // for example, TRIANGLES
 
-    private _collisionBox: CollisionBox | null = null
+    public collisionBox: CollisionBox | null = null
 
     public transform: Transform = new Transform()
 
@@ -36,14 +36,6 @@ export default class GameObject {
         this._drawMode = drawMode
 
         this.countVertices = figureInfo.countVertices
-    }
-
-    public hasCollisionBox() {
-        return this._collisionBox !== null
-    }
-
-    public getCollisionBox() {
-        return this._collisionBox
     }
 
     public getProgram(): WebGLProgram {

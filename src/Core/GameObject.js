@@ -5,7 +5,7 @@ export default class GameObject {
     _uniformsVecInfo = [];
     _uniformsMatInfo = [];
     _drawMode; // for example, TRIANGLES
-    _collisionBox = null;
+    collisionBox = null;
     transform = new Transform();
     countVertices;
     constructor(programInfo, attributesBuffersInfo, drawMode, figureInfo) {
@@ -13,12 +13,6 @@ export default class GameObject {
         this._attributesBuffersInfo = attributesBuffersInfo;
         this._drawMode = drawMode;
         this.countVertices = figureInfo.countVertices;
-    }
-    hasCollisionBox() {
-        return this._collisionBox !== null;
-    }
-    getCollisionBox() {
-        return this._collisionBox;
     }
     getProgram() {
         return this._programInfo.getProgram();

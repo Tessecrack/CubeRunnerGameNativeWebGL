@@ -17,9 +17,9 @@ export default class FiguresUtils {
         const alignCenterOffsetY = -height / 2;
         const alignCenterOffsetZ = -depth / 2;
 
-        const x1 = alignCenterOffsetX;
-        const y1 = alignCenterOffsetY;
-        const z1 = alignCenterOffsetZ;
+        const x1 = x + alignCenterOffsetX;
+        const y1 = y + alignCenterOffsetY;
+        const z1 = z + alignCenterOffsetZ;
 
         const x2 = x1 + width;
         const y2 = y1 + height;

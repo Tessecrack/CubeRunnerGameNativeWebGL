@@ -1,7 +1,10 @@
 export default class CollisionManager {
     constructor() {
     }
-    isCollision() {
+    isCollision(first, second) {
+        return this._checkAABB();
+    }
+    _checkAABB() {
         return false;
     }
 }

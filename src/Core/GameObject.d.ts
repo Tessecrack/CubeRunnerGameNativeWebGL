@@ -12,12 +12,10 @@ export default class GameObject {
     private _uniformsVecInfo;
     private _uniformsMatInfo;
     private _drawMode;
-    private _collisionBox;
+    collisionBox: CollisionBox | null;
     transform: Transform;
     countVertices: number;
     constructor(programInfo: GLProgramInfo, attributesBuffersInfo: GLLinkedAttributesToBuffer[], drawMode: GLenum, figureInfo: FigureInfo);
-    hasCollisionBox(): boolean;
-    getCollisionBox(): CollisionBox | null;
     getProgram(): WebGLProgram;
     getAttributesBuffersInfo(): GLLinkedAttributesToBuffer[];
     getUniformsVecInfo(): GLUniformVecInfo[];

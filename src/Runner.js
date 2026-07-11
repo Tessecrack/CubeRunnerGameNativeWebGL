@@ -1,3 +1,4 @@
+import CollisionBox from "./Core/Common/CollisionBox.js";
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js";
 import GameLoopManager from "./Core/GameLoopManager.js";
 import InputController from "./Core/InputController.js";
@@ -39,10 +40,12 @@ export default class Runner {
         const scene = new Scene("CUBE RUNNER SCENE");
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo();
         const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo);
-        const simpleCube = FiguresUtils.getColorCube(10, 10, 0, 40, 10, 10);
-        const simpleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, simpleCube);
+        object.collisionBox = new CollisionBox(cubeFigureInfo.width, cubeFigureInfo.height, cubeFigureInfo.depth);
+        const obstacleFigureInfo = FiguresUtils.getColorCube(10, -50, 0, 40, 10, 10);
+        const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo);
+        obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth);
         const player = new Player(object);
-        scene.addObject(simpleObject);
+        scene.addObject(obstacleObject);
         scene.addObject(object);
         this._gameLoopManager.setScene(scene);
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera();
