@@ -8,13 +8,13 @@ export default class FiguresUtils {
     static getColorTriangle() {
         return this._colorTriangleInfo;
     }
-    static getColorCube(x, y, z, width, height, depth) {
+    static getColorCube(width, height, depth) {
         const alignCenterOffsetX = -width / 2;
         const alignCenterOffsetY = -height / 2;
         const alignCenterOffsetZ = -depth / 2;
-        const x1 = x + alignCenterOffsetX;
-        const y1 = y + alignCenterOffsetY;
-        const z1 = z + alignCenterOffsetZ;
+        const x1 = alignCenterOffsetX;
+        const y1 = alignCenterOffsetY;
+        const z1 = alignCenterOffsetZ;
         const x2 = x1 + width;
         const y2 = y1 + height;
         const z2 = z1 + depth;

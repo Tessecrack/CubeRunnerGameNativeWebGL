@@ -41,23 +41,33 @@ export default class Runner {
     }
 
     private _initializeCubeRunnerScene(): Scene {
-        const cubeFigureInfo = FiguresUtils.getColorCube(0, 0, 0, 10, 10, 10)
+        const cubeFigureInfo = FiguresUtils.getColorCube(10, 10, 10)
 
         const scene = new Scene("CUBE RUNNER SCENE")
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo()
-        const object = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
+        const cubePlayerObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, cubeFigureInfo)
 
-        object.collisionBox = new CollisionBox(cubeFigureInfo.width, cubeFigureInfo.height, cubeFigureInfo.depth)
+        cubePlayerObject.transform.translation.x = 0
+        cubePlayerObject.transform.translation.y = 0
+        cubePlayerObject.transform.translation.z = 0
 
-        const obstacleFigureInfo = FiguresUtils.getColorCube(10, -50, 0, 40, 10, 10)
+        cubePlayerObject.collisionBox = new CollisionBox(cubeFigureInfo.width, cubeFigureInfo.height, cubeFigureInfo.depth)
+
+        const obstacleFigureInfo = FiguresUtils.getColorCube(50, 10, 10)
         const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo)
+
+        obstacleObject.transform.translation.x = 10
+        obstacleObject.transform.translation.y = -50
+        obstacleObject.transform.translation.z = 0
 
         obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth)
 
-        const player = new Player(object)
+        const player = new Player(cubePlayerObject)
 
         scene.addObject(obstacleObject)
-        scene.addObject(object)
+        scene.addObject(cubePlayerObject)
+
+        console.log
 
         this._gameLoopManager.setScene(scene)
 

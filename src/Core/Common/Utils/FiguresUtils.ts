@@ -12,14 +12,14 @@ export default class FiguresUtils {
         return this._colorTriangleInfo
     }
 
-    public static getColorCube(x: number, y: number, z: number, width: number, height: number, depth: number): FigureInfo {
+    public static getColorCube(width: number, height: number, depth: number): FigureInfo {
         const alignCenterOffsetX = -width / 2;
         const alignCenterOffsetY = -height / 2;
         const alignCenterOffsetZ = -depth / 2;
 
-        const x1 = x + alignCenterOffsetX;
-        const y1 = y + alignCenterOffsetY;
-        const z1 = z + alignCenterOffsetZ;
+        const x1 = alignCenterOffsetX;
+        const y1 = alignCenterOffsetY;
+        const z1 = alignCenterOffsetZ;
 
         const x2 = x1 + width;
         const y2 = y1 + height;

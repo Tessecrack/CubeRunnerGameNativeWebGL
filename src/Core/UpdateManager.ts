@@ -99,7 +99,6 @@ export default class UpdateManager {
                     }
 
                     if (this._checkAABB(targetX, controlledObject.transform.translation.y, controlledObject.transform.translation.z, collisionBox, obj)) {
-                        console.log("X")
                         collisionX = true;
                         break;
                     }
@@ -119,7 +118,6 @@ export default class UpdateManager {
                     }
 
                     if (this._checkAABB(controlledObject.transform.translation.x, targetY, controlledObject.transform.translation.z, collisionBox, obj)) {
-                        console.log("Y")
                         collisionY = true;
                         break;
                     }
