@@ -75,8 +75,9 @@ export default class UpdateManager {
                         break;
                     }
                 }
-                if (!collisionX)
+                if (!collisionX) {
                     controlledObject.transform.translation.x = targetX;
+                }
             }
             if (moveOffsetY !== 0) {
                 let targetY = controlledObject.transform.translation.y + moveOffsetY;

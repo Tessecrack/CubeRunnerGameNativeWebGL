@@ -104,7 +104,9 @@ export default class UpdateManager {
                         break;
                     }
                 }
-                if (!collisionX) controlledObject.transform.translation.x = targetX;
+                if (!collisionX) {
+                    controlledObject.transform.translation.x = targetX;
+                }
             }
 
             if (moveOffsetY !== 0) {
