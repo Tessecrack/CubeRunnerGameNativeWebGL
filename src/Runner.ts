@@ -5,6 +5,7 @@ import InputController from "./Core/InputController.js"
 import InputKeyboardSystem from "./Core/InputKeyboardSystem.js"
 import PerspectiveCamera from "./Core/PerspectiveCamera.js"
 import Player from "./Core/Player.js"
+import PlayerMovementController from "./Core/PlayerMovementController.js"
 import Renderer from "./Core/Renderer.js"
 import Scene from "./Core/Scene.js"
 import UpdateManager from "./Core/UpdateManager.js"
@@ -24,7 +25,7 @@ export default class Runner {
         this._inputSystem = new InputKeyboardSystem(window)
         this._inputController = new InputController(this._inputSystem)
         this._renderer = new Renderer(this._webGlWrapper)
-        this._updateManager = new UpdateManager(this._inputController)
+        this._updateManager = new UpdateManager()
         this._gameLoopManager = new GameLoopManager(this._updateManager, this._renderer)
     }
 
@@ -63,6 +64,7 @@ export default class Runner {
         obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth)
 
         const player = new Player(cubePlayerObject)
+        const playerMovementController = new PlayerMovementController(player, this._inputController)
 
         scene.addObject(obstacleObject)
         scene.addObject(cubePlayerObject)
@@ -76,7 +78,7 @@ export default class Runner {
         this._renderer.setPerspectiveCamera(perspectiveCamera)
 
         this._updateManager.setPerspectiveCamera(perspectiveCamera)
-        this._updateManager.setPlayer(player)
+        this._updateManager.setPlayerMovementController(playerMovementController)
 
         return scene
     }

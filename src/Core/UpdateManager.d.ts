@@ -1,18 +1,14 @@
 import type GameObject from "./GameObject.js";
-import InputController from "./InputController.js";
 import type PerspectiveCamera from "./PerspectiveCamera.js";
-import Player from "./Player.js";
+import type PlayerMovementController from "./PlayerMovementController.js";
 export default class UpdateManager {
-    private _inputController;
     private _perspectiveCamera;
-    private _player;
+    private _playerMovementController;
     private _collisionManager;
-    constructor(inputController: InputController);
+    constructor();
     setPerspectiveCamera(perspectiveCamera: PerspectiveCamera): void;
-    setPlayer(player: Player): void;
+    setPlayerMovementController(playerMovementController: PlayerMovementController): void;
     updateLogic(deltaTime: number, gameObjects: GameObject[]): void;
-    applyInput(deltaTime: number, valueTranslation: number, controlledObject: GameObject, gameObjects: GameObject[]): void;
-    private _checkAABB;
     private _updateCameraState;
 }
 //# sourceMappingURL=UpdateManager.d.ts.map
