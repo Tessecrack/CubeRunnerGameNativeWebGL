@@ -1,6 +1,8 @@
 import CollisionBox from "./Core/Common/CollisionBox.js"
+import type GLProgramInfo from "./Core/Common/GLProgramInfo.js"
 import FiguresUtils from "./Core/Common/Utils/FiguresUtils.js"
 import GameLoopManager from "./Core/GameLoopManager.js"
+import type GameObject from "./Core/GameObject.js"
 import InputController from "./Core/InputController.js"
 import InputKeyboardSystem from "./Core/InputKeyboardSystem.js"
 import PerspectiveCamera from "./Core/PerspectiveCamera.js"
@@ -21,7 +23,7 @@ export default class Runner {
     private _isTest: boolean = false
 
     constructor() {
-        this._webGlWrapper = new WebGLWrapper()        
+        this._webGlWrapper = new WebGLWrapper()
         this._inputSystem = new InputKeyboardSystem(window)
         this._inputController = new InputController(this._inputSystem)
         this._renderer = new Renderer(this._webGlWrapper)
@@ -37,7 +39,7 @@ export default class Runner {
         } else {
             scene = this._initializeCubeRunnerScene()
         }
-        
+
         this._gameLoopManager.start()
     }
 
@@ -54,26 +56,22 @@ export default class Runner {
 
         cubePlayerObject.collisionBox = new CollisionBox(cubeFigureInfo.width, cubeFigureInfo.height, cubeFigureInfo.depth)
 
-        const obstacleFigureInfo = FiguresUtils.getColorCube(50, 10, 10)
-        const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo)
-
-        obstacleObject.transform.translation.x = 10
-        obstacleObject.transform.translation.y = -50
-        obstacleObject.transform.translation.z = 0
-
-        obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth)
-
+    
         const player = new Player(cubePlayerObject)
         const playerMovementController = new PlayerMovementController(player, this._inputController)
 
-        scene.addObject(obstacleObject)
+        const obstacles = this._generateObstacles(defaultColorProgramInfo)
+        for (let obstacle of obstacles) {
+            scene.addObject(obstacle)
+        }
+        
         scene.addObject(cubePlayerObject)
 
         console.log
 
         this._gameLoopManager.setScene(scene)
 
-        const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()        
+        const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
 
         this._renderer.setPerspectiveCamera(perspectiveCamera)
 
@@ -81,6 +79,26 @@ export default class Runner {
         this._updateManager.setPlayerMovementController(playerMovementController)
 
         return scene
+    }
+
+    private _generateObstacles(defaultColorProgramInfo: GLProgramInfo): GameObject[] {
+        const widthObstacle = 60
+        let obstacles: GameObject[] = []
+        const obstacleFigureInfo = FiguresUtils.getColorCube(widthObstacle, 10, 10)
+
+        for (let i = 0; i < 10; ++i) {
+            const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo)
+
+            obstacleObject.transform.translation.x = i * widthObstacle * 2
+            obstacleObject.transform.translation.y = -50
+            obstacleObject.transform.translation.z = 0
+
+            obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth)
+
+            obstacles.push(obstacleObject)
+        }
+
+        return obstacles
     }
 
     private _initializeTestScene(): Scene {

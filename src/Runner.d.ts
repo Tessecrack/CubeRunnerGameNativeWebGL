@@ -9,6 +9,7 @@ export default class Runner {
     constructor();
     run(): void;
     private _initializeCubeRunnerScene;
+    private _generateObstacles;
     private _initializeTestScene;
 }
 //# sourceMappingURL=Runner.d.ts.map

@@ -45,15 +45,12 @@ export default class Runner {
         cubePlayerObject.transform.translation.y = 0;
         cubePlayerObject.transform.translation.z = 0;
         cubePlayerObject.collisionBox = new CollisionBox(cubeFigureInfo.width, cubeFigureInfo.height, cubeFigureInfo.depth);
-        const obstacleFigureInfo = FiguresUtils.getColorCube(50, 10, 10);
-        const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo);
-        obstacleObject.transform.translation.x = 10;
-        obstacleObject.transform.translation.y = -50;
-        obstacleObject.transform.translation.z = 0;
-        obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth);
         const player = new Player(cubePlayerObject);
         const playerMovementController = new PlayerMovementController(player, this._inputController);
-        scene.addObject(obstacleObject);
+        const obstacles = this._generateObstacles(defaultColorProgramInfo);
+        for (let obstacle of obstacles) {
+            scene.addObject(obstacle);
+        }
         scene.addObject(cubePlayerObject);
         console.log;
         this._gameLoopManager.setScene(scene);
@@ -62,6 +59,20 @@ export default class Runner {
         this._updateManager.setPerspectiveCamera(perspectiveCamera);
         this._updateManager.setPlayerMovementController(playerMovementController);
         return scene;
+    }
+    _generateObstacles(defaultColorProgramInfo) {
+        const widthObstacle = 60;
+        let obstacles = [];
+        const obstacleFigureInfo = FiguresUtils.getColorCube(widthObstacle, 10, 10);
+        for (let i = 0; i < 10; ++i) {
+            const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo);
+            obstacleObject.transform.translation.x = i * widthObstacle * 2;
+            obstacleObject.transform.translation.y = -50;
+            obstacleObject.transform.translation.z = 0;
+            obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth);
+            obstacles.push(obstacleObject);
+        }
+        return obstacles;
     }
     _initializeTestScene() {
         const defaultColorProgramInfo = this._webGlWrapper.createDefaultColorProgramInfo();
