@@ -6,17 +6,16 @@ export default class InputKeyboardSystem {
     private static _leftKeyCode = 'KeyA'
     private static _downKeyCode = 'KeyS'
     private static _rightKeyCode = 'KeyD'
-
     private static _spaceKeyCode = 'Space'
 
 
     private _window: Window
 
-
     private _isKeyUpPressed: boolean = false
     private _isKeyDownPressed: boolean = false
     private _isKeyLeftPressed: boolean = false
     private _isKeyRightPressed: boolean = false
+    private _isSpacePressed: boolean = false
 
     constructor(window: Window) {
         this._window = window
@@ -28,9 +27,10 @@ export default class InputKeyboardSystem {
     public get isLeftPressed(): boolean { return this._isKeyLeftPressed }
     public get isDownPressed(): boolean { return this._isKeyDownPressed }
     public get isRightPressed(): boolean { return this._isKeyRightPressed }
+    public get isSpacePressed(): boolean { return this._isSpacePressed }
 
     private _handleKeyUp(event: KeyboardEvent) {
-                switch (event.code) {
+        switch (event.code) {
             case InputKeyboardSystem._upKeyCode:
                 this._isKeyUpPressed = false
                 break
@@ -48,7 +48,7 @@ export default class InputKeyboardSystem {
                 break
 
             case InputKeyboardSystem._spaceKeyCode:
-                
+                this._isSpacePressed = false
                 break
         }
     }
@@ -72,7 +72,7 @@ export default class InputKeyboardSystem {
                 break
 
             case InputKeyboardSystem._spaceKeyCode:
-                
+                this._isSpacePressed = true
                 break
         }
     }

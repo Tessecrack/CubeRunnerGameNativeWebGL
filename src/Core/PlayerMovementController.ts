@@ -11,6 +11,7 @@ export default class PlayerMovementController {
     private _inputController: InputController
     private _speed = 100.0
     private _velocityY = 0.0
+    private _jumpForce = 10.0
 
     constructor(player: Player, inputController: InputController) {
         this._player = player
@@ -36,11 +37,9 @@ export default class PlayerMovementController {
         let moveOffsetY = 0
 
         if (this._inputController.isUpPressed()) {
-            moveOffsetY += speed
-        }
-
-        if (this._inputController.isDownPressed()) {
-            moveOffsetY -= speed
+            if (this._velocityY === 0) {
+                this._velocityY = this._jumpForce
+            }
         }
 
         if (this._inputController.isLeftPressed()) {
@@ -52,16 +51,10 @@ export default class PlayerMovementController {
         }
 
         this._velocityY -= PlayerMovementController.GRAVITY * deltaTime;
-        moveOffsetY += this._velocityY * deltaTime
+        moveOffsetY += this._velocityY * deltaTime * 10
 
         if (moveOffsetX === 0 && moveOffsetY === 0) {
             return
-        }
-
-        if (moveOffsetX !== 0 || moveOffsetY !== 0) {
-            const length = Math.sqrt(moveOffsetX * moveOffsetX + moveOffsetY * moveOffsetY);
-            moveOffsetX = (moveOffsetX / length) * valueTranslation * deltaTime;
-            moveOffsetY = (moveOffsetY / length) * valueTranslation * deltaTime;
         }
 
         if (controlledObject.collisionBox !== null) {

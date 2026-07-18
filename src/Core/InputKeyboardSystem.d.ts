@@ -10,11 +10,13 @@ export default class InputKeyboardSystem {
     private _isKeyDownPressed;
     private _isKeyLeftPressed;
     private _isKeyRightPressed;
+    private _isSpacePressed;
     constructor(window: Window);
     get isUpPressed(): boolean;
     get isLeftPressed(): boolean;
     get isDownPressed(): boolean;
     get isRightPressed(): boolean;
+    get isSpacePressed(): boolean;
     private _handleKeyUp;
     private _handleKeyDown;
 }

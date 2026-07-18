@@ -9,6 +9,7 @@ export default class InputKeyboardSystem {
     _isKeyDownPressed = false;
     _isKeyLeftPressed = false;
     _isKeyRightPressed = false;
+    _isSpacePressed = false;
     constructor(window) {
         this._window = window;
         this._window.addEventListener('keydown', this._handleKeyDown.bind(this));
@@ -18,6 +19,7 @@ export default class InputKeyboardSystem {
     get isLeftPressed() { return this._isKeyLeftPressed; }
     get isDownPressed() { return this._isKeyDownPressed; }
     get isRightPressed() { return this._isKeyRightPressed; }
+    get isSpacePressed() { return this._isSpacePressed; }
     _handleKeyUp(event) {
         switch (event.code) {
             case InputKeyboardSystem._upKeyCode:
@@ -33,6 +35,7 @@ export default class InputKeyboardSystem {
                 this._isKeyRightPressed = false;
                 break;
             case InputKeyboardSystem._spaceKeyCode:
+                this._isSpacePressed = false;
                 break;
         }
     }
@@ -51,6 +54,7 @@ export default class InputKeyboardSystem {
                 this._isKeyRightPressed = true;
                 break;
             case InputKeyboardSystem._spaceKeyCode:
+                this._isSpacePressed = true;
                 break;
         }
     }

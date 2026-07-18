@@ -4,6 +4,7 @@ export default class PlayerMovementController {
     _inputController;
     _speed = 100.0;
     _velocityY = 0.0;
+    _jumpForce = 10.0;
     constructor(player, inputController) {
         this._player = player;
         this._inputController = inputController;
@@ -22,10 +23,9 @@ export default class PlayerMovementController {
         let moveOffsetX = 0;
         let moveOffsetY = 0;
         if (this._inputController.isUpPressed()) {
-            moveOffsetY += speed;
-        }
-        if (this._inputController.isDownPressed()) {
-            moveOffsetY -= speed;
+            if (this._velocityY === 0) {
+                this._velocityY = this._jumpForce;
+            }
         }
         if (this._inputController.isLeftPressed()) {
             moveOffsetX -= speed;
@@ -34,14 +34,9 @@ export default class PlayerMovementController {
             moveOffsetX += speed;
         }
         this._velocityY -= PlayerMovementController.GRAVITY * deltaTime;
-        moveOffsetY += this._velocityY * deltaTime;
+        moveOffsetY += this._velocityY * deltaTime * 10;
         if (moveOffsetX === 0 && moveOffsetY === 0) {
             return;
-        }
-        if (moveOffsetX !== 0 || moveOffsetY !== 0) {
-            const length = Math.sqrt(moveOffsetX * moveOffsetX + moveOffsetY * moveOffsetY);
-            moveOffsetX = (moveOffsetX / length) * valueTranslation * deltaTime;
-            moveOffsetY = (moveOffsetY / length) * valueTranslation * deltaTime;
         }
         if (controlledObject.collisionBox !== null) {
             const collisionBox = controlledObject.collisionBox;
@@ -84,7 +79,6 @@ export default class PlayerMovementController {
                     }
                 }
                 if (!collisionY) {
-                    console.log(moveOffsetY);
                     controlledObject.transform.translation.y = targetY;
                 }
             }

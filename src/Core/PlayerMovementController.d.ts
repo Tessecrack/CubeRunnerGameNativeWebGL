@@ -7,6 +7,7 @@ export default class PlayerMovementController {
     private _inputController;
     private _speed;
     private _velocityY;
+    private _jumpForce;
     constructor(player: Player, inputController: InputController);
     getPlayerTransform(): import("./Transform.js").default;
     applyMove(deltaTime: number, obstacles: GameObject[]): void;
