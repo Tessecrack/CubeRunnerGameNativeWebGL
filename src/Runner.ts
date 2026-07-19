@@ -74,7 +74,6 @@ export default class Runner {
         const perspectiveCamera = this._webGlWrapper.createPerspectiveCamera()
 
         this._renderer.setPerspectiveCamera(perspectiveCamera)
-
         this._updateManager.setPerspectiveCamera(perspectiveCamera)
         this._updateManager.setPlayerMovementController(playerMovementController)
 
