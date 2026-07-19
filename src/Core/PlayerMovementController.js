@@ -2,7 +2,7 @@ export default class PlayerMovementController {
     static GRAVITY = 20.0;
     _player;
     _inputController;
-    _speed = 100.0;
+    _speed = 90.0;
     _velocityY = 0.0;
     _jumpForce = 10.0;
     constructor(player, inputController) {
@@ -31,8 +31,9 @@ export default class PlayerMovementController {
             moveOffsetX -= speed;
         }
         if (this._inputController.isRightPressed()) {
-            moveOffsetX += speed;
+            //moveOffsetX += speed
         }
+        moveOffsetX += speed;
         this._velocityY -= PlayerMovementController.GRAVITY * deltaTime;
         moveOffsetY += this._velocityY * deltaTime * 10;
         if (moveOffsetX === 0 && moveOffsetY === 0) {

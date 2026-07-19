@@ -67,7 +67,7 @@ export default class Runner {
         for (let i = 0; i < 10; ++i) {
             const obstacleObject = this._webGlWrapper.getDefaultColorGameObjectByFigureInfo(defaultColorProgramInfo, obstacleFigureInfo);
             obstacleObject.transform.translation.x = i * widthObstacle * 2;
-            obstacleObject.transform.translation.y = -50;
+            obstacleObject.transform.translation.y = -10;
             obstacleObject.transform.translation.z = 0;
             obstacleObject.collisionBox = new CollisionBox(obstacleFigureInfo.width, obstacleFigureInfo.height, obstacleFigureInfo.depth);
             obstacles.push(obstacleObject);
